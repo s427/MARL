@@ -18,7 +18,8 @@ Alternatively, you can download this project from its [project page](https://git
 
 ## Features
 
-__What data is shown__:
+__What data is shown__
+
 - basic profile info, including pictures (avatar, banner)
 - full profile JSON data
 - favorites (*)
@@ -31,26 +32,38 @@ __What data is shown__:
 
 (*) see "Limitations" below.
 
-__Direct support for archive files__: no need to unpack your archive. Just drag'n'drop your file in the MARL window, and MARL will unpack it for you. This takes place in your browser's memory: no files are written on your disks. It's also strictly read-only: your archive file is not altered in any way.
+__Direct support for archive files__
 
-__Strictly in-browser only__: everything takes place in the browser, with no communication with any server (once the page has been loaded). Your archive data is _not_ sent to any server. No analytics are included either.
+No need to unpack your archive. Just drag'n'drop your file in the MARL window, and MARL will unpack it for you. This takes place in your browser's memory: no files are written on your disks. It's also strictly read-only: your archive file is not altered in any way.
 
-__Filters__: many filters allow you to quickly find a subset of posts in your archive:
+__Strictly in-browser only__
+
+Everything takes place in the browser, with no communication with any server (once the page has been loaded). Your archive data is _not_ sent to any server. No analytics are included either.
+
+__Filters__
+
+Many filters allow you to quickly find a subset of posts in your archive:
 - search full text, or exclusively in hashtags, mentions, content warnings or external links
 - filter posts depending on their language or visibility (public, unlisted etc)
 - filter posts depending on whether they contain images, videos or sounds
 - and more.
 
-__Media viewer__: posts attachments (images, videos or sounds) can be viewed or played in MARL. However there may be some limitations depending on the size of the attachment, as well as your browser and/or device.
+__Media viewer__
 
-__Accessibility__: MARL should be fully accessible to keyboard users. It also has been optimized for Forced Colors (aka "High Contrast" mode). Last but not least, it should be accessible to screen readers.  
+Posts attachments (images, videos or sounds) can be viewed or played in MARL. However there may be some limitations depending on the size of the attachment, as well as your browser and/or device.
+
+__Accessibility__
+
+MARL should be fully accessible to keyboard users. It also has been optimized for Forced Colors (aka "High Contrast" mode). Last but not least, it should be accessible to screen readers.  
 Accessibility is a vast and complex topic, and there's probably room for improvement. Feel free to let me know if you have feedback or suggestion!
 
-__Responsive__: MARL should work on pretty much any screen size, as low as 300 pixels wide (and possibly less).
+__Responsive__
+
+MARL should work on pretty much any screen size, as low as 300 pixels wide (and possibly less).
 
 ## Limitations
 
-Everything is based on the data contained in the Mastodon archive. As far as I can tell, the archive does __not__ include:
+Everything is based on the data contained in the Mastodon archive file. As far as I can tell, the archive does __not__ include:
 
 - a list of the accounts you follow or are followed by
 - a list of your blocked or muted accounts
@@ -61,7 +74,7 @@ Some data may not be shown in MARL, by choice or oversight. This is why the full
 
 ### Heavy attachments
 
-MARL will try to load images, sounds or videos that are attached to your posts. However all this takes place in your browser/OS memory. Very large images or videos may fail to load. You can still find them by unpacking your archive: for each attachment, MARL tells you the exact path where you can find it in your archive.
+MARL will try to load images, sounds or videos that are attached to your posts. However, this all takes place in your browser/OS memory. Very large images or videos may fail to load. You can still find them by unpacking your archive: for each attachment, MARL tells you the exact path where you can find it in your archive.
 
 ### Boosts, favorites and bookmarks
 
