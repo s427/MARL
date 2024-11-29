@@ -1,0 +1,125 @@
+$display-wide: 340px;
+
+.toots-tags {
+  display: grid;
+  grid-template-rows: min-content repeat(3, 1fr);
+  height: 100vh;
+  padding-bottom: 2rem;
+  overflow: hidden;
+  background-color: var(--bg4);
+  container-type: inline-size;
+}
+
+.tags-title {
+  padding: 1rem;
+}
+.tags-group {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  padding: 1rem 1rem 0;
+  grid-template-rows: min-content 1fr;
+
+  ul {
+    font-size: 0.85em;
+    list-style: none;
+  }
+  li {
+    list-style: none;
+    margin: 0.3rem 4px;
+  }
+  button {
+    all: unset;
+    display: block;
+    width: 100%;
+
+    div {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 0.25rem;
+      padding: 0.1rem 0.3rem;
+      border-radius: 0.2rem;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+
+      .count {
+        @container (width >= #{$display-wide}) {
+          display: inline-block;
+          min-width: 5ch;
+          text-align: right;
+        }
+        color: var(--accent-dark);
+        font-size: 0.85em;
+        font-weight: bold;
+      }
+      .name {
+        flex-grow: 1;
+        word-break: break-all;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .domain {
+        margin-left: auto;
+        padding-left: 0.5em;
+        font-size: 0.85em;
+        font-weight: bold;
+        letter-spacing: 0.02em;
+        opacity: 0.75;
+      }
+    }
+
+    &:hover {
+      .name {
+        text-decoration: underline;
+      }
+    }
+  }
+  .active button div {
+    color: var(--fg-inv0);
+    background-color: var(--accent);
+    .count {
+      color: var(--fg-inv0);
+    }
+  }
+}
+
+.tags-group-header {
+  white-space: nowrap;
+  overflow: hidden;
+
+  @container (width >= #{$display-wide}) {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+  h3 {
+    .count {
+      color: var(--accent-dark);
+      font-weight: normal;
+    }
+  }
+}
+.tags-group-filter {
+  flex-grow: 1;
+  input {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    @container (width >= #{$display-wide}) {
+      margin-top: 0;
+    }
+  }
+}
+
+.tags-group-scroll {
+  overflow: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 2rem;
+}

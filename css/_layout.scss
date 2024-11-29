@@ -1,0 +1,203 @@
+html {
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.main-section-inner {
+  position: relative;
+  z-index: 1;
+  height: 100dvh;
+  max-width: 100dvw;
+  display: grid;
+  grid-template-areas:
+    "actor filters header tags"
+    "actor filters toots  tags";
+  grid-template-columns: min(25%, 600px) min(20%, 400px) 1fr min(20%, 400px);
+  grid-template-rows: min-content 1fr;
+}
+
+.actor {
+  grid-area: actor;
+}
+.toots-header {
+  grid-area: header;
+}
+.toots-filters {
+  grid-area: filters;
+}
+.toots {
+  grid-area: toots;
+}
+.toots-tags {
+  grid-area: tags;
+}
+.mobile-menu {
+  display: none;
+}
+
+.toots-header {
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: var(--bg3);
+  h2 {
+    padding: 1rem 1rem 0;
+    .order {
+      font-weight: normal;
+    }
+  }
+  .nb {
+    color: var(--accent-light);
+  }
+  .toggle-order {
+    margin-bottom: 5px;
+  }
+  .load-new {
+    float: right;
+    margin-left: 5px;
+  }
+  .paging-options-toggle {
+    display: none;
+  }
+}
+
+.toots {
+  background: var(--bg3);
+  overflow: auto;
+  container-type: inline-size;
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
+}
+
+.paging {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  .direction-back,
+  .direction-fwd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .direction-back {
+    justify-content: flex-start;
+  }
+  .direction-fwd {
+    justify-content: flex-end;
+  }
+}
+
+// bottom paging
+.toots .paging {
+  padding-bottom: 2rem;
+  // -> align with padding-bottom on .toots-filters and .toots-tags (side panels)
+
+  @media (width < 400px) {
+    .direction-back,
+    .direction-fwd,
+    .paging-options-toggle {
+      .btn-label {
+        @include visually-hidden();
+      }
+    }
+  }
+}
+
+// top paging
+.toots-header {
+  container-type: inline-size;
+
+  input {
+    font-size: inherit;
+  }
+
+  .paging {
+    clear: both;
+    flex-wrap: wrap;
+    .paging-options,
+    .paging-options-toggle {
+      order: 2;
+      user-select: none;
+    }
+    .direction-back {
+      order: 1;
+    }
+    .direction-fwd {
+      order: 3;
+    }
+
+    .toggle-order {
+      display: none;
+    }
+  }
+
+  @container (width < 675px) {
+    // hide the paging options and show "options" button
+
+    .toggle-order {
+      display: none;
+    }
+    .paging-options-toggle {
+      display: block;
+    }
+    .paging .toggle-order {
+      display: inline-block;
+      margin: 1rem;
+    }
+
+    .paging .paging-options {
+      font-size: 0.85em;
+
+      display: none;
+      order: 4;
+      flex-basis: calc(100% + 2rem);
+      position: relative;
+      margin: 0.5rem -1rem -1rem;
+      text-align: center;
+      background: var(--bg4);
+      box-shadow: 0 0.75rem 0.75rem -1rem #000 inset;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: calc(50% - 0.5rem);
+        top: 0;
+        z-index: 2;
+        width: 0;
+        height: 0;
+        border: 0.5rem solid transparent;
+        border-top: 0.4rem solid var(--bg3);
+      }
+      @media (forced-colors: active) {
+        &::before {
+          content: none;
+          display: none;
+        }
+      }
+
+      &.open {
+        display: block;
+      }
+    }
+
+    .paging-options-inner {
+      display: inline-block;
+      padding: 1rem;
+    }
+  } // ! @container
+
+  @container (width < 550px) {
+    .paging {
+      .direction-back,
+      .direction-fwd,
+      .paging-options-toggle {
+        .btn-label {
+          @include visually-hidden();
+        }
+      }
+    }
+  } // ! @container
+}

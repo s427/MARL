@@ -1,0 +1,264 @@
+$menu-width: 75px;
+$icon-width: 35px;
+$panel-width: 400px;
+
+.mobile-menu {
+  display: none;
+  position: relative;
+  z-index: 2;
+  color: var(--fg-inv1);
+  background-color: var(--bg-inv2);
+
+  @media (forced-colors: active) {
+    color: buttonText;
+  }
+
+  ul {
+    list-style: none;
+    height: 100dvh;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  li {
+    display: block;
+    list-style: none;
+  }
+  button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: $menu-width;
+    aspect-ratio: 1;
+    padding: 0;
+    color: inherit;
+    font-size: 0.75em;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    &:focus-visible {
+      outline-offset: -4px;
+    }
+
+    svg {
+      display: block;
+      width: $icon-width;
+      height: auto;
+      margin: 5px auto 0;
+      fill: var(--fg-inv0);
+
+      @media (forced-colors: active) {
+        fill: buttonText;
+      }
+    }
+
+    span {
+      display: block;
+      padding-bottom: 10px;
+    }
+    .visually-hidden {
+      text-transform: initial;
+    }
+
+    &.menu-filters {
+      &.filters-active {
+        &::before {
+          content: "";
+          position: absolute;
+          right: 10px;
+          top: 5px;
+          z-index: 1;
+          width: 10px;
+          height: 10px;
+          border-radius: 10px;
+          background-color: var(--accent-light2);
+          @media (forced-colors: active) {
+            background-color: Highlight;
+          }
+        }
+      }
+    }
+    &.menu-new {
+      margin-top: auto;
+    }
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgba(255, 255, 255, 0.1);
+
+      @media (forced-colors: active) {
+        color: Canvas;
+        background: Highlight;
+        span {
+          color: CanvasText;
+        }
+        svg {
+          fill: Canvas;
+        }
+      }
+    }
+  }
+}
+.panel-backdrop {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  background-color: var(--menu-backdrop);
+}
+
+@media screen and (width < 1200px) {
+  // toolbar becomes visible, positionned to the left side of the screen
+
+  .toots-header {
+    z-index: 2;
+    box-shadow: 0 -10px 10px 10px rgba(0, 0, 0, 0.5);
+    .load-new {
+      display: none;
+    }
+  }
+  .toots {
+    z-index: 1;
+  }
+
+  .main-section-inner {
+    grid-template-areas:
+      "menu header"
+      "menu toots";
+    grid-template-columns: $menu-width 1fr;
+    overflow: hidden;
+  }
+
+  .toots .paging {
+    padding-bottom: 1rem;
+  }
+
+  .mobile-menu-panel {
+    position: fixed;
+    left: 0 - ($menu-width + $panel-width);
+    top: 0;
+    bottom: 0;
+    z-index: 3;
+    width: min(#{$panel-width}, calc(100dvw - #{$menu-width}));
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: left 0.2s ease-out;
+      transition-property: left, box-shadow;
+      scroll-behavior: smooth;
+    }
+  }
+  .panel-close {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    z-index: 1;
+    color: var(--fg1);
+    background: transparent;
+    box-shadow: none;
+    .btn-icon {
+      fill: currentColor;
+    }
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      color: var(--accent-light);
+    }
+
+    @media (forced-colors: active) {
+      color: buttonText;
+    }
+  }
+
+  .mobile-menu {
+    display: block;
+    grid-area: menu;
+    z-index: 5;
+  }
+
+  .main-page.menu-open {
+    .panel-backdrop {
+      display: block;
+    }
+
+    &.menu-open-actor .actor,
+    &.menu-open-filters .toots-filters,
+    &.menu-open-tags .toots-tags {
+      left: $menu-width;
+      box-shadow: -1rem 0 1rem 1rem rgba(0, 0, 0, 0.5);
+      @media (prefers-reduced-motion: no-preference) {
+        transition-duration: 0.35s;
+      }
+    }
+
+    &.menu-open-actor .menu-actor,
+    &.menu-open-filters .menu-filters,
+    &.menu-open-tags .menu-tags {
+      color: var(--fg-inv0);
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+@media screen and (width < 500px) {
+  // toolbar is repositioned to the bottom of the screen
+
+  .main-section-inner {
+    grid-template-areas:
+      "header"
+      "toots"
+      "menu";
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content 1fr min-content;
+  }
+
+  .mobile-menu {
+    box-shadow: none;
+    ul {
+      flex-direction: row;
+      justify-content: space-around;
+      height: auto;
+      padding: 0;
+    }
+    li {
+      flex-grow: 1;
+    }
+    button {
+      aspect-ratio: unset;
+      width: 100%;
+    }
+  }
+
+  .mobile-menu-panel {
+    height: auto;
+    bottom: $menu-width;
+    width: 100dvw;
+    left: -100dvw;
+    box-shadow: none;
+  }
+  .main-page.menu-open {
+    &.menu-open-actor .actor,
+    &.menu-open-filters .toots-filters,
+    &.menu-open-tags .toots-tags {
+      left: 0;
+    }
+  }
+
+  .toots-tags {
+    padding-bottom: 1rem;
+  }
+  .tags-title {
+    padding-bottom: 0;
+  }
+}

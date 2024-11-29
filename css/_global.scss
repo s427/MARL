@@ -1,0 +1,237 @@
+/* mini-reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* anti-mini-reset */
+.actor-summary,
+.toot-content {
+  * {
+    all: revert;
+  }
+
+  /* anti-anti-mini-reset */
+  & > *:first-child {
+    margin-top: 0;
+  }
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+  a {
+    color: var(--accent);
+  }
+}
+
+/* global rules */
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--fg1);
+  font-size: 16px;
+  background: var(--bg2);
+  font-family: sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--fg2);
+}
+
+img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+a,
+.main-welcome p label {
+  color: var(--accent);
+}
+
+button {
+  position: relative;
+  top: 0;
+  padding: 0.3em 0.5em;
+  line-height: 24px;
+  font-family: inherit;
+  vertical-align: middle;
+  background: var(--bg-button);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0.15em 0 0 rgba(0, 0, 0, 0.35);
+
+  @media (forced-colors: active) {
+    border: 1px solid ButtonText;
+  }
+
+  &:not(:has(svg)) {
+    padding: 0.7em 1em;
+  }
+
+  .btn-icon,
+  .btn-label {
+    display: inline-block;
+    line-height: 24px;
+    vertical-align: top;
+  }
+  .btn-label {
+    padding: 0 0.5em;
+  }
+  .btn-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--button-svg);
+    @media (forced-colors: active) {
+      fill: ButtonText;
+    }
+  }
+
+  &:hover {
+    background: var(--bg-button-hover);
+    .btn-icon {
+      fill: var(--button-svg-hover);
+      @media (forced-colors: active) {
+        fill: ButtonText;
+      }
+    }
+  }
+  &:focus {
+    color: var(--fg-button-focus);
+    .btn-icon {
+      fill: var(--button-svg-focus);
+      @media (forced-colors: active) {
+        fill: ButtonText;
+      }
+    }
+  }
+  &:active {
+    top: 0.15em;
+    color: var(--fg-button-active);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    .btn-icon {
+      fill: var(--button-svg-active);
+      @media (forced-colors: active) {
+        fill: ButtonText;
+      }
+    }
+  }
+  &:disabled {
+    top: 0;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.35;
+    .btn-icon {
+      fill: var(--button-svg);
+      @media (forced-colors: active) {
+        fill: GrayText;
+      }
+    }
+  }
+}
+
+input {
+  padding: 0.3em 0.5em;
+  color: inherit;
+  border: none;
+  background-color: var(--bg-input);
+
+  @media (forced-colors: active) {
+    border: 1px solid ButtonText;
+  }
+
+  &:hover {
+    background-color: var(--bg-input-hover);
+  }
+  &:focus,
+  &:focus-visible {
+    background-color: var(--bg-input-focus);
+  }
+}
+
+input[type="number"] {
+  width: 6ch;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+details {
+  summary {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    .summary-icon {
+      min-width: 1.3rem;
+      text-align: center;
+      svg {
+        height: 1.3em;
+        aspect-ratio: 1;
+      }
+    }
+    .summary-label {
+    }
+  }
+  pre,
+  textarea {
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 0.8em;
+  }
+  textarea {
+    display: block;
+    width: 100%;
+    resize: vertical;
+    border: none;
+    background: transparent;
+    min-height: 20em;
+    min-height: 15.5lh;
+
+    @supports (field-sizing: content) {
+      min-height: 0;
+      field-sizing: content;
+    }
+  }
+}
+
+// focusable elements
+*:focus-visible,
+// .att-img-wrapper:hover,
+.tags-group button:focus-visible div,
+.toots-filter:has([type="checkbox"]:focus-visible) {
+  text-decoration: none;
+  outline: 2px solid var(--accent-light);
+  outline-offset: 2px;
+  border-radius: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.visually-hidden:not(:focus):not(:active) {
+  @include visually-hidden();
+}
+
+.nojs {
+  margin: 5dvh 10dvw;
+  padding: 2em;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  background-color: #600;
+}

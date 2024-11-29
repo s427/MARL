@@ -1,0 +1,85 @@
+.overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-content {
+  position: relative;
+  z-index: 5;
+}
+
+.overlay-content,
+.overlay-content img {
+  max-width: calc(100dvw - 88px);
+  max-height: calc(100dvh - 44px);
+}
+
+.overlay-content img {
+  box-shadow: 0 1rem 2.5rem -1rem rgba(0, 0, 0, 1);
+}
+
+.overlay-ui {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+
+  button {
+    display: block;
+    padding: 0;
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    svg {
+      display: block;
+      width: 36px;
+      height: 36px;
+      fill: var(--overlay-icon);
+    }
+    &:hover,
+    &:focus,
+    &:active {
+      svg {
+        fill: var(--overlay-icon-hover);
+      }
+    }
+  }
+  .viewer-close {
+    top: 4px;
+    right: 4px;
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  .viewer-next {
+    right: 4px;
+    top: calc(50% - 18px);
+  }
+  .viewer-prev {
+    left: 4px;
+    top: calc(50% - 18px);
+  }
+
+  .backdrop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: var(--overlay-backdrop);
+  }
+}

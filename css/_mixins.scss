@@ -1,0 +1,13 @@
+@mixin visually-hidden() {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  position: absolute;
+  white-space: nowrap;
+}
+
+@mixin box-shadow-inner() {
+  box-shadow: 0 0.1rem 0.2rem -0.2rem rgba(0, 0, 0, 0.5) inset;
+}

@@ -1,0 +1,141 @@
+// tint and saturation factor for the app color scheme
+$hue: 30;
+$sat: 0.5;
+
+/*********************************/
+/* global background/text colors */
+/*********************************/
+
+$bg0: hsl(var(--hue), calc(var(--sat) * 0%), 100%);
+// -> post content
+$bg1: hsl(var(--hue), calc(var(--sat) * 20%), 95%);
+// -> post
+$bg2: hsl(var(--hue), calc(var(--sat) * 30%), 90%);
+// -> post attachment/meta/raw
+$bg3: hsl(var(--hue), calc(var(--sat) * 35%), 87%);
+// -> posts header
+$bg4: hsl(var(--hue), calc(var(--sat) * 40%), 84%);
+// -> filters/tags panels
+
+$fg0: hsl(var(--hue), calc(var(--sat) * 0%), 0%);
+// -> post content
+$fg1: hsl(var(--hue), calc(var(--sat) * 20%), 20%);
+// -> body text; some SVG icons (panel close)
+$fg2: hsl(var(--hue), calc(var(--sat) * 20%), 30%);
+// -> headings (h1, h2...)
+
+/********************************************/
+/* inverted light scheme (e.g. actor panel) */
+/********************************************/
+
+$bg-inv0: hsl(var(--hue), calc(var(--sat) * 75%), 11%);
+// -> bookmarks
+$bg-inv1: hsl(var(--hue), calc(var(--sat) * 65%), 15%);
+// -> favorites
+$bg-inv2: hsl(var(--hue), calc(var(--sat) * 50%), 20%);
+// -> actor raw data, mobile menu
+$bg-inv3: hsl(var(--hue), calc(var(--sat) * 50%), 25%);
+// -> actor panel
+$bg-inv4: hsl(var(--hue), calc(var(--sat) * 45%), 40%);
+// -> actor summary
+
+$fg-inv0: hsl(var(--hue), calc(var(--sat) * 0%), 100%);
+// -> misc highlighted text; mobile menu icons
+$fg-inv1: hsl(var(--hue), calc(var(--sat) * 80%), 80%);
+// -> actor, mobile menu
+
+/**********/
+/* accent */
+/**********/
+
+$accent: hsl(var(--hue), calc(var(--sat) * 200%), 30%);
+// -> links, active elements, counters, misc background stripes (color 1)
+$accent-dark: hsl(var(--hue), calc(var(--sat) * 250%), 26%);
+// -> misc background stripes (color 2)
+$accent-light: hsl(var(--hue), calc(var(--sat) * 150%), 38%);
+// -> focusable elements outline; main header counter
+$accent-light2: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
+// -> overlay hover/focus icons (SVG); private posts border; active filter indicator (mobile menu)
+$accent-light3: hsl(var(--hue), calc(var(--sat) * 150%), 75%);
+// -> hover effect on images
+$accent-light-bg: hsl(var(--hue), calc(var(--sat) * 100%), 96%);
+// -> private posts background
+
+/***********/
+/* overlay */
+/***********/
+
+$overlay-icon: #fff;
+$overlay-icon-hover: #fff;
+$overlay-backdrop: rgba(0, 0, 0, 0.75);
+$menu-backdrop: rgba(0, 0, 0, 0.5);
+
+/*****************/
+/* form elements */
+/*****************/
+
+$bg-input: rgba(255, 255, 255, 0.35);
+$bg-input-hover: rgba(255, 255, 255, 0.65);
+$bg-input-focus: rgba(255, 255, 255, 1);
+
+$bg-button: rgba(255, 255, 255, 1);
+$bg-button-hover: hsl(var(--hue), calc(var(--sat) * 100%), 95%);
+$button-svg: $fg1;
+$button-svg-hover: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
+$button-svg-focus: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
+$button-svg-active: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
+
+$fg-button-focus: $accent;
+$fg-button-active: $accent;
+
+// Note: some rgba values hardcoded, used mostly for box-shadow or backdrops
+
+html {
+  --hue: #{$hue};
+  --sat: #{$sat};
+
+  --bg0: #{$bg0};
+  --bg1: #{$bg1};
+  --bg2: #{$bg2};
+  --bg3: #{$bg3};
+  --bg4: #{$bg4};
+
+  --fg0: #{$fg0};
+  --fg1: #{$fg1};
+  --fg2: #{$fg2};
+
+  --bg-inv0: #{$bg-inv0};
+  --bg-inv1: #{$bg-inv1};
+  --bg-inv2: #{$bg-inv2};
+  --bg-inv3: #{$bg-inv3};
+  --bg-inv4: #{$bg-inv4};
+
+  --fg-inv0: #{$fg-inv0};
+  --fg-inv1: #{$fg-inv1};
+
+  --accent: #{$accent};
+  --accent-dark: #{$accent-dark};
+  --accent-light: #{$accent-light};
+  --accent-light2: #{$accent-light2};
+  --accent-light3: #{$accent-light3};
+  --accent-light-bg: #{$accent-light-bg};
+
+  --overlay-icon: #{$overlay-icon};
+  --overlay-icon-hover: #{$overlay-icon-hover};
+  --overlay-backdrop: #{$overlay-backdrop};
+  --menu-backdrop: #{$menu-backdrop};
+
+  --bg-input: #{$bg-input};
+  --bg-input-hover: #{$bg-input-hover};
+  --bg-input-focus: #{$bg-input-focus};
+
+  --bg-button: #{$bg-button};
+  --bg-button-hover: #{$bg-button-hover};
+  --button-svg: #{$button-svg};
+  --button-svg-hover: #{$button-svg-hover};
+  --button-svg-focus: #{$button-svg-focus};
+  --button-svg-active: #{$button-svg-active};
+
+  --fg-button-focus: #{$fg-button-focus};
+  --fg-button-active: #{$fg-button-active};
+}
