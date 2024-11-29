@@ -128,10 +128,9 @@ html {
     .direction-fwd {
       order: 3;
     }
-
-    .toggle-order {
-      display: none;
-    }
+  }
+  .paging-options-reverse {
+    display: none;
   }
 
   @container (width < 675px) {
@@ -143,9 +142,9 @@ html {
     .paging-options-toggle {
       display: block;
     }
-    .paging .toggle-order {
-      display: inline-block;
-      margin: 1rem;
+    .paging-options-reverse {
+      display: block;
+      padding: 0 1rem 1rem;
     }
 
     .paging .paging-options {

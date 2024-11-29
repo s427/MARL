@@ -7,7 +7,7 @@
     <link rel="icon" href="data:," />
     <base target="_blank" />
 
-    <link rel="stylesheet" href="css/main.css?20241132" />
+    <link rel="stylesheet" href="css/main.css?20241133" />
     <script>
       const isFileProtocol = window.location.protocol === "file:";
       const scripts = [
@@ -907,14 +907,13 @@
                     />
                     <label for="paging-page-size">posts per page)</label>
                   </div>
-                  <button
-                    @click="$store.files.toggleTootsOrder()"
-                    class="toggle-order"
-                  >
-                    <svg class="btn-icon" aria-hidden="true">
-                      <use href="#toggle-order" /></svg
-                    ><span class="btn-label">Reverse order</span>
-                  </button>
+                  <div class="paging-options-reverse">
+                    <button @click="$store.files.toggleTootsOrder()">
+                      <svg class="btn-icon" aria-hidden="true">
+                        <use href="#toggle-order" /></svg
+                      ><span class="btn-label">Reverse order</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div class="direction-fwd">
