@@ -73,12 +73,13 @@
             <p>
               You can request your Mastodon archive by logging into your account
               on the web, then visiting "Preferences > Import and export >
-              Request your archive".
+              Request your archive".<br />
+              <strong>Please note:</strong> only ZIP files are supported (not
+              GZ).
             </p>
             <p>
-              <strong>Start by opening your archive file with MARL.</strong>
-            </p>
-            <p>
+              <strong>Start by opening your archive file with MARL.</strong
+              ><br />
               You can drag and drop it anywhere on this page, or
               <label for="file-loader" tabindex="0"
                 >click here to select it</label
@@ -89,7 +90,7 @@
               id="file-loader"
               class="file-loader"
               type="file"
-              accept=".zip, .gz"
+              accept=".zip"
               x-show="!$store.files.loading"
               @change="unZip(Object.values($event.target.files))"
             />

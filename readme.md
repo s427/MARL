@@ -12,6 +12,8 @@ __Access MARL online here:__ https://s427.github.io/MARL/
 
 Alternatively, you can download this project from its [project page](https://github.com/s427/MARL), unpack it on your device, and simply launch (double click) `index.html`.
 
+⚠️ __Only ZIP files are supported__ —not GZ files. This is a limitation of the JSZip library which is used by MARL to unpack the archive file. Older versions of Mastodon (prior to version 4.2.0) used to export the archive in TAR.GZ. If this is your case, you will have to first convert your archive to a ZIP file.
+
 ## Screenshot
 
 <img src="screenshot.png" alt="app screenshot">
