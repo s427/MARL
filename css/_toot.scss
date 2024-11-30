@@ -261,7 +261,8 @@ $meta-visible: 100ch;
 
   & > div {
     flex-basis: calc((100% - 2rem) / 3);
-    flex-grow: 0;
+    max-width: calc((100% - 2rem) / 2);
+    flex-grow: 1;
     flex-shrink: 0;
     padding: 1rem;
     background-color: var(--bg2);
@@ -319,6 +320,7 @@ $meta-visible: 100ch;
   opacity: 0.8;
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   container-type: inline-size;
   background: var(--bg2);
   border-radius: 0.5rem;
