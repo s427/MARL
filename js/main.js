@@ -113,12 +113,14 @@ const filesStore = {
       document.getElementById(id).focus();
     }, 100);
   },
-  resetFilters() {
+  resetFilters(userAction) {
     this.filters = JSON.parse(JSON.stringify(this.filtersDefault));
-    this.currentPage = 1;
-    this.filtersActive = false;
-    scrollTootsToTop();
-    pagingUpdated();
+    if (userAction) {
+      this.currentPage = 1;
+      this.filtersActive = false;
+      scrollTootsToTop();
+      pagingUpdated();
+    }
   },
 
   get filteredToots() {
@@ -850,7 +852,7 @@ function loadJsonFile(name) {
       delete data.orderedItems;
       Alpine.store("files").outbox = data;
 
-      Alpine.store("files").resetFilters();
+      Alpine.store("files").resetFilters(false);
       Alpine.store("files").loaded.outbox = true;
     } // outbox.json
 

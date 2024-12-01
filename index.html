@@ -800,7 +800,7 @@
 
               <div class="toots-filters-reset">
                 <button
-                  @click="$store.files.resetFilters()"
+                  @click="$store.files.resetFilters(true)"
                   :disabled="!$store.files.filtersActive"
                 >
                   <svg class="btn-icon" aria-hidden="true">
@@ -1213,7 +1213,7 @@
                   <p>No results for the specified filters</p>
                   <p class="action">
                     <button
-                      @click="$store.files.resetFilters()"
+                      @click="$store.files.resetFilters(true)"
                       :disabled="!$store.files.filtersActive"
                     >
                       <svg class="btn-icon" aria-hidden="true">
@@ -1493,8 +1493,6 @@
       </template>
     </div>
 
-    <script src="js/main.js"></script>
-
     <svg style="display: none">
       <symbol viewBox="0 -960 960 960" id="reset-filters">
         <path
@@ -1597,5 +1595,7 @@
         />
       </symbol>
     </svg>
+
+    <script src="js/main.js?20241201"></script>
   </body>
 </html>
