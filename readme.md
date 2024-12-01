@@ -2,9 +2,12 @@
 
 ## About
 
-MARL is a lightweight, single-page app that provide a user-friendly interface to explore the content of a Mastodon archive file: account data, posts, attachments, etc.
+MARL is a lightweight, single-page app that provides a user-friendly interface to explore the content of a Mastodon archive file: account data, posts, attachments, etc.
 
 Project page: https://github.com/s427/MARL
+
+Should you want to spread the word, here are the announcement posts on Mastodon:  
+[English](https://lou.lt/@s427/113567190207673533) - [French](https://lou.lt/@s427/113567186376766727)
 
 ## Usage
 
@@ -20,7 +23,7 @@ Alternatively, you can download this project from its [project page](https://git
 
 ## Features
 
-__What data is shown__
+### What data is shown
 
 - basic profile info, including pictures (avatar, banner)
 - full profile JSON data
@@ -34,15 +37,15 @@ __What data is shown__
 
 (*) see "Limitations" below.
 
-__Direct support for archive files__
+### Direct support for archive files
 
 No need to unpack your archive. Just drag'n'drop your file in the MARL window, and MARL will unpack it for you. This takes place in your browser's memory: no files are written on your disks. It's also strictly read-only: your archive file is not altered in any way.
 
-__Strictly in-browser only__
+### Strictly in-browser only
 
 Everything takes place in the browser, with no communication with any server (once the page has been loaded). Your archive data is _not_ sent to any server. No analytics are included either.
 
-__Filters__
+### Filters
 
 Many filters allow you to quickly find a subset of posts in your archive:
 - search full text, or exclusively in hashtags, mentions, content warnings or external links
@@ -50,16 +53,16 @@ Many filters allow you to quickly find a subset of posts in your archive:
 - filter posts depending on whether they contain images, videos or sounds
 - and more.
 
-__Media viewer__
+### Media viewer
 
 Posts attachments (images, videos or sounds) can be viewed or played in MARL. However there may be some limitations depending on the size of the attachment, as well as your browser and/or device.
 
-__Accessibility__
+### Accessibility
 
-MARL should be fully accessible to keyboard users. It also has been optimized for Forced Colors (aka "High Contrast" mode). Last but not least, it should be accessible to screen readers.  
+MARL should be fully accessible to keyboard users. It also has been optimized for Forced Colors (aka "High Contrast" or "Contrast Theme") mode. Last but not least, it should be accessible to screen readers.  
 Accessibility is a vast and complex topic, and there's probably room for improvement. Feel free to let me know if you have feedback or suggestion!
 
-__Responsive__
+### Responsive
 
 MARL should work on pretty much any screen size, as low as 300 pixels wide (and possibly less).
 
