@@ -756,6 +756,18 @@ function resetStores() {
 function loadJsonFile(name) {
   const content = Alpine.store("files").raw;
 
+  if (content[name + ".json"] === undefined) {
+    if (name === "likes" || name === "bookmarks") {
+      // we can still run the app without those files
+      console.warn(`File ${name}.json not found in archive.`);
+      Alpine.store("files").loaded[name] = true;
+    } else {
+      // this should NOT happen and will prevent the app from running
+      console.error(`File ${name}.json not found in archive.`);
+    }
+    return;
+  }
+
   content[name + ".json"].async("text").then(function (txt) {
     if (name === "actor") {
       Alpine.store("files").actor = JSON.parse(txt);
