@@ -917,6 +917,7 @@ function loadActorImages() {
     });
   } else {
     Alpine.store("files").avatar = { noImg: true };
+    Alpine.store("files").loaded.avatar = true;
   }
 
   if (actor.image && actor.image.type === "Image" && actor.image.url) {
@@ -931,6 +932,7 @@ function loadActorImages() {
     });
   } else {
     Alpine.store("files").header = { noImg: true };
+    Alpine.store("files").loaded.banner = true;
   }
 }
 
