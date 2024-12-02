@@ -1,5 +1,29 @@
 // stores definitions
 
+const userPrefsStore = {
+  prefix: "marl_",
+
+  save(pref, value) {
+    localStorage.setItem(this.prefix + pref, value);
+  },
+  load(pref) {
+    const value = localStorage.getItem(this.prefix + pref);
+    if (value !== null) {
+      this.set(pref, value);
+    }
+  },
+  set(pref, value) {
+    switch (pref) {
+      case "sortAsc":
+        value = +value === 1 ? true : false;
+        if (value !== Alpine.store("files").sortAsc) {
+          Alpine.store("files").toggleTootsOrder();
+        }
+        break;
+    }
+  },
+};
+
 const filesStore = {
   resetState() {
     this.raw = {};
@@ -11,7 +35,7 @@ const filesStore = {
     this.avatar = {};
     this.header = {};
 
-    this.sortAsc = true;
+    this.sortAsc = true; // -> userPrefs
     this.pageSize = 10;
     this.currentPage = 1;
 
@@ -526,6 +550,7 @@ const filesStore = {
     });
     scrollTootsToTop();
     pagingUpdated();
+    Alpine.store("userPrefs").save("sortAsc", this.sortAsc ? 1 : 0);
   },
 
   checkPagingValue() {
@@ -973,6 +998,7 @@ function checkAllLoaded(ok) {
     cleanUpRaw();
     document.getElementById("main-section").focus();
     Alpine.store("ui").checkMenuState();
+    Alpine.store("userPrefs").load("sortAsc");
   }
 }
 
@@ -1223,6 +1249,7 @@ document.addEventListener("alpine:init", () => {
   Alpine.store("files", filesStore);
   Alpine.store("lightbox", lightboxStore);
   Alpine.store("ui", uiStore);
+  Alpine.store("userPrefs", userPrefsStore);
 
   resetStores();
 });
