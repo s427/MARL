@@ -98,6 +98,24 @@ $meta-visible: 100ch;
   }
 }
 
+.multiple-actors .toot-content {
+  position: relative;
+  // overflow: hidden;
+  padding-left: 1.6rem;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0.35rem;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    z-index: 1;
+    width: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: hsl(var(--actor-hue), 50%, 80%);
+    background-color: $actor-accent-light-ok;
+  }
+}
+
 .toot-attachments {
   margin: 1rem 0 0;
   ul,

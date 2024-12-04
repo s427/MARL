@@ -52,9 +52,9 @@
       id="app"
       x-data
       :class="$store.ui.appClasses"
-      x-init="$watch('$store.files.allLoaded', value => checkAllLoaded(value))"
+      x-init="$watch('$store.files.appReady', value => checkAppReady(value))"
     >
-      <template x-if="! $store.files.allLoaded">
+      <template x-if="! $store.files.appReady">
         <main
           class="welcome"
           :class="$store.files.loading ? 'file-loading' : ''"
@@ -91,6 +91,7 @@
               class="file-loader"
               type="file"
               accept=".zip"
+              multiple
               x-show="!$store.files.loading"
               @change="unZip(Object.values($event.target.files))"
             />
@@ -105,7 +106,7 @@
         </main>
       </template>
 
-      <template x-if="$store.files.allLoaded">
+      <template x-if="$store.files.appReady">
         <main
           class="main-section"
           id="main-section"
@@ -185,209 +186,262 @@
               </button>
 
               <h2 class="visually-hidden" id="actor-title">Account info</h2>
+              <h3 class="visually-hidden" id="actor-tabs-title">Accounts</h3>
 
-              <div class="actor-pretty">
-                <div class="actor-banner">
-                  <template x-if="$store.files.header.noImg">
-                    <img alt="header" src="img/no-header.png" />
-                  </template>
-                  <template x-if="! $store.files.header.noImg">
-                    <button
-                      id="actor-header"
-                      @click="$store.lightbox.openProfileImg('header', 'actor-header')"
-                    >
-                      <img
-                        alt="header"
-                        :src="`data:${$store.files.header.type}; base64,${$store.files.header.content}`"
-                      />
-                    </button>
-                  </template>
-                </div>
-
-                <div class="actor-id">
-                  <template x-if="$store.files.avatar.noImg">
-                    <div class="actor-avatar no-avatar">
-                      <img
-                        :alt="$store.files.actor.name"
-                        src="img/no-avatar.png"
-                      />
-                    </div>
-                  </template>
-                  <template x-if="! $store.files.avatar.noImg">
-                    <button
-                      id="actor-avatar"
-                      class="actor-avatar"
-                      @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar')"
-                    >
-                      <img
-                        :alt="$store.files.actor.name"
-                        class="actor-avatar"
-                        :src="`data:${$store.files.avatar.type}; base64,${$store.files.avatar.content}`"
-                      />
-                    </button>
-                  </template>
-                  <h1
-                    class="actor-name"
-                    x-text="await $store.files.actor.name"
-                  ></h1>
-                  <div class="actor-url">
-                    <a
-                      :href="await $store.files.actor.url"
-                      x-text="await $store.files.actor.url"
-                    ></a>
-                  </div>
-                </div>
-
-                <div
-                  class="actor-summary"
-                  x-show="$store.files.actor.summary"
-                  x-html="await $store.files.actor.summary"
-                ></div>
-
-                <div class="actor-infos">
-                  <dl>
-                    <dt>Member since</dt>
-                    <dd
-                      x-text="await formatDate($store.files.actor.published)"
-                    ></dd>
-                  </dl>
-                  <template x-for="item in await $store.files.actor.attachment">
-                    <dl>
-                      <dt x-text="item.name"></dt>
-                      <dd x-html="item.value"></dd>
-                    </dl>
-                  </template>
-                </div>
-
-                <div class="actor-posts-count">
-                  <div class="total">
-                    <span
-                      class="count"
-                      x-text="formatNumber($store.files.outbox.totalItems)"
-                    ></span>
-                    <span class="label">posts</span>
-                  </div>
-
-                  <div class="archive">
-                    <span
-                      class="count"
-                      x-text="formatNumber($store.files.toots.length)"
-                    ></span>
-                    <span class="label">in archive</span>
-                  </div>
-
-                  <details
-                    class="comment"
-                    x-show="$store.files.toots.length != $store.files.outbox.totalItems"
+              <div class="actors-wrapper">
+                <template x-if="$store.files.sources.length > 1">
+                  <div
+                    class="actors-tabs"
+                    role="tablist"
+                    aria-labelledby="actor-tabs-title"
+                    :style="'--actor-hue: '+ $store.files.sources[$store.ui.actorPanel].hue"
                   >
-                    <summary>
-                      <span class="summary-icon">
-                        <svg aria-hidden="true">
-                          <use href="#question" />
-                        </svg>
-                      </span>
-                      <span class="summary-label"
-                        >Why are those two numbers different?</span
+                    <template x-for="(_, source) in $store.files.sources">
+                      <button
+                        type="button"
+                        role="tab"
+                        :id="'actortab-' + source"
+                        :aria-selected="source === $store.ui.actorPanel ? 'true': 'false'"
+                        :aria-controls="'actorpanel-' + source"
+                        :style="'--actor-hue: '+ $store.files.sources[source].hue"
+                        @click="$store.ui.openActorPanel(source)"
+                        @keyup.right="$store.ui.switchActorPanel('up')"
+                        @keyup.left="$store.ui.switchActorPanel('down')"
                       >
-                    </summary>
-                    <div class="details-content">
-                      <p>
-                        Posts that are not directly hosted on your instance are
-                        kept in a cache by your instance for a given time, after
-                        what they are deleted from that cache. Posts that are
-                        not in your instance cache any more are not included in
-                        your archive. This affects boosts, likes, and bookmarks.
-                      </p>
-                    </div>
-                  </details>
-                </div>
-              </div>
+                        <span
+                          x-text="$store.files.sources[source].actor.name"
+                        ></span>
+                      </button>
+                      <!-- :tabindex="source === $store.ui.actorPanel ? '0': '-1'" -->
+                    </template>
+                  </div>
+                </template>
 
-              <div class="actor-raw">
-                <div class="actor-raw-inner">
-                  <details>
-                    <summary>
-                      <span class="summary-icon">
-                        <svg aria-hidden="true">
-                          <use href="#json" />
-                        </svg>
-                      </span>
-                      <span class="summary-label"
-                        >Raw data <em>(actor.json)</em></span
-                      >
-                    </summary>
-                    <div class="details-content">
-                      <pre x-text="formatJson(await $store.files.actor)"></pre>
-                    </div>
-                  </details>
-                </div>
-              </div>
+                <template x-for="actor in $store.files.actors">
+                  <div
+                    class="actor-panel"
+                    :id="'actorpanel-' + actor.source"
+                    role="tabpanel"
+                    tabindex="0"
+                    :aria-labelledby="'actortab-' + actor.source"
+                    x-data="{a: $store.files.sources[actor.source].actor}"
+                    x-show="$store.ui.actorPanel === actor.source"
+                  >
+                    <div class="actor-pretty">
+                      <div class="actor-banner">
+                        <template
+                          x-if="$store.files.sources[actor.source].header.noImg"
+                        >
+                          <img alt="header" src="img/no-header.png" />
+                        </template>
+                        <template
+                          x-if="! $store.files.sources[actor.source].header.noImg"
+                        >
+                          <button
+                            id="actor-header"
+                            @click="$store.lightbox.openProfileImg('header', 'actor-header', actor.source)"
+                          >
+                            <img
+                              alt="header"
+                              :src="`data:${$store.files.sources[actor.source].header.type}; base64,${$store.files.sources[actor.source].header.content}`"
+                            />
+                          </button>
+                        </template>
+                      </div>
 
-              <div class="actor-likes-bookmarks">
-                <div class="actor-likes">
-                  <details>
-                    <summary>
-                      <span class="summary-icon">
-                        <svg aria-hidden="true">
-                          <use href="#favorite" />
-                        </svg>
-                      </span>
-                      <h2 class="summary-label">
-                        Favorites (<span
-                          class="count"
-                          x-text="$store.files.likes.length"
-                        ></span
-                        >)
-                      </h2>
-                    </summary>
-                    <div class="details-content">
-                      <template x-if="$store.files.likes.length">
-                        <ul>
-                          <template x-for="url in $store.files.likes">
-                            <li>
-                              <a :href="url" x-text="url"></a>
-                            </li>
-                          </template>
-                        </ul>
-                      </template>
-                      <template x-if="! $store.files.likes.length">
-                        <p class="no-content">... no favorites ...</p>
-                      </template>
+                      <div class="actor-id">
+                        <template
+                          x-if="$store.files.sources[actor.source].avatar.noImg"
+                        >
+                          <div class="actor-avatar no-avatar">
+                            <img :alt="a.name" src="img/no-avatar.png" />
+                          </div>
+                        </template>
+                        <template
+                          x-if="! $store.files.sources[actor.source].avatar.noImg"
+                        >
+                          <button
+                            id="actor-avatar"
+                            class="actor-avatar"
+                            @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar', actor.source)"
+                          >
+                            <img
+                              :alt="a.name"
+                              class="actor-avatar"
+                              :src="`data:${$store.files.sources[actor.source].avatar.type}; base64,${$store.files.sources[actor.source].avatar.content}`"
+                            />
+                          </button>
+                        </template>
+                        <h1 class="actor-name" x-text="await a.name"></h1>
+                        <div class="actor-url">
+                          <a :href="await a.url" x-text="await a.url"></a>
+                        </div>
+                      </div>
+
+                      <div
+                        class="actor-summary"
+                        x-show="a.summary"
+                        x-html="await a.summary"
+                      ></div>
+
+                      <div class="actor-infos">
+                        <dl>
+                          <dt>Member since</dt>
+                          <dd x-text="await formatDate(a.published)"></dd>
+                        </dl>
+                        <template x-for="item in await a.attachment">
+                          <dl>
+                            <dt x-text="item.name"></dt>
+                            <dd x-html="item.value"></dd>
+                          </dl>
+                        </template>
+                      </div>
+
+                      <div class="actor-posts-count">
+                        <div class="total">
+                          <span
+                            class="count"
+                            x-text="formatNumber($store.files.sources[actor.source].outbox.totalItems)"
+                          ></span>
+                          <span class="label">posts</span>
+                        </div>
+
+                        <div class="archive">
+                          <span
+                            class="count"
+                            x-text="formatNumber($store.files.sources[actor.source].nbToots)"
+                          ></span>
+                          <span class="label">in archive</span>
+                        </div>
+
+                        <details
+                          class="comment"
+                          x-show="$store.files.sources[actor.source].nbToots != $store.files.sources[actor.source].outbox.totalItems"
+                        >
+                          <summary>
+                            <span class="summary-icon">
+                              <svg aria-hidden="true">
+                                <use href="#question" />
+                              </svg>
+                            </span>
+                            <span class="summary-label"
+                              >Why are those two numbers different?</span
+                            >
+                          </summary>
+                          <div class="details-content">
+                            <p>
+                              Posts that are not directly hosted on your
+                              instance are kept in a cache by your instance for
+                              a given time, after what they are deleted from
+                              that cache. Posts that are not in your instance
+                              cache any more are not included in your archive.
+                              This affects boosts, likes, and bookmarks.
+                            </p>
+                          </div>
+                        </details>
+                      </div>
                     </div>
-                  </details>
-                </div>
-                <div class="actor-bookmarks">
-                  <details>
-                    <summary>
-                      <span class="summary-icon">
-                        <svg aria-hidden="true">
-                          <use href="#bookmark" />
-                        </svg>
-                      </span>
-                      <h2 class="summary-label">
-                        Bookmarks (<span
-                          class="count"
-                          x-text="$store.files.bookmarks.length"
-                        ></span
-                        >)
-                      </h2>
-                    </summary>
-                    <div class="details-content">
-                      <template x-if="$store.files.bookmarks.length">
-                        <ul>
-                          <template x-for="url in $store.files.bookmarks">
-                            <li>
-                              <a :href="url" x-text="url"></a>
-                            </li>
-                          </template>
-                        </ul>
-                      </template>
-                      <template x-if="! $store.files.bookmarks.length">
-                        <p class="no-content">... no bookmarks ...</p>
-                      </template>
+
+                    <div class="actor-raw">
+                      <div class="actor-raw-inner">
+                        <details>
+                          <summary>
+                            <span class="summary-icon">
+                              <svg aria-hidden="true">
+                                <use href="#json" />
+                              </svg>
+                            </span>
+                            <span class="summary-label"
+                              >Raw data <em>(actor.json)</em></span
+                            >
+                          </summary>
+                          <div class="details-content">
+                            <pre x-text="formatJson(await a)"></pre>
+                          </div>
+                        </details>
+                      </div>
                     </div>
-                  </details>
-                </div>
+
+                    <div class="actor-likes-bookmarks">
+                      <div class="actor-likes">
+                        <details>
+                          <summary>
+                            <span class="summary-icon">
+                              <svg aria-hidden="true">
+                                <use href="#favorite" />
+                              </svg>
+                            </span>
+                            <h2 class="summary-label">
+                              Favorites (<span
+                                class="count"
+                                x-text="$store.files.sources[actor.source].likes.length"
+                              ></span
+                              >)
+                            </h2>
+                          </summary>
+                          <div class="details-content">
+                            <template
+                              x-if="$store.files.sources[actor.source].likes.length"
+                            >
+                              <ul>
+                                <template
+                                  x-for="url in $store.files.sources[actor.source].likes"
+                                >
+                                  <li>
+                                    <a :href="url" x-text="url"></a>
+                                  </li>
+                                </template>
+                              </ul>
+                            </template>
+                            <template
+                              x-if="! $store.files.sources[actor.source].likes.length"
+                            >
+                              <p class="no-content">... no favorites ...</p>
+                            </template>
+                          </div>
+                        </details>
+                      </div>
+                      <div class="actor-bookmarks">
+                        <details>
+                          <summary>
+                            <span class="summary-icon">
+                              <svg aria-hidden="true">
+                                <use href="#bookmark" />
+                              </svg>
+                            </span>
+                            <h2 class="summary-label">
+                              Bookmarks (<span
+                                class="count"
+                                x-text="$store.files.sources[actor.source].bookmarks.length"
+                              ></span
+                              >)
+                            </h2>
+                          </summary>
+                          <div class="details-content">
+                            <template
+                              x-if="$store.files.sources[actor.source].bookmarks.length"
+                            >
+                              <ul>
+                                <template
+                                  x-for="url in $store.files.sources[actor.source].bookmarks"
+                                >
+                                  <li>
+                                    <a :href="url" x-text="url"></a>
+                                  </li>
+                                </template>
+                              </ul>
+                            </template>
+                            <template
+                              x-if="! $store.files.sources[actor.source].bookmarks.length"
+                            >
+                              <p class="no-content">... no bookmarks ...</p>
+                            </template>
+                          </div>
+                        </details>
+                      </div>
+                    </div>
+                  </div>
+                </template>
               </div>
             </div>
 
@@ -780,13 +834,13 @@
                 <template x-for="(nb, lang) in $store.files.languages">
                   <div
                     class="toots-filter checkbox"
-                    :class="isFilterActive('langs_' + lang) ? 'active' : ''"
+                    :class="isFilterActive('lang_' + lang) ? 'active' : ''"
                   >
                     <label :for="'filter-lang-' + lang">
                       <input
                         :id="'filter-lang-' + lang"
                         type="checkbox"
-                        x-model="$store.files.filters['langs_' + lang]"
+                        x-model="$store.files.filters['lang_' + lang]"
                         @change="$store.files.setFilter()"
                       />
                       <span>
@@ -797,6 +851,31 @@
                   </div>
                 </template>
               </div>
+
+              <template x-if="$store.files.sources.length > 1">
+                <div class="toots-filters-group">
+                  <h3 class="toots-filters-group-title">Author</h3>
+                  <template x-for="(actor, name) in $store.files.actors">
+                    <div
+                      class="toots-filter checkbox"
+                      :class="isFilterActive('actor_' + actor.source) ? 'active' : ''"
+                    >
+                      <label :for="'filter-actor-' + actor.source">
+                        <input
+                          :id="'filter-actor-' + actor.source"
+                          type="checkbox"
+                          x-model="$store.files.filters['actor_' + actor.source]"
+                          @change="$store.files.setFilter()"
+                        />
+                        <span>
+                          <span x-text="name"></span>
+                          (<span x-text="actor.nb"></span>)
+                        </span>
+                      </label>
+                    </div>
+                  </template>
+                </div>
+              </template>
 
               <div class="toots-filters-reset">
                 <button
@@ -944,6 +1023,7 @@
 
             <div
               class="toots"
+              :class="$store.files.sources.length > 1 ? 'multiple-actors' : ''"
               id="toots"
               role="region"
               aria-labelledby="toots-title"
@@ -958,6 +1038,7 @@
                 <div
                   class="toot"
                   :class="['toot-type-' + contentType(toot.type).toLowerCase(), 'toot-visibility-' + toot._marl.visibility[0]]"
+                  :style="'--actor-hue: '+ $store.files.sources[toot._marl.source].hue"
                 >
                   <h3 class="toot-header visually-hidden">
                     <span x-text="contentType(toot.type)"></span>
@@ -986,21 +1067,21 @@
                           >
                             <li
                               :class="attachmentWrapperClass(att)"
-                              :data-trigger="loadAttachedMedia(att)"
+                              :data-trigger="loadAttachedMedia(att, toot._marl.source)"
                             >
                               <!-- image -->
                               <template
-                                x-if="attachmentIsImage(att) && $store.files[att.url]"
+                                x-if="attachmentIsImage(att) && $store.files.sources[toot._marl.source][att.url]"
                               >
                                 <div class="att-wrapper">
                                   <button
                                     class="att-img-wrapper"
-                                    @click="$store.lightbox.open(toot.object.attachment, index, toot._marl.id + '-' + index)"
+                                    @click="$store.lightbox.open(toot, index, toot._marl.id + '-' + index)"
                                     :id="toot._marl.id + '-' + index"
                                   >
                                     <img
                                       alt=""
-                                      :src="`data:${att.mediaType}; base64,${await $store.files[att.url].content}`"
+                                      :src="`data:${att.mediaType}; base64,${await $store.files.sources[toot._marl.source][att.url].content}`"
                                       :aria-labelledby="toot._marl.id + '-' + index + '-desc'"
                                     />
                                   </button>
@@ -1023,12 +1104,12 @@
 
                               <!-- sound -->
                               <template
-                                x-if="attachmentIsSound(att) && $store.files[att.url]"
+                                x-if="attachmentIsSound(att) && $store.files.sources[toot._marl.source][att.url]"
                               >
                                 <div class="att-wrapper">
                                   <audio
                                     controls
-                                    :src="`data:${att.mediaType}; base64,${await $store.files[att.url].content}`"
+                                    :src="`data:${att.mediaType}; base64,${await $store.files.sources[toot._marl.source][att.url].content}`"
                                     :aria-labelledby="toot._marl.id + '-' + index + '-desc'"
                                   ></audio>
                                   <div
@@ -1049,14 +1130,14 @@
 
                               <!-- video -->
                               <template
-                                x-if="attachmentIsVideo(att) && $store.files[att.url]"
+                                x-if="attachmentIsVideo(att) && $store.files.sources[toot._marl.source][att.url]"
                               >
                                 <div class="att-wrapper">
                                   <video
                                     controls
                                     :width="att.width"
                                     :height="att.height"
-                                    :src="`data:${att.mediaType}; base64,${await $store.files[att.url].content}`"
+                                    :src="`data:${att.mediaType}; base64,${await $store.files.sources[toot._marl.source][att.url].content}`"
                                     :aria-labelledby="toot._marl.id + '-' + index + '-desc'"
                                   ></video>
                                   <div
@@ -1454,7 +1535,7 @@
               <div class="overlay-content">
                 <img
                   :alt="$store.lightbox.data[$store.lightbox.index].name"
-                  :src="`data:${$store.lightbox.data[$store.lightbox.index].mediaType}; base64,${$store.files[$store.lightbox.data[$store.lightbox.index].url].content}`"
+                  :src="`data:${$store.lightbox.data[$store.lightbox.index].mediaType}; base64,${$store.files.sources[$store.lightbox.source][$store.lightbox.data[$store.lightbox.index].url].content}`"
                   @click="$store.lightbox.showNext()"
                 />
               </div>

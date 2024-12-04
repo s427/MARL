@@ -1,5 +1,5 @@
 // tint and saturation factor for the app color scheme
-$hue: 30;
+$hue: 30; // === 59.17 in oklch
 $sat: 0.5;
 
 /*********************************/
@@ -56,6 +56,7 @@ $accent-light: hsl(var(--hue), calc(var(--sat) * 150%), 38%);
 // -> focusable elements outline; main header counter
 $accent-light2: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
 // -> overlay hover/focus icons (SVG); private posts border; active filter indicator (mobile menu)
+// === oklch(56.48% 0.124 59.17)
 $accent-light3: hsl(var(--hue), calc(var(--sat) * 150%), 75%);
 // -> hover effect on images
 $accent-light-bg: hsl(var(--hue), calc(var(--sat) * 100%), 96%);
@@ -138,4 +139,10 @@ html {
 
   --fg-button-focus: #{$fg-button-focus};
   --fg-button-active: #{$fg-button-active};
+
+  --actor-hue: 0;
+  // ### TODO hsl() fallback
 }
+
+$actor-accent-light-ok: oklch(80% 0.15 var(--actor-hue));
+$actor-accent-dark-ok: oklch(25% 0.25 var(--actor-hue));
