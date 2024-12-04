@@ -17,7 +17,18 @@ const userPrefsStore = {
       case "sortAsc":
         value = +value === 1 ? true : false;
         if (value !== Alpine.store("files").sortAsc) {
-          Alpine.store("files").toggleTootsOrder();
+          Alpine.store("files").sortAsc = value;
+        }
+        break;
+      case "pageSize":
+        value = +value;
+        if (
+          typeof value == "number" &&
+          !isNaN(value) &&
+          value > 0 &&
+          value !== Alpine.store("files").pageSize
+        ) {
+          Alpine.store("files").pageSize = value;
         }
         break;
     }
@@ -36,7 +47,7 @@ const filesStore = {
     this.header = {};
 
     this.sortAsc = true; // -> userPrefs
-    this.pageSize = 10;
+    this.pageSize = 10; // -> userPrefs
     this.currentPage = 1;
 
     this.loading = false;
@@ -539,8 +550,7 @@ const filesStore = {
     }
   },
 
-  toggleTootsOrder() {
-    this.sortAsc = !this.sortAsc;
+  sortToots() {
     this.toots.sort((a, b) => {
       if (this.sortAsc) {
         return a.published.localeCompare(b.published);
@@ -548,9 +558,13 @@ const filesStore = {
         return b.published.localeCompare(a.published);
       }
     });
+  },
+
+  toggleTootsOrder() {
+    this.sortAsc = !this.sortAsc;
+    this.sortToots();
     scrollTootsToTop();
     pagingUpdated();
-    Alpine.store("userPrefs").save("sortAsc", this.sortAsc ? 1 : 0);
   },
 
   checkPagingValue() {
@@ -776,6 +790,9 @@ function resetStores() {
   Alpine.store("files").resetState();
   Alpine.store("lightbox").resetState();
   Alpine.store("ui").resetState();
+
+  Alpine.store("userPrefs").load("sortAsc");
+  Alpine.store("userPrefs").load("pageSize");
 }
 
 function loadJsonFile(name) {
@@ -998,7 +1015,8 @@ function checkAllLoaded(ok) {
     cleanUpRaw();
     document.getElementById("main-section").focus();
     Alpine.store("ui").checkMenuState();
-    Alpine.store("userPrefs").load("sortAsc");
+    Alpine.store("files").sortToots();
+    Alpine.store("files").loading = false;
   }
 }
 
@@ -1252,6 +1270,14 @@ document.addEventListener("alpine:init", () => {
   Alpine.store("userPrefs", userPrefsStore);
 
   resetStores();
+
+  Alpine.effect(() => {
+    const pageSize = Alpine.store("files").pageSize;
+    const sortAsc = Alpine.store("files").sortAsc;
+
+    Alpine.store("userPrefs").save("pageSize", pageSize);
+    Alpine.store("userPrefs").save("sortAsc", sortAsc ? 1 : 0);
+  });
 });
 
 drag.init("app");
