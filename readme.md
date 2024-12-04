@@ -91,6 +91,16 @@ Moreover, even when those external posts have _not_ expired, the data that is in
 
 As a result, MARL can only show you very little data for your boosts, bookmarks and favorites.
 
+## Tech
+
+Third-party libraries and assets used:
+- [AlpineJs](https://alpinejs.dev/) v3.14.5
+- [JSZip](https://stuk.github.io/jszip/) v3.10.1
+- [Material Icons](https://fonts.google.com/icons)
+
+All are stored within the project; no request to a CDN or third-party server is made by MARL.  
+Everything else coded by me.
+
 ## Disclaimer
 
 This is a personal, non-official project. I am not associated with the Mastodon project in any way. A lot of the way MARL works is based on guesswork on my part when trying to understand the archive structure. Feel free to let me know if you think I've missed or misunderstood something!
