@@ -7,7 +7,7 @@
     <link rel="icon" href="data:," />
     <base target="_blank" />
 
-    <link rel="stylesheet" href="css/main.css?20241201" />
+    <link rel="stylesheet" href="css/main.css?20241204" />
     <script>
       const isFileProtocol = window.location.protocol === "file:";
       const scripts = [
@@ -54,7 +54,7 @@
       :class="$store.ui.appClasses"
       x-init="$watch('$store.files.appReady', value => checkAppReady(value))"
     >
-      <template x-if="! $store.files.appReady">
+      <template x-if="!$store.files.appReady && !$store.files.someFilesLoaded">
         <main
           class="welcome"
           :class="$store.files.loading ? 'file-loading' : ''"
@@ -106,6 +106,16 @@
         </main>
       </template>
 
+      <template x-if="!$store.files.appReady && $store.files.someFilesLoaded">
+        <main class="welcome loading-more">
+          <div class="intro">
+            <div class="file-loader loading">
+              <span>... Loading ...</span>
+            </div>
+          </div>
+        </main>
+      </template>
+
       <template x-if="$store.files.appReady">
         <main
           class="main-section"
@@ -113,7 +123,11 @@
           tabindex="-1"
           x-on:resize.window="$store.ui.checkMenuState()"
         >
-          <div class="main-section-inner" id="main-section-inner">
+          <div
+            class="main-section-inner"
+            id="main-section-inner"
+            :class="$store.files.sources.length > 1 ? 'multiple-actors' : ''"
+          >
             <div class="mobile-menu" id="mobile-menu">
               <nav>
                 <ul>
@@ -188,13 +202,15 @@
               <h2 class="visually-hidden" id="actor-title">Account info</h2>
               <h3 class="visually-hidden" id="actor-tabs-title">Accounts</h3>
 
-              <div class="actors-wrapper">
+              <div
+                class="actors-wrapper"
+                :style="'--actor-hue: '+ $store.files.sources[$store.ui.actorPanel].hue"
+              >
                 <template x-if="$store.files.sources.length > 1">
                   <div
                     class="actors-tabs"
                     role="tablist"
                     aria-labelledby="actor-tabs-title"
-                    :style="'--actor-hue: '+ $store.files.sources[$store.ui.actorPanel].hue"
                   >
                     <template x-for="(_, source) in $store.files.sources">
                       <button
@@ -1023,7 +1039,6 @@
 
             <div
               class="toots"
-              :class="$store.files.sources.length > 1 ? 'multiple-actors' : ''"
               id="toots"
               role="region"
               aria-labelledby="toots-title"
@@ -1677,6 +1692,6 @@
       </symbol>
     </svg>
 
-    <script src="js/main.js?20241202"></script>
+    <script src="js/main.js?20241204"></script>
   </body>
 </html>

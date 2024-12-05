@@ -577,7 +577,6 @@ const filesStore = {
       }
     });
   },
-
   toggleTootsOrder() {
     this.sortAsc = !this.sortAsc;
     this.sortToots();

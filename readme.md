@@ -66,6 +66,10 @@ Accessibility is a vast and complex topic, and there's probably room for improve
 
 MARL should work on pretty much any screen size, as low as 300 pixels wide (and possibly less).
 
+### Persistent settings
+
+Paging-related settings (namely: number of posts per page, and sorting order) are stored in the browser and automatically restored when the app is initialized, so that you don't have to re-set them the way you like it every time.
+
 ## Limitations
 
 Everything is based on the data contained in the Mastodon archive file. As far as I can tell, the archive does __not__ include:

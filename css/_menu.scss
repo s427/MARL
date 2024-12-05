@@ -6,8 +6,8 @@ $panel-width: 400px;
   display: none;
   position: relative;
   z-index: 2;
-  color: var(--fg-inv1);
-  background-color: var(--bg-inv2);
+  color: var(--menu-fg);
+  background-color: var(--menu-bg);
 
   @media (forced-colors: active) {
     color: buttonText;
@@ -53,7 +53,7 @@ $panel-width: 400px;
       width: $icon-width;
       height: auto;
       margin: 5px auto 0;
-      fill: var(--fg-inv0);
+      fill: var(--menu-icon);
 
       @media (forced-colors: active) {
         fill: buttonText;
@@ -79,7 +79,7 @@ $panel-width: 400px;
           width: 10px;
           height: 10px;
           border-radius: 10px;
-          background-color: var(--accent-light2);
+          background-color: var(--menu-filter-active);
           @media (forced-colors: active) {
             background-color: Highlight;
           }
@@ -164,7 +164,7 @@ $panel-width: 400px;
     right: 6px;
     top: 6px;
     z-index: 1;
-    color: var(--fg1);
+    color: var(--panel-close);
     background: transparent;
     box-shadow: none;
     .btn-icon {
@@ -173,7 +173,7 @@ $panel-width: 400px;
     &:hover,
     &:focus,
     &:focus-visible {
-      color: var(--accent-light);
+      color: var(--panel-close-hover);
     }
 
     @media (forced-colors: active) {
@@ -205,7 +205,7 @@ $panel-width: 400px;
     &.menu-open-actor .menu-actor,
     &.menu-open-filters .menu-filters,
     &.menu-open-tags .menu-tags {
-      color: var(--fg-inv0);
+      color: var(--menu-fg-active);
       background-color: rgba(255, 255, 255, 0.2);
     }
   }
