@@ -66,6 +66,10 @@ Accessibility is a vast and complex topic, and there's probably room for improve
 
 MARL should work on pretty much any screen size, as low as 300 pixels wide (and possibly less).
 
+### Persistent settings
+
+Paging-related settings (namely: number of posts per page, and sorting order) are stored in the browser and automatically restored when the app is initialized, so that you don't have to re-set them the way you like it every time.
+
 ## Limitations
 
 Everything is based on the data contained in the Mastodon archive file. As far as I can tell, the archive does __not__ include:
@@ -90,6 +94,16 @@ __This affects boosts, favorites and bookmarks__ —except for posts that are ho
 Moreover, even when those external posts have _not_ expired, the data that is included in the archive is _very_ sparse: basically a single URL to the post on its original instance. It is not possible to programmatically fetch more data from those URLs, as Mastodon servers currently do not allow cross-origin resource sharing (CORS). (See [this issue](https://github.com/mastodon/mastodon/issues/10400) on the official Mastodon project page.)
 
 As a result, MARL can only show you very little data for your boosts, bookmarks and favorites.
+
+## Tech
+
+Third-party libraries and assets used:
+- [AlpineJs](https://alpinejs.dev/) v3.14.5
+- [JSZip](https://stuk.github.io/jszip/) v3.10.1
+- [Material Icons](https://fonts.google.com/icons)
+
+All are stored within the project; no request to a CDN or third-party server is made by MARL.  
+Everything else coded by me.
 
 ## Disclaimer
 
