@@ -37,31 +37,18 @@ const userPrefsStore = {
 
 const filesStore = {
   resetState() {
-    this.raw = {};
-    this.actor = {};
-    this.outbox = {};
+    this.sources = [];
     this.toots = [];
-    this.likes = [];
-    this.bookmarks = [];
-    this.avatar = {};
-    this.header = {};
 
     this.sortAsc = true; // -> userPrefs
     this.pageSize = 10; // -> userPrefs
     this.currentPage = 1;
 
     this.loading = false;
-    this.loaded = {
-      actor: false,
-      avatar: false,
-      banner: false,
-      outbox: false,
-      likes: false,
-      bookmarks: false,
-    };
+    this.someFilesLoaded = false;
 
     this.languages = {};
-    this.boostsAuthors = {};
+    this.boostsAuthors = [];
 
     this.filters = {};
     this.filtersDefault = {
@@ -91,9 +78,13 @@ const filesStore = {
       attachmentWithAltText: false,
 
       // automatically generated (see loadJsonFile()):
-      // langs_en: true,
-      // langs_fr: true,
-      // langs_de: true,
+      // lang_en: true,
+      // lang_fr: true,
+      // lang_de: true,
+      // etc
+      // actor_0: true,
+      // actor_1: true,
+      // actor_2: true,
       // etc
     };
     this.filtersActive = false;
@@ -412,13 +403,22 @@ const filesStore = {
         }
       }
 
-      for (let lang in this.languages) {
-        if (f.hasOwnProperty("langs_" + lang) && f["langs_" + lang] === false) {
+      for (const lang in this.languages) {
+        if (f.hasOwnProperty("lang_" + lang) && f["lang_" + lang] === false) {
           if (t.type === "Create") {
             if (t.object.contentMap.hasOwnProperty(lang)) {
               return false;
             }
           } else {
+            return false;
+          }
+        }
+      }
+
+      for (const source of this.sources) {
+        const id = source.id;
+        if (f.hasOwnProperty("actor_" + id) && f["actor_" + id] === false) {
+          if (t._marl.source === id) {
             return false;
           }
         }
@@ -524,15 +524,26 @@ const filesStore = {
     return r;
   },
 
-  get allLoaded() {
-    return (
-      this.loaded.actor &&
-      this.loaded.avatar &&
-      this.loaded.banner &&
-      this.loaded.outbox &&
-      this.loaded.likes &&
-      this.loaded.bookmarks
-    );
+  get appReady() {
+    if (this.sources.length === 0) {
+      return false;
+    }
+
+    let r = true;
+    for (let i = 0; i < this.sources.length; i++) {
+      const source = this.sources[i];
+      if (
+        !source.loaded.actor ||
+        !source.loaded.avatar ||
+        !source.loaded.header ||
+        !source.loaded.outbox ||
+        !source.loaded.likes ||
+        !source.loaded.bookmarks
+      ) {
+        r = false;
+      }
+    }
+    return r;
   },
 
   get totalPages() {
@@ -540,7 +551,7 @@ const filesStore = {
   },
   get pagedToots() {
     if (this.filteredToots) {
-      return this.filteredToots.filter((toot, index) => {
+      return this.filteredToots.filter((_, index) => {
         let start = (this.currentPage - 1) * this.pageSize;
         let end = this.currentPage * this.pageSize;
         if (index >= start && index < end) return true;
@@ -559,7 +570,6 @@ const filesStore = {
       }
     });
   },
-
   toggleTootsOrder() {
     this.sortAsc = !this.sortAsc;
     this.sortToots();
@@ -570,10 +580,7 @@ const filesStore = {
   checkPagingValue() {
     if (this.currentPage < 1) {
       this.currentPage = 1;
-    } else if (
-      (this.currentPage - 1) * this.pageSize >
-      this.filteredToots.length
-    ) {
+    } else if (this.currentPage > this.totalPages) {
       this.currentPage = this.totalPages;
     }
   },
@@ -607,38 +614,47 @@ const lightboxStore = {
   resetState() {
     this.show = false;
     this.data = [];
+    this.source = 0;
     this.index = 0;
-    this.source = "";
+    this.origin = "";
   },
 
-  open(att, index, source) {
-    this.data = att;
+  open(toot, index, origin) {
+    this.data = toot.object.attachment;
+    this.source = toot._marl.source;
     this.show = true;
     this.index = index;
-    this.source = source;
+    this.origin = origin;
     document.getElementById("main-section-inner").setAttribute("inert", true);
     setTimeout(() => {
       document.getElementById("lightbox").focus();
     }, 50);
   },
-  openProfileImg(name, source) {
-    const data = [
-      {
-        name: name,
-        url: name,
-        mediaType: Alpine.store("files")[name].type,
+  openProfileImg(name, origin, source) {
+    const data = {
+      object: {
+        attachment: [
+          {
+            name: name,
+            url: name,
+            mediaType: Alpine.store("files").sources[source][name].type,
+          },
+        ],
       },
-    ];
-    this.open(data, 0, source);
+      _marl: {
+        source: source,
+      },
+    };
+    this.open(data, 0, origin);
   },
   close() {
-    const source = this.source;
+    const origin = this.origin;
     this.data = [];
     this.index = 0;
     this.show = false;
-    this.source = "";
+    this.origin = "";
     document.getElementById("main-section-inner").removeAttribute("inert");
-    document.getElementById(source).focus();
+    document.getElementById(origin).focus();
   },
   showNext() {
     this.index++;
@@ -664,6 +680,7 @@ const uiStore = {
   resetState() {
     this.pagingOptionsVisible = false;
     this.openMenu = "";
+    this.actorPanel = 0;
     this.menuIsActive = false;
   },
 
@@ -678,6 +695,26 @@ const uiStore = {
   },
   get pagingOptionsClass() {
     return this.pagingOptionsVisible ? "open" : "";
+  },
+
+  openActorPanel(id) {
+    this.actorPanel = id;
+  },
+  switchActorPanel(dir) {
+    let id = this.actorPanel;
+    if (dir === "up") {
+      id++;
+      if (id >= Alpine.store("files").sources.length) {
+        id = 0;
+      }
+    } else {
+      id--;
+      if (id < 0) {
+        id = Alpine.store("files").sources.length - 1;
+      }
+    }
+    this.actorPanel = id;
+    document.getElementById("actortab-" + id).focus();
   },
 
   menuClose() {
@@ -773,19 +810,6 @@ const uiStore = {
 
 // utils
 
-function unZip(file) {
-  resetStores();
-  Alpine.store("files").loading = true;
-  JSZip.loadAsync(file[0]).then(function (content) {
-    Alpine.store("files").raw = content.files;
-
-    loadJsonFile("actor");
-    loadJsonFile("outbox");
-    loadJsonFile("likes");
-    loadJsonFile("bookmarks");
-  });
-}
-
 function resetStores() {
   Alpine.store("files").resetState();
   Alpine.store("lightbox").resetState();
@@ -795,14 +819,78 @@ function resetStores() {
   Alpine.store("userPrefs").load("pageSize");
 }
 
-function loadJsonFile(name) {
-  const content = Alpine.store("files").raw;
+function unZip(files) {
+  const firstLoad = Alpine.store("files").sources.length === 0;
+  if (firstLoad) {
+    resetStores();
+  }
+  Alpine.store("files").loading = true;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    if (
+      Alpine.store("files").sources.some((source) => {
+        return (
+          source.fileInfos.name === file.name &&
+          source.fileInfos.size === file.size &&
+          source.fileInfos.lastModified === file.lastModified
+        );
+      })
+    ) {
+      console.warn("File already loaded:", file.name);
+      continue;
+    }
+
+    let index = Alpine.store("files").sources.length;
+
+    Alpine.store("files").sources[index] = {
+      id: index,
+      fileInfos: {
+        name: file.name,
+        size: file.size,
+        lastModified: file.lastModified,
+      },
+      nbToots: 0,
+
+      actor: {},
+      outbox: {},
+      likes: [],
+      bookmarks: [],
+      avatar: {},
+      header: {},
+
+      loaded: {
+        actor: false,
+        avatar: false,
+        header: false,
+        outbox: false,
+        likes: false,
+        bookmarks: false,
+      },
+    };
+
+    JSZip.loadAsync(file).then(function (content) {
+      Alpine.store("files").sources[index]._raw = content.files;
+
+      loadJsonFile("actor", index);
+      loadJsonFile("outbox", index);
+      loadJsonFile("likes", index);
+      loadJsonFile("bookmarks", index);
+    });
+  }
+
+  setHueForSources();
+}
+
+function loadJsonFile(name, index) {
+  const content = Alpine.store("files").sources[index]._raw;
 
   if (content[name + ".json"] === undefined) {
     if (name === "likes" || name === "bookmarks") {
       // we can still run the app without those files
       console.warn(`File ${name}.json not found in archive.`);
-      Alpine.store("files").loaded[name] = true;
+      Alpine.store("files").sources[index].loaded[name] = true;
     } else {
       // this should NOT happen and will prevent the app from running
       console.error(`File ${name}.json not found in archive.`);
@@ -812,114 +900,131 @@ function loadJsonFile(name) {
 
   content[name + ".json"].async("text").then(function (txt) {
     if (name === "actor") {
-      Alpine.store("files").actor = JSON.parse(txt);
-      loadActorImages();
-      Alpine.store("files").loaded.actor = true;
+      Alpine.store("files").sources[index].actor = JSON.parse(txt);
+      loadActorImages(index);
+      Alpine.store("files").sources[index].loaded.actor = true;
     } // actor.json
 
     if (name === "outbox") {
       let data = JSON.parse(txt);
-      let toots = data.orderedItems.map(preprocessToots);
-      Alpine.store("files").toots = toots;
-
-      let infos = toots.reduce(
-        (accu, toot) => {
-          if (toot.type === "Create") {
-            const map = toot.object.contentMap;
-            for (let lang in map) {
-              if (!accu.langs[lang]) {
-                accu.langs[lang] = 1;
-              } else {
-                accu.langs[lang]++;
-              }
-            }
-          } else if (toot.type === "Announce") {
-            // since Mastodon doesn't allow (yet?) cross-origin requests to
-            // retrieve post data (for boosts), we try to at least extract the
-            // user names for all the boosts contained in the archive
-
-            // [ISSUE] "object" value is a string most of the times, but
-            // sometimes it's a complex object similar to type "Create"
-            if (typeof toot.object === "object" && toot.object !== null) {
-              // let's ignore this case for now...
-              // [TODO], but not clear how it should be handled
-            } else if (toot.object) {
-              // if it's not an object and it has a value, then it's simply a
-              // url (string) pointing to the original (boosted) post.
-              // [ISSUE] URL format not always consistent... (esp. in the case
-              // of non-Mastodon instances) - e.g:
-              // https://craftopi.art/objects/[...]
-              // https://firefish.city/notes/[...]
-              // https://bsky.brid.gy/convert/ap/at://did:plc:[...]/app.bsky.feed.post/[...]
-              // -> the user name is not always present in URL
-              const url = toot.object.split("/");
-              let name;
-              let user;
-              let domain;
-              if (url.length > 2) {
-                domain = url[2];
-
-                if (
-                  url[0] === "https:" &&
-                  url[3] === "users" &&
-                  url[5] === "statuses"
-                ) {
-                  // Mastodon URL format -> user name
-                  name = url[4];
-                  user = `https://${url[2]}/users/${url[4]}/`;
-                } else {
-                  // other URL format -> domain name
-                  name = `? ${url[2]}`;
-                  user = `https://${url[2]}/`;
-                }
-
-                if (!accu.boosts[name]) {
-                  accu.boosts[name] = {
-                    nb: 1,
-                    name: name,
-                    url: user,
-                    domain: domain,
-                  };
-                } else {
-                  accu.boosts[name].nb++;
-                }
-              }
-            }
-          }
-          return accu;
-        },
-        { langs: {}, boosts: {} }
-      );
-
-      let boosts = [];
-      for (var key in infos.boosts) {
-        boosts.push(infos.boosts[key]);
-      }
-
-      Alpine.store("files").languages = infos.langs;
-      Alpine.store("files").boostsAuthors = boosts;
-
-      for (let lang in infos.langs) {
-        Alpine.store("files").filtersDefault["langs_" + lang] = true;
-      }
-
+      let toots = data.orderedItems.map((t) => preprocessToots(t, index));
+      Alpine.store("files").toots = Alpine.store("files").toots.concat(toots); // ### duplicate toots?
+      Alpine.store("files").sources[index].nbToots = toots.length;
       delete data.orderedItems;
-      Alpine.store("files").outbox = data;
-
-      Alpine.store("files").resetFilters(false);
-      Alpine.store("files").loaded.outbox = true;
+      Alpine.store("files").sources[index].outbox = data;
+      Alpine.store("files").sources[index].loaded.outbox = true;
     } // outbox.json
 
     if (name === "likes" || name === "bookmarks") {
       const tmp = JSON.parse(txt);
-      Alpine.store("files")[name] = tmp.orderedItems;
-      Alpine.store("files").loaded[name] = true;
+      Alpine.store("files").sources[index][name] = tmp.orderedItems;
+      Alpine.store("files").sources[index].loaded[name] = true;
     } // likes.json || bookmarks.json
   });
 }
 
-function preprocessToots(t) {
-  let marl = {};
+function buildTootsInfos() {
+  let langs = {};
+  let boosts = [];
+
+  if (Alpine.store("files").toots.length > 0) {
+    let infos = Alpine.store("files").toots.reduce(
+      (accu, toot) => {
+        if (toot.type === "Create") {
+          const map = toot.object.contentMap;
+          for (let lang in map) {
+            if (!accu.langs[lang]) {
+              accu.langs[lang] = 1;
+            } else {
+              accu.langs[lang]++;
+            }
+          }
+        } else if (toot.type === "Announce") {
+          // since Mastodon doesn't allow (yet?) cross-origin requests to
+          // retrieve post data (for boosts), we try to at least extract the
+          // user names for all the boosts contained in the archive
+
+          // [ISSUE] "object" value is a string most of the times, but
+          // sometimes it's a complex object similar to type "Create"
+          if (typeof toot.object === "object" && toot.object !== null) {
+            // let's ignore this case for now...
+            // [TODO], but not clear how it should be handled
+          } else if (toot.object) {
+            // if it's not an object and it has a value, then it's simply a
+            // url (string) pointing to the original (boosted) post.
+            // [ISSUE] URL format not always consistent... (esp. in the case
+            // of non-Mastodon instances) - e.g:
+            // https://craftopi.art/objects/[...]
+            // https://firefish.city/notes/[...]
+            // https://bsky.brid.gy/convert/ap/at://did:plc:[...]/app.bsky.feed.post/[...]
+            // -> the user name is not always present in URL
+            const url = toot.object.split("/");
+            let name;
+            let user;
+            let domain;
+            if (url.length > 2) {
+              domain = url[2];
+
+              if (
+                url[0] === "https:" &&
+                url[3] === "users" &&
+                url[5] === "statuses"
+              ) {
+                // Mastodon URL format -> user name
+                name = url[4];
+                user = `https://${url[2]}/users/${url[4]}/`;
+              } else {
+                // other URL format -> domain name
+                name = `? ${url[2]}`;
+                user = `https://${url[2]}/`;
+              }
+
+              if (!accu.boosts[name]) {
+                accu.boosts[name] = {
+                  nb: 1,
+                  name: name,
+                  url: user,
+                  domain: domain,
+                };
+              } else {
+                accu.boosts[name].nb++;
+              }
+            }
+          }
+        }
+        return accu;
+      },
+      { langs: {}, boosts: {} }
+    );
+
+    langs = infos.langs;
+
+    boosts = [];
+    for (var key in infos.boosts) {
+      boosts.push(infos.boosts[key]);
+    }
+  }
+
+  Alpine.store("files").languages = langs;
+  Alpine.store("files").boostsAuthors = boosts;
+}
+
+function buildDynamicFilters() {
+  for (const lang in Alpine.store("files").languages) {
+    Alpine.store("files").filtersDefault["lang_" + lang] = true;
+  }
+
+  for (const source of Alpine.store("files").sources) {
+    Alpine.store("files").filtersDefault["actor_" + source.id] = true;
+  }
+
+  Alpine.store("files").resetFilters(false);
+}
+
+function preprocessToots(t, index) {
+  let marl = {
+    source: index,
+  };
 
   if (typeof t.object === "object" && t.object !== null) {
     if (t.object.contentMap) {
@@ -955,87 +1060,106 @@ function preprocessToots(t) {
   return t;
 }
 
-function loadActorImages() {
-  const actor = Alpine.store("files").actor;
-  const content = Alpine.store("files").raw;
+function loadActorImages(index) {
+  const actor = Alpine.store("files").sources[index].actor;
+  const content = Alpine.store("files").sources[index]._raw;
 
   if (actor.icon && actor.icon.type === "Image" && actor.icon.url) {
     const image = actor.icon;
     content[image.url].async("base64").then(function (content) {
-      Alpine.store("files").avatar = {
+      Alpine.store("files").sources[index].avatar = {
         type: image.mediaType,
         content: content,
         noImg: false,
       };
-      Alpine.store("files").loaded.avatar = true;
+      Alpine.store("files").sources[index].loaded.avatar = true;
     });
   } else {
-    Alpine.store("files").avatar = { noImg: true };
-    Alpine.store("files").loaded.avatar = true;
+    Alpine.store("files").sources[index].avatar = { noImg: true };
+    Alpine.store("files").sources[index].loaded.avatar = true;
   }
 
   if (actor.image && actor.image.type === "Image" && actor.image.url) {
     const image = actor.image;
     content[image.url].async("base64").then(function (content) {
-      Alpine.store("files").header = {
+      Alpine.store("files").sources[index].header = {
         type: image.mediaType,
         content: content,
         noImg: false,
       };
-      Alpine.store("files").loaded.banner = true;
+      Alpine.store("files").sources[index].loaded.header = true;
     });
   } else {
-    Alpine.store("files").header = { noImg: true };
-    Alpine.store("files").loaded.banner = true;
+    Alpine.store("files").sources[index].header = { noImg: true };
+    Alpine.store("files").sources[index].loaded.header = true;
   }
 }
 
-function loadAttachedMedia(att) {
-  if (
-    attachmentIsImage(att) ||
-    attachmentIsVideo(att) ||
-    attachmentIsSound(att)
-  ) {
-    const data = Alpine.store("files").raw;
-    let url = att.url;
-    if (url.indexOf("/") === 0) {
-      url = url.slice(1);
-    }
-    data[url].async("base64").then((content) => {
-      Alpine.store("files")[att.url] = {
-        type: att.mediaType,
-        content: content,
-      };
-    });
+function setHueForSources() {
+  const nbSources = Alpine.store("files").sources.length;
+  const hueStart = Math.round(Math.random() * 360); // MARL accent: 59.17
+  const hueSpacing = Math.round(360 / nbSources);
+
+  for (let i = 0; i < nbSources; i++) {
+    Alpine.store("files").sources[i].hue = hueStart + hueSpacing * i;
   }
 }
 
-function checkAllLoaded(ok) {
+function checkAppReady(ok) {
   if (ok) {
+    buildTootsInfos();
+    buildDynamicFilters();
     cleanUpRaw();
     document.getElementById("main-section").focus();
     Alpine.store("ui").checkMenuState();
     Alpine.store("files").sortToots();
     Alpine.store("files").loading = false;
+    Alpine.store("files").someFilesLoaded = true;
   }
 }
 
 function cleanUpRaw() {
-  const content = Alpine.store("files").raw;
-  const actor = Alpine.store("files").actor;
+  for (let i = 0; i < Alpine.store("files").sources.length; i++) {
+    const content = Alpine.store("files").sources[i]._raw;
+    if (content.cleanedUp) {
+      continue;
+    }
 
-  if (actor.image && actor.image.url) {
-    delete content[actor.image.url];
-  }
-  if (actor.icon && actor.icon.url) {
-    delete content[actor.icon.url];
-  }
-  delete content["actor.json"];
-  delete content["outbox.json"];
-  delete content["likes.json"];
-  delete content["bookmarks.json"];
+    const actor = Alpine.store("files").sources[i].actor;
+    if (actor.image && actor.image.url) {
+      delete content[actor.image.url];
+    }
+    if (actor.icon && actor.icon.url) {
+      delete content[actor.icon.url];
+    }
+    delete content["actor.json"];
+    delete content["outbox.json"];
+    delete content["likes.json"];
+    delete content["bookmarks.json"];
+    content.cleanedUp = true;
 
-  Alpine.store("files").raw = content;
+    Alpine.store("files").sources[i]._raw = content;
+  }
+}
+
+function loadAttachedMedia(att, index) {
+  if (
+    attachmentIsImage(att) ||
+    attachmentIsVideo(att) ||
+    attachmentIsSound(att)
+  ) {
+    const data = Alpine.store("files").sources[index]._raw;
+    let url = att.url;
+    if (url.indexOf("/") === 0) {
+      url = url.slice(1);
+    }
+    data[url].async("base64").then((content) => {
+      Alpine.store("files").sources[index][att.url] = {
+        type: att.mediaType,
+        content: content,
+      };
+    });
+  }
 }
 
 function pagingUpdated() {

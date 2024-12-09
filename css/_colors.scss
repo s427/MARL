@@ -1,64 +1,80 @@
 // tint and saturation factor for the app color scheme
-$hue: 30;
-$sat: 0.5;
+$hue: 30; // === 59.17 in oklch
 
 /*********************************/
 /* global background/text colors */
 /*********************************/
 
-$bg0: hsl(var(--hue), calc(var(--sat) * 0%), 100%);
-// -> post content
-$bg1: hsl(var(--hue), calc(var(--sat) * 20%), 95%);
-// -> post
-$bg2: hsl(var(--hue), calc(var(--sat) * 30%), 90%);
-// -> post attachment/meta/raw
-$bg3: hsl(var(--hue), calc(var(--sat) * 35%), 87%);
-// -> posts header
-$bg4: hsl(var(--hue), calc(var(--sat) * 40%), 84%);
-// -> filters/tags panels
+$bg0: #fff; // post content
+$bg1: hsl($hue, 10%, 95%); // post
+$bg2: hsl($hue, 12%, 90%); // post attachment/meta/raw
+$bg3: hsl($hue, 15%, 87%); // posts header
+$bg4: hsl($hue, 17.5%, 84%); // filters/tags panels
 
-$fg0: hsl(var(--hue), calc(var(--sat) * 0%), 0%);
-// -> post content
-$fg1: hsl(var(--hue), calc(var(--sat) * 20%), 20%);
-// -> body text; some SVG icons (panel close)
-$fg2: hsl(var(--hue), calc(var(--sat) * 20%), 30%);
-// -> headings (h1, h2...)
+$fg0: #000; // post content
+$fg1: hsl($hue, 10%, 20%); // body text; some SVG icons (panel close)
+$fg2: hsl($hue, 10%, 30%); // headings (h1, h2...)
 
-/********************************************/
-/* inverted light scheme (e.g. actor panel) */
-/********************************************/
+$fg-inv: #fff; // misc highlighted text
 
-$bg-inv0: hsl(var(--hue), calc(var(--sat) * 75%), 11%);
-// -> bookmarks
-$bg-inv1: hsl(var(--hue), calc(var(--sat) * 65%), 15%);
-// -> favorites
-$bg-inv2: hsl(var(--hue), calc(var(--sat) * 50%), 20%);
-// -> actor raw data, mobile menu
-$bg-inv3: hsl(var(--hue), calc(var(--sat) * 50%), 25%);
-// -> actor panel
-$bg-inv4: hsl(var(--hue), calc(var(--sat) * 45%), 40%);
-// -> actor summary
+/***************/
+/* actor panel */
+/***************/
 
-$fg-inv0: hsl(var(--hue), calc(var(--sat) * 0%), 100%);
-// -> misc highlighted text; mobile menu icons
-$fg-inv1: hsl(var(--hue), calc(var(--sat) * 80%), 80%);
-// -> actor, mobile menu
+$actor-bg0: hsl($hue, 37.5%, 11%); // bookmarks
+$actor-bg1: hsl($hue, 32.5%, 15%); // favorites
+$actor-bg2: hsl($hue, 25%, 20%); // actor raw data; tabs bg
+$actor-bg3: hsl($hue, 25%, 25%); // actor panel
+$actor-bg4: hsl($hue, 22.5%, 40%); // actor summary
+
+$actor-fg0: #fff;
+$actor-fg1: hsl($hue, 40%, 80%); // actor texts
+$actor-tabs-bg: hsl($hue, 12%, 17%);
+
+// OKLCH variants (multiple archives opened)
+$actor-bg0-ok: oklch(21% 18% var(--actor-hue)); // bookmarks; tabs bg
+$actor-bg1-ok: oklch(24% 16% var(--actor-hue)); // favorites
+$actor-bg2-ok: oklch(27% 14% var(--actor-hue)); // actor raw data
+$actor-bg3-ok: oklch(30% 12% var(--actor-hue)); // actor panel
+$actor-bg4-ok: oklch(40% 10% var(--actor-hue)); // actor summary
+$actor-fg1-ok: oklch(92% 8% var(--actor-hue)); // actor texts
+
+$actor-accent: hsl($hue, 75%, 50%);
+$actor-accent-ok: oklch(80% 25% var(--actor-hue));
+$actor-accent2-ok: oklch(60% 20% var(--actor-hue));
+// -> outline; color code on post
+
+/***************/
+/* mobile menu */
+/***************/
+
+$menu-bg: hsl($hue, 25%, 20%); // actor-bg2
+$menu-fg: hsl($hue, 40%, 80%); // actor-fg1
+$menu-fg-active: #fff;
+$menu-icon: #fff;
+$menu-filter-active: hsl($hue, 75%, 50%); // accent-light2
+
+$menu-backdrop: rgba(0, 0, 0, 0.5);
+
+$panel-close: hsl($hue, 10%, 20%); // fg1
+$panel-close-hover: hsl($hue, 75%, 38%); // accent-light
 
 /**********/
 /* accent */
 /**********/
 
-$accent: hsl(var(--hue), calc(var(--sat) * 200%), 30%);
+$accent: hsl($hue, 100%, 30%);
 // -> links, active elements, counters, misc background stripes (color 1)
-$accent-dark: hsl(var(--hue), calc(var(--sat) * 250%), 26%);
+$accent-dark: hsl($hue, 100%, 26%);
 // -> misc background stripes (color 2)
-$accent-light: hsl(var(--hue), calc(var(--sat) * 150%), 38%);
+$accent-light: hsl($hue, 75%, 38%);
 // -> focusable elements outline; main header counter
-$accent-light2: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
+$accent-light2: hsl($hue, 75%, 50%);
 // -> overlay hover/focus icons (SVG); private posts border; active filter indicator (mobile menu)
-$accent-light3: hsl(var(--hue), calc(var(--sat) * 150%), 75%);
+// === oklch(56.48% 0.124 59.17)
+$accent-light3: hsl($hue, 75%, 75%);
 // -> hover effect on images
-$accent-light-bg: hsl(var(--hue), calc(var(--sat) * 100%), 96%);
+$accent-light-bg: hsl($hue, 50%, 96%);
 // -> private posts background
 
 /***********/
@@ -68,7 +84,6 @@ $accent-light-bg: hsl(var(--hue), calc(var(--sat) * 100%), 96%);
 $overlay-icon: #fff;
 $overlay-icon-hover: #fff;
 $overlay-backdrop: rgba(0, 0, 0, 0.75);
-$menu-backdrop: rgba(0, 0, 0, 0.5);
 
 /*****************/
 /* form elements */
@@ -79,11 +94,11 @@ $bg-input-hover: rgba(255, 255, 255, 0.65);
 $bg-input-focus: rgba(255, 255, 255, 1);
 
 $bg-button: rgba(255, 255, 255, 1);
-$bg-button-hover: hsl(var(--hue), calc(var(--sat) * 100%), 95%);
+$bg-button-hover: hsl($hue, 50%, 95%);
 $button-svg: $fg1;
-$button-svg-hover: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
-$button-svg-focus: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
-$button-svg-active: hsl(var(--hue), calc(var(--sat) * 150%), 50%);
+$button-svg-hover: hsl($hue, 75%, 50%);
+$button-svg-focus: hsl($hue, 75%, 50%);
+$button-svg-active: hsl($hue, 75%, 50%);
 
 $fg-button-focus: $accent;
 $fg-button-active: $accent;
@@ -91,9 +106,6 @@ $fg-button-active: $accent;
 // Note: some rgba values hardcoded, used mostly for box-shadow or backdrops
 
 html {
-  --hue: #{$hue};
-  --sat: #{$sat};
-
   --bg0: #{$bg0};
   --bg1: #{$bg1};
   --bg2: #{$bg2};
@@ -103,15 +115,15 @@ html {
   --fg0: #{$fg0};
   --fg1: #{$fg1};
   --fg2: #{$fg2};
+  --fg-inv: #{$fg-inv};
 
-  --bg-inv0: #{$bg-inv0};
-  --bg-inv1: #{$bg-inv1};
-  --bg-inv2: #{$bg-inv2};
-  --bg-inv3: #{$bg-inv3};
-  --bg-inv4: #{$bg-inv4};
-
-  --fg-inv0: #{$fg-inv0};
-  --fg-inv1: #{$fg-inv1};
+  --menu-bg: #{$menu-bg};
+  --menu-fg: #{$menu-fg};
+  --menu-fg-active: #{$menu-fg-active};
+  --menu-icon: #{$menu-icon};
+  --menu-filter-active: #{$menu-filter-active};
+  --panel-close: #{$panel-close};
+  --panel-close-hover: #{$panel-close-hover};
 
   --accent: #{$accent};
   --accent-dark: #{$accent-dark};
@@ -138,4 +150,34 @@ html {
 
   --fg-button-focus: #{$fg-button-focus};
   --fg-button-active: #{$fg-button-active};
+}
+
+.actors-wrapper {
+  --actor-hue: 0;
+  --actor-bg0: #{$actor-bg0};
+  --actor-bg0-ok: #{$actor-bg0-ok};
+  --actor-bg1: #{$actor-bg1};
+  --actor-bg1-ok: #{$actor-bg1-ok};
+  --actor-bg2: #{$actor-bg2};
+  --actor-bg2-ok: #{$actor-bg2-ok};
+  --actor-bg3: #{$actor-bg3};
+  --actor-bg3-ok: #{$actor-bg3-ok};
+  --actor-bg4: #{$actor-bg4};
+  --actor-bg4-ok: #{$actor-bg4-ok};
+
+  --actor-fg0: #{$actor-fg0};
+  --actor-fg1: #{$actor-fg1};
+  --actor-fg1-ok: #{$actor-fg1-ok};
+  --actor-tabs-bg: #{$actor-tabs-bg};
+  --actor-accent: #{$actor-accent};
+  --actor-accent-ok: #{$actor-accent-ok};
+  --actor-accent2-ok: #{$actor-accent2-ok};
+}
+.actors-tabs button {
+  --actor-accent-ok: #{$actor-accent-ok};
+  --actor-accent2-ok: #{$actor-accent2-ok};
+}
+.toot-content {
+  --actor-accent-ok: #{$actor-accent-ok};
+  --actor-accent2-ok: #{$actor-accent2-ok};
 }

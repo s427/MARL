@@ -96,7 +96,7 @@
   }
 
   &.active label {
-    color: var(--fg-inv0);
+    color: var(--fg-inv);
     opacity: 1;
     background-color: var(--accent);
     @media (forced-colors: active) {
