@@ -211,7 +211,6 @@ details {
 
 // focusable elements
 *:focus-visible,
-// .att-img-wrapper:hover,
 .tags-group button:focus-visible div,
 .toots-filter:has([type="checkbox"]:focus-visible) {
   text-decoration: none;

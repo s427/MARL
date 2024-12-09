@@ -37,7 +37,7 @@ $meta-visible: 100ch;
 .toot-summary {
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
-  color: var(--fg-inv0);
+  color: var(--fg-inv);
   background: repeating-linear-gradient(
     45deg,
     var(--accent-dark),
@@ -95,6 +95,23 @@ $meta-visible: 100ch;
   .toot-visibility-mentioned & {
     background-color: var(--accent-light-bg);
     border: 2px dashed var(--accent-light2);
+  }
+}
+
+.multiple-actors .toot-content {
+  position: relative;
+  padding-left: 1.6rem;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0.35rem;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    z-index: 1;
+    width: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: red;
+    background-color: var(--actor-accent-ok, transparent);
   }
 }
 

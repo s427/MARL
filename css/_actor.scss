@@ -1,16 +1,18 @@
 .actor {
-  container-type: inline-size;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  overflow-y: auto;
-  overflow-x: hidden;
-  color: var(--fg-inv1);
-  background: var(--bg-inv3);
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 2rem;
+    box-shadow: -1.5rem 0 2rem -2rem #000 inset;
+  }
 
   a {
-    color: var(--fg-inv0);
+    color: var(--actor-fg0);
   }
   h1,
   h2,
@@ -22,13 +24,13 @@
   summary {
     padding: 1rem;
     svg {
-      fill: var(--fg-inv1);
+      fill: var(--actor-fg1);
     }
     &:hover,
     &:focus {
-      color: var(--fg-inv0);
+      color: var(--actor-fg0);
       svg {
-        fill: var(--fg-inv0);
+        fill: var(--actor-fg0);
       }
     }
   }
@@ -39,7 +41,28 @@
   }
 }
 
+.actors-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.actor-panel {
+  flex-grow: 1;
+  height: 100%;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: var(--actor-fg1);
+  background: var(--actor-bg3);
+}
+
 .actor-pretty {
+  flex-grow: 1;
   flex-shrink: 0;
   padding: 1rem 1rem 2rem;
 }
@@ -118,13 +141,13 @@
 .actor-summary {
   margin: 2rem 0;
   padding: 1rem;
-  color: var(--fg-inv0);
+  color: var(--actor-fg0);
   line-height: 1.3;
-  background: var(--bg-inv4);
+  background: var(--actor-bg4);
   background: radial-gradient(
     circle at 200% 150%,
-    var(--bg-inv3),
-    var(--bg-inv4)
+    var(--actor-bg3),
+    var(--actor-bg4)
   );
   border-radius: 0.5rem;
   box-shadow: 0 0.3rem 0.4rem -0.2rem rgba(0, 0, 0, 0.3);
@@ -146,8 +169,8 @@
   }
   dd {
     padding: 0.5rem 1rem;
-    color: var(--fg-inv0);
-    border-left: 1px solid var(--bg-inv4);
+    color: var(--actor-fg0);
+    border-left: 1px solid var(--actor-bg4);
   }
 
   @container (width < 340px) {
@@ -156,7 +179,7 @@
     dl {
       display: block;
       padding: 0.5rem 1rem;
-      border-bottom: 1px solid var(--bg-inv4);
+      border-bottom: 1px solid var(--actor-bg4);
       &:last-child {
         border-bottom: none;
       }
@@ -180,7 +203,7 @@
   gap: 1rem;
   .count {
     display: block;
-    color: var(--fg-inv0);
+    color: var(--actor-fg0);
     font-size: 1.6em;
     font-weight: bold;
   }
@@ -200,11 +223,11 @@
       font-weight: bold;
       &:hover,
       &:focus-visible {
-        color: var(--fg-inv0);
+        color: var(--actor-fg0);
       }
     }
     &[open] summary {
-      color: var(--fg-inv0);
+      color: var(--actor-fg0);
     }
     p {
       margin-top: 0.5rem;
@@ -214,7 +237,7 @@
 }
 
 .actor-raw {
-  background: var(--bg-inv2);
+  background: var(--actor-bg2);
   box-shadow: 0 0.75rem 0.75rem -1rem #000 inset;
   .details-content {
     padding: 1rem 1rem 2rem;
@@ -224,8 +247,7 @@
 }
 
 .actor-likes-bookmarks {
-  flex-grow: 1;
-  background: var(--bg-inv0);
+  background: var(--actor-bg0);
   overflow-wrap: break-word;
 
   h2 {
@@ -260,10 +282,100 @@
 }
 
 .actor-likes {
-  background: var(--bg-inv1);
+  background: var(--actor-bg1);
   box-shadow: 0 0.75rem 0.75rem -1rem #000 inset;
 }
 .actor-bookmarks {
   padding-bottom: 1rem;
   box-shadow: 0 0.75rem 0.75rem -1rem #000 inset;
+}
+
+.multiple-actors {
+  .actors-tabs {
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--actor-tabs-bg);
+    overflow: hidden;
+    user-select: none;
+
+    button {
+      all: unset;
+      padding: 0.35rem 0.7rem 0.4rem;
+      font-size: 0.85em;
+      font-family: inherit;
+      border-radius: 0.25rem;
+      color: #fff;
+      background: var(--actor-accent2-ok, transparent);
+      cursor: pointer;
+      span {
+        display: inline-block;
+        padding: 0 0 0.3rem;
+        border-bottom: 0.1rem solid transparent;
+      }
+
+      &:hover {
+        span {
+          border-bottom-color: rgba(255, 255, 255, 0.5);
+        }
+      }
+      &[aria-selected="true"] {
+        box-shadow: none;
+        span {
+          border-bottom-color: #fff;
+        }
+      }
+      &:focus-visible {
+        outline: 2px solid hsl(var(--actor-hue), 50%, 80%);
+        outline: 2px solid var(--actor-accent-ok, var(--actor-accent));
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  // color variations
+
+  .actor {
+    *:focus-visible {
+      outline-color: var(--actor-accent-ok, var(--accent-light));
+    }
+  }
+
+  .actor summary svg {
+    fill: var(--actor-fg1-ok, var(--actor-fg1));
+  }
+  .actor-panel {
+    color: var(--actor-fg1-ok, var(--actor-fg1));
+    background: var(--actor-bg3-ok, var(--actor-bg3));
+  }
+  .actor-summary {
+    background: var(--actor-bg4-ok, var(--actor-bg4));
+    background: radial-gradient(
+      circle at 200% 150%,
+      var(--actor-bg3-ok, var(--actor-bg3)),
+      var(--actor-bg4-ok, var(--actor-bg4))
+    );
+  }
+  .actor-infos {
+    dd {
+      border-left-color: var(--actor-bg4-ok, var(--actor-bg4));
+    }
+    @container (width < 340px) {
+      dl {
+        border-bottom-color: var(--actor-bg4-ok, var(--actor-bg4));
+      }
+    }
+  }
+  .actor-raw {
+    background: var(--actor-bg2-ok, var(--actor-bg2));
+  }
+  .actor-likes-bookmarks {
+    background: var(--actor-bg0-ok, var(--actor-bg0));
+  }
+  .actor-likes {
+    background: var(--actor-bg1-ok, var(--actor-bg1));
+  }
 }
