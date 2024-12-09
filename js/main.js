@@ -582,12 +582,6 @@ const filesStore = {
       this.currentPage = 1;
     } else if (this.currentPage > this.totalPages) {
       this.currentPage = this.totalPages;
-      // } else if (
-      //   (this.currentPage - 1) * this.pageSize >
-      //   this.filteredToots.length
-      //   // ### what is that
-      // ) {
-      //   this.currentPage = this.totalPages;
     }
   },
   nextPage(setFocusTo) {

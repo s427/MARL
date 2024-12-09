@@ -119,11 +119,11 @@ html {
 
   --menu-bg: #{$menu-bg};
   --menu-fg: #{$menu-fg};
-  --menu-fg-active: $menu#{-fg-active};
+  --menu-fg-active: #{$menu-fg-active};
   --menu-icon: #{$menu-icon};
-  --menu-filter-active: $menu#{-filter-active};
+  --menu-filter-active: #{$menu-filter-active};
   --panel-close: #{$panel-close};
-  --panel-close-hover: $panel#{-close-hover};
+  --panel-close-hover: #{$panel-close-hover};
 
   --accent: #{$accent};
   --accent-dark: #{$accent-dark};
