@@ -45,6 +45,10 @@ No need to unpack your archive. Just drag'n'drop your file in the MARL window, a
 
 Everything takes place in the browser, with no communication with any server (once the page has been loaded). Your archive data is _not_ sent to any server. No analytics are included either.
 
+### Support for multiple archives
+
+You can open multiple archive files at once (or add some more after via drag'n'drop) and MARL will show you all their posts in a single chronological list, as well as all the profiles in a tabbed interface. Each profile is automatically color-coded. A new group of filters allow you to filter posts by author.
+
 ### Filters
 
 Many filters allow you to quickly find a subset of posts in your archive:
@@ -112,3 +116,15 @@ This is a personal, non-official project. I am not associated with the Mastodon 
 You can reach me via github or on Mastodon:  
 Github: https://github.com/s427  
 Mastodon: https://lou.lt/@s427
+
+## Version history
+
+- v. 1.2
+  - [NEW] support for multiple archive files. Notes:
+    - you can select multiple files from the open dialog;
+    - if one or several files are already loaded, you can drag and drop more files anywhere on the app window in order for MARL to load those new files and add them to the ones already loaded;
+    - for now the "Load new file" button still assumes you want to start over (blank slate); this will probably be changed in a future version.
+- v. 1.1
+  - [NEW] paging preferences (page size and posts order) are automatically saved to the browser and restored on app load if present
+  - various bug fixes and improvements
+- v. 1.0 - Initial release

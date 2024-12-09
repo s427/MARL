@@ -5,38 +5,44 @@ $hue: 30; // === 59.17 in oklch
 /* global background/text colors */
 /*********************************/
 
-$bg0: #fff; // -> post content
-$bg1: hsl($hue, 10%, 95%); // -> post
-$bg2: hsl($hue, 15%, 90%); // -> post attachment/meta/raw
-$bg3: hsl($hue, 17.5%, 87%); // -> posts header
-$bg4: hsl($hue, 20%, 84%); // -> filters/tags panels
+$bg0: #fff; // post content
+$bg1: hsl($hue, 10%, 95%); // post
+$bg2: hsl($hue, 12%, 90%); // post attachment/meta/raw
+$bg3: hsl($hue, 15%, 87%); // posts header
+$bg4: hsl($hue, 17.5%, 84%); // filters/tags panels
 
-$fg0: hsl($hue, 0%, 0%); // -> post content
-$fg1: hsl($hue, 10%, 20%); // -> body text; some SVG icons (panel close)
-$fg2: hsl($hue, 10%, 30%); // -> headings (h1, h2...)
+$fg0: #000; // post content
+$fg1: hsl($hue, 10%, 20%); // body text; some SVG icons (panel close)
+$fg2: hsl($hue, 10%, 30%); // headings (h1, h2...)
 
-$fg-inv: #fff; // -> misc highlighted text
+$fg-inv: #fff; // misc highlighted text
 
 /***************/
 /* actor panel */
 /***************/
 
-$actor-bg0: hsl($hue, 37.5%, 11%); // -> bookmarks
-$actor-bg1: hsl($hue, 32.5%, 15%); // -> favorites
-$actor-bg2: hsl($hue, 25%, 20%); // -> actor raw data
-$actor-bg3: hsl($hue, 25%, 25%); // -> actor panel
-$actor-bg4: hsl($hue, 22.5%, 40%); // -> actor summary
+$actor-bg0: hsl($hue, 37.5%, 11%); // bookmarks
+$actor-bg1: hsl($hue, 32.5%, 15%); // favorites
+$actor-bg2: hsl($hue, 25%, 20%); // actor raw data; tabs bg
+$actor-bg3: hsl($hue, 25%, 25%); // actor panel
+$actor-bg4: hsl($hue, 22.5%, 40%); // actor summary
 
 $actor-fg0: #fff;
-$actor-fg1: hsl($hue, 40%, 80%); // -> actor texts
+$actor-fg1: hsl($hue, 40%, 80%); // actor texts
+$actor-tabs-bg: hsl($hue, 12%, 17%);
 
-// OKLCH variants
-$actor-bg0-ok: oklch(11% 37.5% var(--actor-hue));
-$actor-bg1-ok: oklch(15% 32.5% var(--actor-hue));
-$actor-bg2-ok: oklch(20% 25% var(--actor-hue));
-$actor-bg3-ok: oklch(25% 25% var(--actor-hue));
-$actor-bg4-ok: oklch(40% 22.5% var(--actor-hue));
-$actor-fg1-ok: oklch(92% 10% var(--actor-hue));
+// OKLCH variants (multiple archives opened)
+$actor-bg0-ok: oklch(21% 18% var(--actor-hue)); // bookmarks; tabs bg
+$actor-bg1-ok: oklch(24% 16% var(--actor-hue)); // favorites
+$actor-bg2-ok: oklch(27% 14% var(--actor-hue)); // actor raw data
+$actor-bg3-ok: oklch(30% 12% var(--actor-hue)); // actor panel
+$actor-bg4-ok: oklch(40% 10% var(--actor-hue)); // actor summary
+$actor-fg1-ok: oklch(92% 8% var(--actor-hue)); // actor texts
+
+$actor-accent: hsl($hue, 75%, 50%);
+$actor-accent-ok: oklch(80% 25% var(--actor-hue));
+$actor-accent2-ok: oklch(60% 20% var(--actor-hue));
+// -> outline; color code on post
 
 /***************/
 /* mobile menu */
@@ -50,7 +56,7 @@ $menu-filter-active: hsl($hue, 75%, 50%); // accent-light2
 
 $menu-backdrop: rgba(0, 0, 0, 0.5);
 
-$panel-close: hsl($hue, 40%, 80%); // fg1
+$panel-close: hsl($hue, 10%, 20%); // fg1
 $panel-close-hover: hsl($hue, 75%, 38%); // accent-light
 
 /**********/
@@ -162,6 +168,16 @@ html {
   --actor-fg0: #{$actor-fg0};
   --actor-fg1: #{$actor-fg1};
   --actor-fg1-ok: #{$actor-fg1-ok};
+  --actor-tabs-bg: #{$actor-tabs-bg};
+  --actor-accent: #{$actor-accent};
+  --actor-accent-ok: #{$actor-accent-ok};
+  --actor-accent2-ok: #{$actor-accent2-ok};
 }
-
-$actor-accent-light-ok: oklch(80% 15% var(--actor-hue));
+.actors-tabs button {
+  --actor-accent-ok: #{$actor-accent-ok};
+  --actor-accent2-ok: #{$actor-accent2-ok};
+}
+.toot-content {
+  --actor-accent-ok: #{$actor-accent-ok};
+  --actor-accent2-ok: #{$actor-accent2-ok};
+}

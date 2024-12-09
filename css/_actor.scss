@@ -1,4 +1,16 @@
 .actor {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 2rem;
+    box-shadow: -1.5rem 0 2rem -2rem #000 inset;
+  }
+
   a {
     color: var(--actor-fg0);
   }
@@ -30,10 +42,11 @@
 }
 
 .actors-wrapper {
-  height: 100dvh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  background-color: var(--actor-tabs-bg);
 }
 
 .actor-panel {
@@ -281,48 +294,44 @@
 .multiple-actors {
   .actors-tabs {
     flex-grow: 0;
+    flex-shrink: 0;
+    align-self: flex-start;
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    padding: 1rem 1rem 0;
-    // background: var(--actor-bg0);
-    // background: var(--actor-bg0-ok);
-    background-color: hsl(var(--actor-hue), 50%, 80%);
-    background-color: var(--actor-bg3-ok);
+    padding: 0.75rem 1rem;
     overflow: hidden;
-    box-shadow: 0 -0.75rem 0.75rem -0.75rem rgba(0, 0, 0, 0.75) inset;
     user-select: none;
 
     button {
       all: unset;
-      padding: 0.35rem 0.7rem 0.3rem;
+      padding: 0.35rem 0.7rem 0.4rem;
       font-size: 0.85em;
       font-family: inherit;
-      border-radius: 0.25rem 0.25rem 0 0;
-      color: var(--fg1);
-      background: #fff; // ### VAR
+      border-radius: 0.25rem;
+      color: #fff;
+      background: var(--actor-accent2-ok, transparent);
       cursor: pointer;
-      opacity: 0.65;
-
+      opacity: 0.85;
       span {
         display: inline-block;
-        padding-bottom: 0.1rem;
-        border-bottom: 0.2rem solid transparent;
-        border-color: hsl(var(--actor-hue), 50%, 80%);
-        border-color: $actor-accent-light-ok;
-        // border-color: var(--actor-fg1-ok);
+        padding: 0 0 0.3rem;
+        border-bottom: 0.1rem solid transparent;
       }
 
       &:hover {
-        opacity: 0.85;
+        opacity: 1;
       }
       &[aria-selected="true"] {
         opacity: 1;
+        box-shadow: none;
+        span {
+          border-color: #fff;
+        }
       }
       &:focus-visible {
         outline: 2px solid hsl(var(--actor-hue), 50%, 80%);
-        outline: 2px solid $actor-accent-light-ok;
-        // outline: 2px solid var(--actor-fg1-ok);
+        outline: 2px solid var(--actor-accent-ok, var(--actor-accent));
         outline-offset: 2px;
       }
     }
@@ -330,38 +339,44 @@
 
   // color variations
 
+  .actor {
+    *:focus-visible {
+      outline-color: var(--actor-accent-ok, var(--accent-light));
+    }
+  }
+
   .actor summary svg {
-    fill: var(--actor-fg1-ok);
+    fill: var(--actor-fg1-ok, var(--actor-fg1));
   }
   .actor-panel {
-    color: var(--actor-fg1-ok);
-    background: var(--actor-bg3-ok);
+    color: var(--actor-fg1-ok, var(--actor-fg1));
+    background: var(--actor-bg3-ok, var(--actor-bg3));
   }
   .actor-summary {
-    background: var(--actor-bg4-ok);
+    background: var(--actor-bg4-ok, var(--actor-bg4));
     background: radial-gradient(
       circle at 200% 150%,
-      var(--actor-bg3-ok),
-      var(--actor-bg4-ok)
+      var(--actor-bg3-ok, var(--actor-bg3)),
+      var(--actor-bg4-ok, var(--actor-bg4))
     );
   }
   .actor-infos {
     dd {
-      border-left-color: var(--actor-bg4-ok);
+      border-left-color: var(--actor-bg4-ok, var(--actor-bg4));
     }
     @container (width < 340px) {
       dl {
-        border-bottom-color: var(--actor-bg4-ok);
+        border-bottom-color: var(--actor-bg4-ok, var(--actor-bg4));
       }
     }
   }
   .actor-raw {
-    background: var(--actor-bg2-ok);
+    background: var(--actor-bg2-ok, var(--actor-bg2));
   }
   .actor-likes-bookmarks {
-    background: var(--actor-bg0-ok);
+    background: var(--actor-bg0-ok, var(--actor-bg0));
   }
   .actor-likes {
-    background: var(--actor-bg1-ok);
+    background: var(--actor-bg1-ok, var(--actor-bg1));
   }
 }

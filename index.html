@@ -7,7 +7,7 @@
     <link rel="icon" href="data:," />
     <base target="_blank" />
 
-    <link rel="stylesheet" href="css/main.css?20241204" />
+    <link rel="stylesheet" href="css/main.css?20241209" />
     <script>
       const isFileProtocol = window.location.protocol === "file:";
       const scripts = [
@@ -228,63 +228,61 @@
                           x-text="$store.files.sources[source].actor.name"
                         ></span>
                       </button>
-                      <!-- :tabindex="source === $store.ui.actorPanel ? '0': '-1'" -->
                     </template>
                   </div>
                 </template>
+                <template x-if="$store.files.sources.length === 1">
+                  <span
+                    class="visually-hidden"
+                    id="actortab-0"
+                    x-text="$store.files.sources[0].actor.name"
+                  ></span>
+                </template>
 
-                <template x-for="actor in $store.files.actors">
+                <template x-for="source in $store.files.sources">
                   <div
                     class="actor-panel"
-                    :id="'actorpanel-' + actor.source"
+                    :id="'actorpanel-' + source.id"
                     role="tabpanel"
                     tabindex="0"
-                    :aria-labelledby="'actortab-' + actor.source"
-                    x-data="{a: $store.files.sources[actor.source].actor}"
-                    x-show="$store.ui.actorPanel === actor.source"
+                    :aria-labelledby="'actortab-' + source.id"
+                    x-data="{a: source.actor}"
+                    x-show="$store.ui.actorPanel === source.id"
                   >
                     <div class="actor-pretty">
                       <div class="actor-banner">
-                        <template
-                          x-if="$store.files.sources[actor.source].header.noImg"
-                        >
+                        <template x-if="source.header.noImg">
                           <img alt="header" src="img/no-header.png" />
                         </template>
-                        <template
-                          x-if="! $store.files.sources[actor.source].header.noImg"
-                        >
+                        <template x-if="! source.header.noImg">
                           <button
                             id="actor-header"
-                            @click="$store.lightbox.openProfileImg('header', 'actor-header', actor.source)"
+                            @click="$store.lightbox.openProfileImg('header', 'actor-header', source.id)"
                           >
                             <img
                               alt="header"
-                              :src="`data:${$store.files.sources[actor.source].header.type}; base64,${$store.files.sources[actor.source].header.content}`"
+                              :src="`data:${source.header.type}; base64,${source.header.content}`"
                             />
                           </button>
                         </template>
                       </div>
 
                       <div class="actor-id">
-                        <template
-                          x-if="$store.files.sources[actor.source].avatar.noImg"
-                        >
+                        <template x-if="source.avatar.noImg">
                           <div class="actor-avatar no-avatar">
                             <img :alt="a.name" src="img/no-avatar.png" />
                           </div>
                         </template>
-                        <template
-                          x-if="! $store.files.sources[actor.source].avatar.noImg"
-                        >
+                        <template x-if="! source.avatar.noImg">
                           <button
                             id="actor-avatar"
                             class="actor-avatar"
-                            @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar', actor.source)"
+                            @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar', source.id)"
                           >
                             <img
                               :alt="a.name"
                               class="actor-avatar"
-                              :src="`data:${$store.files.sources[actor.source].avatar.type}; base64,${$store.files.sources[actor.source].avatar.content}`"
+                              :src="`data:${source.avatar.type}; base64,${source.avatar.content}`"
                             />
                           </button>
                         </template>
@@ -317,7 +315,7 @@
                         <div class="total">
                           <span
                             class="count"
-                            x-text="formatNumber($store.files.sources[actor.source].outbox.totalItems)"
+                            x-text="formatNumber(source.outbox.totalItems)"
                           ></span>
                           <span class="label">posts</span>
                         </div>
@@ -325,14 +323,14 @@
                         <div class="archive">
                           <span
                             class="count"
-                            x-text="formatNumber($store.files.sources[actor.source].nbToots)"
+                            x-text="formatNumber(source.nbToots)"
                           ></span>
                           <span class="label">in archive</span>
                         </div>
 
                         <details
                           class="comment"
-                          x-show="$store.files.sources[actor.source].nbToots != $store.files.sources[actor.source].outbox.totalItems"
+                          x-show="source.nbToots != source.outbox.totalItems"
                         >
                           <summary>
                             <span class="summary-icon">
@@ -390,28 +388,22 @@
                             <h2 class="summary-label">
                               Favorites (<span
                                 class="count"
-                                x-text="$store.files.sources[actor.source].likes.length"
+                                x-text="source.likes.length"
                               ></span
                               >)
                             </h2>
                           </summary>
                           <div class="details-content">
-                            <template
-                              x-if="$store.files.sources[actor.source].likes.length"
-                            >
+                            <template x-if="source.likes.length">
                               <ul>
-                                <template
-                                  x-for="url in $store.files.sources[actor.source].likes"
-                                >
+                                <template x-for="url in source.likes">
                                   <li>
                                     <a :href="url" x-text="url"></a>
                                   </li>
                                 </template>
                               </ul>
                             </template>
-                            <template
-                              x-if="! $store.files.sources[actor.source].likes.length"
-                            >
+                            <template x-if="! source.likes.length">
                               <p class="no-content">... no favorites ...</p>
                             </template>
                           </div>
@@ -428,28 +420,22 @@
                             <h2 class="summary-label">
                               Bookmarks (<span
                                 class="count"
-                                x-text="$store.files.sources[actor.source].bookmarks.length"
+                                x-text="source.bookmarks.length"
                               ></span
                               >)
                             </h2>
                           </summary>
                           <div class="details-content">
-                            <template
-                              x-if="$store.files.sources[actor.source].bookmarks.length"
-                            >
+                            <template x-if="source.bookmarks.length">
                               <ul>
-                                <template
-                                  x-for="url in $store.files.sources[actor.source].bookmarks"
-                                >
+                                <template x-for="url in source.bookmarks">
                                   <li>
                                     <a :href="url" x-text="url"></a>
                                   </li>
                                 </template>
                               </ul>
                             </template>
-                            <template
-                              x-if="! $store.files.sources[actor.source].bookmarks.length"
-                            >
+                            <template x-if="! source.bookmarks.length">
                               <p class="no-content">... no bookmarks ...</p>
                             </template>
                           </div>
@@ -845,7 +831,10 @@
                 </div>
               </div>
 
-              <div class="toots-filters-group">
+              <div
+                class="toots-filters-group"
+                x-show="$store.files.toots.length"
+              >
                 <h3 class="toots-filters-group-title">Language</h3>
                 <template x-for="(nb, lang) in $store.files.languages">
                   <div
@@ -871,21 +860,20 @@
               <template x-if="$store.files.sources.length > 1">
                 <div class="toots-filters-group">
                   <h3 class="toots-filters-group-title">Author</h3>
-                  <template x-for="(actor, name) in $store.files.actors">
+                  <template x-for="source in $store.files.sources">
                     <div
                       class="toots-filter checkbox"
-                      :class="isFilterActive('actor_' + actor.source) ? 'active' : ''"
+                      :class="isFilterActive('actor_' + source.id) ? 'active' : ''"
                     >
-                      <label :for="'filter-actor-' + actor.source">
+                      <label :for="'filter-actor-' + source.id">
                         <input
-                          :id="'filter-actor-' + actor.source"
+                          :id="'filter-actor-' + source.id"
                           type="checkbox"
-                          x-model="$store.files.filters['actor_' + actor.source]"
+                          x-model="$store.files.filters['actor_' + source.id]"
                           @change="$store.files.setFilter()"
                         />
                         <span>
-                          <span x-text="name"></span>
-                          (<span x-text="actor.nb"></span>)
+                          <span x-text="source.actor.name"></span>
                         </span>
                       </label>
                     </div>
@@ -1291,10 +1279,16 @@
                             <use href="#json" />
                           </svg>
                         </span>
-                        <span class="summary-label">Raw data</span>
+                        <span class="summary-label" :id="'raw-' + toot._marl.id"
+                          >Raw data</span
+                        >
                       </summary>
                       <div class="details-content">
-                        <textarea x-text="formatJson(toot)" readonly></textarea>
+                        <textarea
+                          x-text="formatJson(toot)"
+                          :aria-labelledby="'raw-' + toot._marl.id"
+                          readonly
+                        ></textarea>
                       </div>
                     </details>
                   </div>
@@ -1692,6 +1686,6 @@
       </symbol>
     </svg>
 
-    <script src="js/main.js?20241204"></script>
+    <script src="js/main.js?20241209"></script>
   </body>
 </html>

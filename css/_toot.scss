@@ -100,7 +100,6 @@ $meta-visible: 100ch;
 
 .multiple-actors .toot-content {
   position: relative;
-  // overflow: hidden;
   padding-left: 1.6rem;
   &::before {
     content: "";
@@ -111,8 +110,8 @@ $meta-visible: 100ch;
     z-index: 1;
     width: 0.25rem;
     border-radius: 0.25rem;
-    background-color: hsl(var(--actor-hue), 50%, 80%);
-    background-color: $actor-accent-light-ok;
+    background-color: red;
+    background-color: var(--actor-accent-ok, transparent);
   }
 }
 

@@ -47,7 +47,6 @@ const filesStore = {
     this.loading = false;
     this.someFilesLoaded = false;
 
-    this.actors = {};
     this.languages = {};
     this.boostsAuthors = [];
 
@@ -416,13 +415,10 @@ const filesStore = {
         }
       }
 
-      for (const actor in this.actors) {
-        const source = this.actors[actor].source;
-        if (
-          f.hasOwnProperty("actor_" + source) &&
-          f["actor_" + source] === false
-        ) {
-          if (t._marl.source === source) {
+      for (const source of this.sources) {
+        const id = source.id;
+        if (f.hasOwnProperty("actor_" + id) && f["actor_" + id] === false) {
+          if (t._marl.source === id) {
             return false;
           }
         }
@@ -532,9 +528,6 @@ const filesStore = {
     if (this.sources.length === 0) {
       return false;
     }
-    // if (this.someFilesLoaded) {
-    //   return true;
-    // }
 
     let r = true;
     for (let i = 0; i < this.sources.length; i++) {
@@ -823,6 +816,15 @@ const uiStore = {
 
 // utils
 
+function resetStores() {
+  Alpine.store("files").resetState();
+  Alpine.store("lightbox").resetState();
+  Alpine.store("ui").resetState();
+
+  Alpine.store("userPrefs").load("sortAsc");
+  Alpine.store("userPrefs").load("pageSize");
+}
+
 function unZip(files) {
   const firstLoad = Alpine.store("files").sources.length === 0;
   if (firstLoad) {
@@ -849,6 +851,7 @@ function unZip(files) {
     let index = Alpine.store("files").sources.length;
 
     Alpine.store("files").sources[index] = {
+      id: index,
       fileInfos: {
         name: file.name,
         size: file.size,
@@ -884,15 +887,6 @@ function unZip(files) {
   }
 
   setHueForSources();
-}
-
-function resetStores() {
-  Alpine.store("files").resetState();
-  Alpine.store("lightbox").resetState();
-  Alpine.store("ui").resetState();
-
-  Alpine.store("userPrefs").load("sortAsc");
-  Alpine.store("userPrefs").load("pageSize");
 }
 
 function loadJsonFile(name, index) {
@@ -936,92 +930,88 @@ function loadJsonFile(name, index) {
 }
 
 function buildTootsInfos() {
-  let infos = Alpine.store("files").toots.reduce(
-    (accu, toot) => {
-      const name = formatAuthor(toot.actor, true).toLowerCase();
-      if (!accu.actors[name]) {
-        accu.actors[name] = {
-          nb: 1,
-          source: toot._marl.source,
-        };
-      } else {
-        accu.actors[name].nb++;
-      }
-
-      if (toot.type === "Create") {
-        const map = toot.object.contentMap;
-        for (let lang in map) {
-          if (!accu.langs[lang]) {
-            accu.langs[lang] = 1;
-          } else {
-            accu.langs[lang]++;
-          }
-        }
-      } else if (toot.type === "Announce") {
-        // since Mastodon doesn't allow (yet?) cross-origin requests to
-        // retrieve post data (for boosts), we try to at least extract the
-        // user names for all the boosts contained in the archive
-
-        // [ISSUE] "object" value is a string most of the times, but
-        // sometimes it's a complex object similar to type "Create"
-        if (typeof toot.object === "object" && toot.object !== null) {
-          // let's ignore this case for now...
-          // [TODO], but not clear how it should be handled
-        } else if (toot.object) {
-          // if it's not an object and it has a value, then it's simply a
-          // url (string) pointing to the original (boosted) post.
-          // [ISSUE] URL format not always consistent... (esp. in the case
-          // of non-Mastodon instances) - e.g:
-          // https://craftopi.art/objects/[...]
-          // https://firefish.city/notes/[...]
-          // https://bsky.brid.gy/convert/ap/at://did:plc:[...]/app.bsky.feed.post/[...]
-          // -> the user name is not always present in URL
-          const url = toot.object.split("/");
-          let name;
-          let user;
-          let domain;
-          if (url.length > 2) {
-            domain = url[2];
-
-            if (
-              url[0] === "https:" &&
-              url[3] === "users" &&
-              url[5] === "statuses"
-            ) {
-              // Mastodon URL format -> user name
-              name = url[4];
-              user = `https://${url[2]}/users/${url[4]}/`;
-            } else {
-              // other URL format -> domain name
-              name = `? ${url[2]}`;
-              user = `https://${url[2]}/`;
-            }
-
-            if (!accu.boosts[name]) {
-              accu.boosts[name] = {
-                nb: 1,
-                name: name,
-                url: user,
-                domain: domain,
-              };
-            } else {
-              accu.boosts[name].nb++;
-            }
-          }
-        }
-      }
-      return accu;
-    },
-    { langs: {}, actors: {}, boosts: {} }
-  );
-
+  let langs = {};
   let boosts = [];
-  for (var key in infos.boosts) {
-    boosts.push(infos.boosts[key]);
+
+  if (Alpine.store("files").toots.length > 0) {
+    let infos = Alpine.store("files").toots.reduce(
+      (accu, toot) => {
+        if (toot.type === "Create") {
+          const map = toot.object.contentMap;
+          for (let lang in map) {
+            if (!accu.langs[lang]) {
+              accu.langs[lang] = 1;
+            } else {
+              accu.langs[lang]++;
+            }
+          }
+        } else if (toot.type === "Announce") {
+          // since Mastodon doesn't allow (yet?) cross-origin requests to
+          // retrieve post data (for boosts), we try to at least extract the
+          // user names for all the boosts contained in the archive
+
+          // [ISSUE] "object" value is a string most of the times, but
+          // sometimes it's a complex object similar to type "Create"
+          if (typeof toot.object === "object" && toot.object !== null) {
+            // let's ignore this case for now...
+            // [TODO], but not clear how it should be handled
+          } else if (toot.object) {
+            // if it's not an object and it has a value, then it's simply a
+            // url (string) pointing to the original (boosted) post.
+            // [ISSUE] URL format not always consistent... (esp. in the case
+            // of non-Mastodon instances) - e.g:
+            // https://craftopi.art/objects/[...]
+            // https://firefish.city/notes/[...]
+            // https://bsky.brid.gy/convert/ap/at://did:plc:[...]/app.bsky.feed.post/[...]
+            // -> the user name is not always present in URL
+            const url = toot.object.split("/");
+            let name;
+            let user;
+            let domain;
+            if (url.length > 2) {
+              domain = url[2];
+
+              if (
+                url[0] === "https:" &&
+                url[3] === "users" &&
+                url[5] === "statuses"
+              ) {
+                // Mastodon URL format -> user name
+                name = url[4];
+                user = `https://${url[2]}/users/${url[4]}/`;
+              } else {
+                // other URL format -> domain name
+                name = `? ${url[2]}`;
+                user = `https://${url[2]}/`;
+              }
+
+              if (!accu.boosts[name]) {
+                accu.boosts[name] = {
+                  nb: 1,
+                  name: name,
+                  url: user,
+                  domain: domain,
+                };
+              } else {
+                accu.boosts[name].nb++;
+              }
+            }
+          }
+        }
+        return accu;
+      },
+      { langs: {}, boosts: {} }
+    );
+
+    langs = infos.langs;
+
+    boosts = [];
+    for (var key in infos.boosts) {
+      boosts.push(infos.boosts[key]);
+    }
   }
 
-  Alpine.store("files").actors = infos.actors;
-  Alpine.store("files").languages = infos.langs;
+  Alpine.store("files").languages = langs;
   Alpine.store("files").boostsAuthors = boosts;
 }
 
@@ -1030,10 +1020,8 @@ function buildDynamicFilters() {
     Alpine.store("files").filtersDefault["lang_" + lang] = true;
   }
 
-  for (const actor in Alpine.store("files").actors) {
-    Alpine.store("files").filtersDefault[
-      "actor_" + Alpine.store("files").actors[actor].source
-    ] = true;
+  for (const source of Alpine.store("files").sources) {
+    Alpine.store("files").filtersDefault["actor_" + source.id] = true;
   }
 
   Alpine.store("files").resetFilters(false);
@@ -1115,7 +1103,7 @@ function loadActorImages(index) {
 
 function setHueForSources() {
   const nbSources = Alpine.store("files").sources.length;
-  const hueStart = Math.round(Math.random() * 360);
+  const hueStart = Math.round(Math.random() * 360); // MARL accent: 59.17
   const hueSpacing = Math.round(360 / nbSources);
 
   for (let i = 0; i < nbSources; i++) {

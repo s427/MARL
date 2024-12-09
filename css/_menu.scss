@@ -153,6 +153,10 @@ $panel-width: 400px;
     width: min(#{$panel-width}, calc(100dvw - #{$menu-width}));
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 
+    &.actor::before {
+      content: none;
+    }
+
     @media (prefers-reduced-motion: no-preference) {
       transition: left 0.2s ease-out;
       transition-property: left, box-shadow;
@@ -178,6 +182,10 @@ $panel-width: 400px;
 
     @media (forced-colors: active) {
       color: buttonText;
+    }
+
+    .actor & {
+      color: #fff;
     }
   }
 
