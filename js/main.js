@@ -1064,7 +1064,12 @@ function loadActorImages(index) {
   const actor = Alpine.store("files").sources[index].actor;
   const content = Alpine.store("files").sources[index]._raw;
 
-  if (actor.icon && actor.icon.type === "Image" && actor.icon.url) {
+  if (
+    actor.icon &&
+    actor.icon.type === "Image" &&
+    actor.icon.url &&
+    content[actor.icon.url]
+  ) {
     const image = actor.icon;
     content[image.url].async("base64").then(function (content) {
       Alpine.store("files").sources[index].avatar = {
@@ -1079,7 +1084,12 @@ function loadActorImages(index) {
     Alpine.store("files").sources[index].loaded.avatar = true;
   }
 
-  if (actor.image && actor.image.type === "Image" && actor.image.url) {
+  if (
+    actor.image &&
+    actor.image.type === "Image" &&
+    actor.image.url &&
+    content[actor.image.url]
+  ) {
     const image = actor.image;
     content[image.url].async("base64").then(function (content) {
       Alpine.store("files").sources[index].header = {
@@ -1150,8 +1160,18 @@ function loadAttachedMedia(att, index) {
   ) {
     const data = Alpine.store("files").sources[index]._raw;
     let url = att.url;
-    if (url.indexOf("/") === 0) {
-      url = url.slice(1);
+    // ?! some instances seem to add their own name in front of the path,
+    // resulting in an invalid path with relation to the archive
+    // structure (e.g. "/framapiaf/media_attachments/...", but in the
+    // archive there is only a folder "/media_attachments")
+    // => So we remove everything that comes before "media_attachments/",
+    // hoping it doesn't break something else... :/
+    const prefix = url.indexOf("media_attachments/");
+    if (prefix > 0) {
+      url = url.slice(prefix);
+    }
+    if (!data[url]) {
+      return;
     }
     data[url].async("base64").then((content) => {
       Alpine.store("files").sources[index][att.url] = {
