@@ -214,6 +214,9 @@
     text-align: center;
     border-radius: 0.5rem;
     background-color: rgba(0, 0, 0, 0.2);
+    @media (forced-colors: active) {
+      border: 1px dotted CanvasText;
+    }
   }
   .comment {
     flex: 0 0 100%;
@@ -332,6 +335,16 @@
         outline: 2px solid hsl(var(--actor-hue), 50%, 80%);
         outline: 2px solid var(--actor-accent-ok, var(--actor-accent));
         outline-offset: 2px;
+      }
+
+      @media (forced-colors: active) {
+        border: 1px solid ButtonText;
+        span {
+          border-bottom-color: Canvas;
+        }
+        &[aria-selected="true"] span {
+          border-bottom-color: Highlight;
+        }
       }
     }
   }
