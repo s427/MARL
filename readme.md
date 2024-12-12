@@ -19,7 +19,7 @@ Alternatively, you can download this project from its [project page](https://git
 
 ## Screenshot
 
-<img src="screenshot.png" alt="app screenshot">
+<img src="screenshot-multiple-archives.png" alt="app screenshot with multiple files loaded">
 
 ## Features
 
