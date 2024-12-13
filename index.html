@@ -854,21 +854,21 @@
                 x-show="$store.files.toots.length"
               >
                 <h3 class="toots-filters-group-title">Language</h3>
-                <template x-for="(nb, lang) in $store.files.languages">
+                <template x-for="lang in $store.files.sortedLanguages">
                   <div
                     class="toots-filter checkbox"
-                    :class="isFilterActive('lang_' + lang) ? 'active' : ''"
+                    :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''"
                   >
-                    <label :for="'filter-lang-' + lang">
+                    <label :for="'filter-lang-' + lang[0]">
                       <input
-                        :id="'filter-lang-' + lang"
+                        :id="'filter-lang-' + lang[0]"
                         type="checkbox"
-                        x-model="$store.files.filters['lang_' + lang]"
+                        x-model="$store.files.filters['lang_' + lang[0]]"
                         @change="$store.files.setFilter()"
                       />
                       <span>
-                        <span x-text="lang"></span>
-                        (<span x-text="nb"></span>)
+                        <span x-text="lang[0]"></span>
+                        (<span x-text="lang[1]"></span>)
                       </span>
                     </label>
                   </div>
@@ -1704,6 +1704,6 @@
       </symbol>
     </svg>
 
-    <script src="js/main.js?20241212"></script>
+    <script src="js/main.js?20241213"></script>
   </body>
 </html>

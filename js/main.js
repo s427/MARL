@@ -414,11 +414,7 @@ const filesStore = {
 
       for (const lang in this.languages) {
         if (f.hasOwnProperty("lang_" + lang) && f["lang_" + lang] === false) {
-          if (t.type === "Create") {
-            if (t.object.contentMap.hasOwnProperty(lang)) {
-              return false;
-            }
-          } else {
+          if (t._marl.langs.includes(lang) || t._marl.langs.length === 0) {
             return false;
           }
         }
@@ -531,6 +527,26 @@ const filesStore = {
       }
     });
     return r;
+  },
+
+  get sortedLanguages() {
+    let langs = [];
+    for (const lang in this.languages) {
+      langs.push([lang, this.languages[lang]]);
+    }
+    langs.sort((a, b) => {
+      if (a[0] === "undefined") {
+        return 1;
+      }
+      if (b[0] === "undefined") {
+        return -1;
+      }
+      if (a[1] === b[1]) {
+        return a[0].localeCompare(b[0]);
+      }
+      return b[1] - a[1];
+    });
+    return langs;
   },
 
   get appReady() {
@@ -947,16 +963,16 @@ function buildTootsInfos() {
   if (Alpine.store("files").toots.length > 0) {
     let infos = Alpine.store("files").toots.reduce(
       (accu, toot) => {
-        if (toot.type === "Create") {
-          const map = toot.object.contentMap;
-          for (let lang in map) {
-            if (!accu.langs[lang]) {
-              accu.langs[lang] = 1;
-            } else {
-              accu.langs[lang]++;
-            }
+        for (let lang in toot._marl.langs) {
+          const l = toot._marl.langs[lang];
+          if (!accu.langs[l]) {
+            accu.langs[l] = 1;
+          } else {
+            accu.langs[l]++;
           }
-        } else if (toot.type === "Announce") {
+        }
+
+        if (toot.type === "Announce") {
           // since Mastodon doesn't allow (yet?) cross-origin requests to
           // retrieve post data (for boosts), we try to at least extract the
           // user names for all the boosts contained in the archive
@@ -1039,7 +1055,9 @@ function buildDynamicFilters() {
 }
 
 function preprocessToots(t, index) {
+  // build the '_marl' prop for each toot
   let marl = {
+    langs: [],
     source: index,
   };
 
@@ -1069,13 +1087,24 @@ function preprocessToots(t, index) {
   } else {
     Alpine.store("files").toc.push(t.id);
   }
+
+  if (t.type === "Create") {
+    if (
+      typeof t.object === "object" &&
+      t.object !== null &&
+      t.object.contentMap
+    ) {
       let langs = [];
       for (let lang in t.object.contentMap) {
         langs.push(lang);
       }
       marl.langs = langs;
+    } else {
+      marl.langs = ["undefined"];
     }
+  }
 
+  if (typeof t.object === "object" && t.object !== null) {
     if (t.object.content) {
       const content = t.object.content.toLowerCase();
       marl.textContent = stripHTML(content);
