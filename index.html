@@ -547,6 +547,9 @@
                     />
                   </div>
                 </div>
+              </div>
+
+              <div class="toots-filters-group">
                 <div
                   class="toots-filter checkbox sep-above"
                   :class="isFilterActive('isEdited') ? 'active' : ''"
@@ -559,6 +562,21 @@
                       @change.debounce="$store.files.setFilter()"
                     />
                     <span>Has been edited</span>
+                  </label>
+                </div>
+                <div
+                  x-show="$store.files.duplicates"
+                  class="toots-filter checkbox"
+                  :class="isFilterActive('isDuplicate') ? 'active' : ''"
+                >
+                  <label for="filter-is-duplicate">
+                    <input
+                      id="filter-is-duplicate"
+                      type="checkbox"
+                      x-model.debounce="$store.files.filters.isDuplicate"
+                      @change.debounce="$store.files.setFilter()"
+                    />
+                    <span>Non-exact duplicates</span>
                   </label>
                 </div>
               </div>

@@ -39,6 +39,8 @@ const filesStore = {
   resetState() {
     this.sources = [];
     this.toots = [];
+    this.toc = [];
+    this.duplicates = false;
 
     this.sortAsc = true; // -> userPrefs
     this.pageSize = 10; // -> userPrefs
@@ -58,6 +60,7 @@ const filesStore = {
       externalLink: "",
       summary: "",
       isEdited: false,
+      isDuplicate: false,
       noStartingAt: false,
       hasExternalLink: false,
       hasHashtags: false,
@@ -230,6 +233,12 @@ const filesStore = {
             t.object.updated
           )
         ) {
+          return false;
+        }
+      }
+
+      if (f.isDuplicate) {
+        if (!t._marl.duplicate) {
           return false;
         }
       }
@@ -907,8 +916,16 @@ function loadJsonFile(name, index) {
 
     if (name === "outbox") {
       let data = JSON.parse(txt);
-      let toots = data.orderedItems.map((t) => preprocessToots(t, index));
-      Alpine.store("files").toots = Alpine.store("files").toots.concat(toots); // ### duplicate toots?
+
+      let toots = data.orderedItems.reduce((accu, t) => {
+        let t2 = preprocessToots(t, index);
+        if (t2) {
+          accu.push(t2);
+        }
+        return accu;
+      }, []);
+
+      Alpine.store("files").toots = Alpine.store("files").toots.concat(toots);
       Alpine.store("files").sources[index].nbToots = toots.length;
       delete data.orderedItems;
       Alpine.store("files").sources[index].outbox = data;
@@ -1026,8 +1043,32 @@ function preprocessToots(t, index) {
     source: index,
   };
 
-  if (typeof t.object === "object" && t.object !== null) {
-    if (t.object.contentMap) {
+  // check for duplicates (in case of multiple archive files)
+  if (Alpine.store("files").toc.includes(t.id)) {
+    const alts = Alpine.store("files").toots.filter((t2) => t2.id === t.id);
+
+    let identical = false;
+    const flat1 = JSON.stringify(t);
+
+    alts.forEach((alt) => {
+      let alt2 = JSON.parse(JSON.stringify(alt));
+      delete alt2._marl;
+      const flat2 = JSON.stringify(alt2);
+
+      if (flat1 === flat2) {
+        identical = true;
+      } else {
+        alt._marl.duplicate = true;
+        marl.duplicate = true;
+        Alpine.store("files").duplicates = true;
+      }
+    });
+    if (identical) {
+      return false;
+    }
+  } else {
+    Alpine.store("files").toc.push(t.id);
+  }
       let langs = [];
       for (let lang in t.object.contentMap) {
         langs.push(lang);
