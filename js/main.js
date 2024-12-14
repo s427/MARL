@@ -1366,6 +1366,26 @@ function formatNumber(nb) {
   return nb.toLocaleString();
 }
 
+function formatLikesBookmarks(url) {
+  const u = url.split("/");
+  u.splice(0, 2);
+
+  // 0 [domain]
+  // 1 "users"
+  // 2 [username]
+  // 3 "statuses"
+  // 4 [post id]
+
+  let text = `<span class="url-instance">${u[0]}</span>`;
+  if (u[1] === "users" && u[3] === "statuses") {
+    text += `<span class="url-actor">${u[2]}</span><span class="url-post-id">${u[4]}</span>`;
+  } else {
+    u.splice(0, 1);
+    text += `<span class="url-post-id">${u.join("/")}</span>`;
+  }
+  return text;
+}
+
 function stripHTML(str) {
   let doc = new DOMParser().parseFromString(str, "text/html");
   return doc.body.textContent || "";

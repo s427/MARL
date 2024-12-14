@@ -251,7 +251,7 @@
 
 .actor-likes-bookmarks {
   background: var(--actor-bg0);
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 
   h2 {
     display: inline;
@@ -261,19 +261,41 @@
 
   ul {
     font-size: 0.9em;
-    padding: 0 1rem 2rem 2.05rem;
+    padding: 0 1rem 2rem;
   }
   li {
-    padding: 0.25rem 0.75rem;
+    margin: 0 -0.25rem;
+    padding: 0.25rem 0;
     list-style: none;
   }
   a {
-    display: block;
+    display: inline-block;
     padding: 0.25rem;
     line-height: 1.1;
     text-decoration: none;
     &:hover {
       text-decoration: underline;
+    }
+
+    .url-instance {
+      padding-right: 1ch;
+      color: var(--actor-fg1);
+      &::after {
+        padding-left: 1ch;
+        content: "»";
+      }
+    }
+    .url-actor {
+      padding-right: 1ch;
+      color: var(--actor-fg0);
+      font-weight: bold;
+      &::after {
+        padding-left: 1ch;
+        content: "»";
+      }
+    }
+    .url-post-id {
+      color: var(--actor-fg1);
     }
   }
 
@@ -390,5 +412,12 @@
   }
   .actor-likes {
     background: var(--actor-bg1-ok, var(--actor-bg1));
+  }
+
+  .actor-likes-bookmarks a {
+    .url-instance,
+    .url-post-id {
+      color: var(--actor-fg1-ok, var(--actor-fg1));
+    }
   }
 }

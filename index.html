@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:," />
     <base target="_blank" />
-    <link rel="stylesheet" href="css/main.css?20241209" />
+    <link rel="stylesheet" href="css/main.css?20241214" />
   </head>
 
   <body>
@@ -365,7 +365,10 @@
                               <ul>
                                 <template x-for="url in source.likes">
                                   <li>
-                                    <a :href="url" x-text="url"></a>
+                                    <a
+                                      :href="url"
+                                      x-html="formatLikesBookmarks(url)"
+                                    ></a>
                                   </li>
                                 </template>
                               </ul>
@@ -397,7 +400,10 @@
                               <ul>
                                 <template x-for="url in source.bookmarks">
                                   <li>
-                                    <a :href="url" x-text="url"></a>
+                                    <a
+                                      :href="url"
+                                      x-html="formatLikesBookmarks(url)"
+                                    ></a>
                                   </li>
                                 </template>
                               </ul>
@@ -1671,6 +1677,6 @@
       </symbol>
     </svg>
 
-    <script src="js/main.js?20241214"></script>
+    <script src="js/main.js?20241215"></script>
   </body>
 </html>
