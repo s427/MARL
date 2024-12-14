@@ -6,40 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:," />
     <base target="_blank" />
-
     <link rel="stylesheet" href="css/main.css?20241209" />
-    <script>
-      const isFileProtocol = window.location.protocol === "file:";
-      const scripts = [
-        {
-          src: "js/jszip.min.js",
-          integrity:
-            "sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==",
-          crossorigin: "anonymous",
-          defer: false,
-        },
-        {
-          src: "js/alpinejs.min.js",
-          integrity:
-            "sha512-FUaEyIgi9bspXaH6hUadCwBLxKwdH7CW24riiOqA5p8hTNR/RCLv9UpAILKwqs2AN5WtKB52CqbiePBei3qjKg==",
-          crossorigin: "anonymous",
-          defer: true,
-        },
-      ];
-
-      scripts.forEach(({ src, integrity, crossorigin, defer }) => {
-        const script = document.createElement("script");
-        script.src = src;
-        if (!isFileProtocol) {
-          script.integrity = integrity;
-          script.crossOrigin = crossorigin;
-        }
-        if (defer) {
-          script.defer = true;
-        }
-        document.head.appendChild(script);
-      });
-    </script>
   </head>
 
   <body>
@@ -1704,6 +1671,6 @@
       </symbol>
     </svg>
 
-    <script src="js/main.js?20241213"></script>
+    <script src="js/main.js?20241214"></script>
   </body>
 </html>
