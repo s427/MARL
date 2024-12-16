@@ -867,58 +867,70 @@ function unZip(files) {
       continue;
     }
 
-    let index = Alpine.store("files").sources.length;
+    JSZip.loadAsync(file).then(
+      (content) => {
+        const index = Alpine.store("files").sources.length;
+        const fileInfos = {
+          name: file.name,
+          size: file.size,
+          lastModified: file.lastModified,
+        };
 
-    Alpine.store("files").sources[index] = {
-      id: index,
-      fileInfos: {
-        name: file.name,
-        size: file.size,
-        lastModified: file.lastModified,
+        Alpine.store("files").sources[index] = {
+          id: index,
+          fileInfos: {
+            name: file.name,
+            size: file.size,
+            lastModified: file.lastModified,
+          },
+          nbToots: 0,
+
+          actor: {},
+          outbox: {},
+          likes: [],
+          bookmarks: [],
+          avatar: {},
+          header: {},
+
+          loaded: {
+            actor: false,
+            avatar: false,
+            header: false,
+            outbox: false,
+            likes: false,
+            bookmarks: false,
+          },
+        };
+
+        Alpine.store("files").sources[index]._raw = content.files;
+
+        loadJsonFile("actor", index, fileInfos);
+        loadJsonFile("outbox", index, fileInfos);
+        loadJsonFile("likes", index, fileInfos);
+        loadJsonFile("bookmarks", index, fileInfos);
       },
-      nbToots: 0,
-
-      actor: {},
-      outbox: {},
-      likes: [],
-      bookmarks: [],
-      avatar: {},
-      header: {},
-
-      loaded: {
-        actor: false,
-        avatar: false,
-        header: false,
-        outbox: false,
-        likes: false,
-        bookmarks: false,
-      },
-    };
-
-    JSZip.loadAsync(file).then(function (content) {
-      Alpine.store("files").sources[index]._raw = content.files;
-
-      loadJsonFile("actor", index);
-      loadJsonFile("outbox", index);
-      loadJsonFile("likes", index);
-      loadJsonFile("bookmarks", index);
-    });
+      (error) => {
+        console.error(`Error loading ${file.name}:`, error.message);
+      }
+    );
   }
-
-  setHueForSources();
 }
 
-function loadJsonFile(name, index) {
+function loadJsonFile(name, index, fileInfos) {
   const content = Alpine.store("files").sources[index]._raw;
 
   if (content[name + ".json"] === undefined) {
     if (name === "likes" || name === "bookmarks") {
       // we can still run the app without those files
-      console.warn(`File ${name}.json not found in archive.`);
+      console.warn(
+        `${fileInfos.name}: File ${name}.json not found in archive.`
+      );
       Alpine.store("files").sources[index].loaded[name] = true;
     } else {
       // this should NOT happen and will prevent the app from running
-      console.error(`File ${name}.json not found in archive.`);
+      console.error(
+        `${fileInfos.name}: File ${name}.json not found in archive.`
+      );
     }
     return;
   }
@@ -1190,6 +1202,7 @@ function checkAppReady(ok) {
     buildTootsInfos();
     buildDynamicFilters();
     cleanUpRaw();
+    setHueForSources();
     document.getElementById("main-section").focus();
     Alpine.store("ui").checkMenuState();
     Alpine.store("files").sortToots();
