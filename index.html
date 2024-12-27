@@ -21,11 +21,10 @@
       :class="$store.ui.appClasses"
       x-init="$watch('$store.files.appReady', value => checkAppReady(value))"
     >
-      <template x-if="!$store.files.appReady && !$store.files.someFilesLoaded">
-        <main
-          class="welcome"
-          :class="$store.files.loading ? 'file-loading' : ''"
-        >
+      <template
+        x-if="!$store.files.appReady && !$store.files.someFilesLoaded && !$store.files.loading"
+      >
+        <main class="welcome">
           <div class="intro">
             <h1>
               Welcome to MARL
@@ -59,13 +58,8 @@
               type="file"
               accept=".zip"
               multiple
-              x-show="!$store.files.loading"
               @change="unZip(Object.values($event.target.files))"
             />
-
-            <div class="file-loader loading" x-show="$store.files.loading">
-              <span>... Loading ...</span>
-            </div>
           </div>
           <div class="about">
             <a href="https://github.com/s427/MARL">Project page (github)</a>
@@ -73,11 +67,14 @@
         </main>
       </template>
 
-      <template x-if="!$store.files.appReady && $store.files.someFilesLoaded">
+      <template
+        x-if="(!$store.files.appReady && $store.files.someFilesLoaded) || $store.files.loading"
+      >
         <main class="welcome loading-more">
           <div class="intro">
             <div class="file-loader loading">
-              <span>... Loading ...</span>
+              <div>... Loading ...</div>
+              <div class="filename" x-text="$store.files.loadingName"></div>
             </div>
           </div>
         </main>
@@ -332,12 +329,18 @@
                                 <use href="#json" />
                               </svg>
                             </span>
-                            <span class="summary-label"
+                            <span
+                              class="summary-label"
+                              :id="source + 'raw-data-label'"
                               >Raw data <em>(actor.json)</em></span
                             >
                           </summary>
                           <div class="details-content">
-                            <pre x-text="formatJson(await a)"></pre>
+                            <textarea
+                              x-text="formatJson(await a)"
+                              :aria-labelledby="source + 'raw-data-label'"
+                              readonly
+                            ></textarea>
                           </div>
                         </details>
                       </div>
