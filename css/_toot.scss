@@ -37,13 +37,13 @@ $meta-visible: 100ch;
 .toot-summary {
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
-  color: var(--fg-inv);
+  color: var(--stripe-fg);
   background: repeating-linear-gradient(
     45deg,
-    var(--accent-dark),
-    var(--accent-dark) 10px,
-    var(--accent) 10px,
-    var(--accent) 20px
+    var(--stripe1),
+    var(--stripe1) 10px,
+    var(--stripe2) 10px,
+    var(--stripe2) 20px
   );
   @include box-shadow-inner();
   border-radius: 0.5rem;
@@ -70,7 +70,7 @@ $meta-visible: 100ch;
     position: relative;
     overflow-wrap: break-word;
     background: radial-gradient(circle at 100% 100%, var(--bg2), var(--bg0));
-    &::before {
+    &::after {
       content: "";
       position: absolute;
       left: 0;
@@ -93,25 +93,27 @@ $meta-visible: 100ch;
   }
 
   .toot-visibility-mentioned & {
-    background-color: var(--accent-light-bg);
-    border: 2px dashed var(--accent-light2);
+    background-color: var(--private-post-bg);
+    border: 2px dashed var(--private-post-border);
   }
 }
 
-.multiple-actors .toot-content {
-  position: relative;
-  padding-left: 1.6rem;
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0.35rem;
-    top: 0.35rem;
-    bottom: 0.35rem;
-    z-index: 1;
-    width: 0.25rem;
-    border-radius: 0.25rem;
-    background-color: red;
-    background-color: var(--actor-accent-ok, transparent);
+@media (forced-colors: none) {
+  .multiple-actors .toot-content {
+    position: relative;
+    padding-left: 1.6rem;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0.35rem;
+      top: 0.35rem;
+      bottom: 0.35rem;
+      z-index: 1;
+      width: 0.25rem;
+      border-radius: 0.25rem;
+      background-color: red;
+      background-color: var(--actor-accent-ok, transparent);
+    }
   }
 }
 
@@ -203,7 +205,7 @@ $meta-visible: 100ch;
     padding: 0 1rem;
   }
 
-  .no-alt-text .att-img-wrapper {
+  &.no-alt-text .att-img-wrapper {
     position: relative;
     &::before {
       content: "";
@@ -334,7 +336,6 @@ $meta-visible: 100ch;
   margin: 0 1rem;
   padding: 1rem;
   font-size: 0.8em;
-  opacity: 0.8;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -430,6 +431,7 @@ $meta-visible: 100ch;
 .toot-visibility-mentioned .toot-infos .visibility {
   background-image: url("../svg/dark/visibility-mentioned.svg");
 }
+
 .toot-infos .link a {
   padding-left: 0;
   padding-right: 1.6em;
@@ -437,7 +439,7 @@ $meta-visible: 100ch;
   background-image: url("../svg/dark/open-in-new.svg");
   @media (forced-colors: active) {
     padding-right: 0;
-    background: none;
+    background: none !important;
   }
 }
 
@@ -465,6 +467,9 @@ $meta-visible: 100ch;
   }
   .summary-icon {
     display: flex;
+    svg {
+      fill: currentColor;
+    }
   }
 
   details[open] {
@@ -477,7 +482,7 @@ $meta-visible: 100ch;
 
     summary {
       opacity: 1;
-      background-color: transparent;
+      background-color: transparent !important;
       box-shadow: none;
     }
   }
@@ -494,5 +499,161 @@ $meta-visible: 100ch;
   background: var(--bg1);
   p {
     margin: 1em 0;
+  }
+}
+
+/********************/
+/* THEME VARIATIONS */
+/********************/
+
+// light
+
+@media (prefers-color-scheme: light) {
+  .toot-meta .toot-people li a {
+    background-image: url("../svg/dark/person.svg");
+  }
+  .toot-meta .toot-hashtags li a {
+    background-image: url("../svg/dark/hashtag.svg");
+  }
+  .toot-meta .toot-links li a {
+    background-image: url("../svg/dark/link.svg");
+  }
+  .toot-infos .published {
+    background-image: url("../svg/dark/calendar.svg");
+  }
+  .toot-type-post .toot-infos .type {
+    background-image: url("../svg/dark/type-post.svg");
+  }
+  .toot-type-boost .toot-infos .type {
+    background-image: url("../svg/dark/type-boost.svg");
+  }
+  .toot-visibility-public .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-public.svg");
+  }
+  .toot-visibility-unlisted .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-unlisted.svg");
+  }
+  .toot-visibility-followers .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-followers.svg");
+  }
+  .toot-visibility-mentioned .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-mentioned.svg");
+  }
+  .toot-infos .link a {
+    background-image: url("../svg/dark/open-in-new.svg");
+  }
+}
+html.light {
+  .toot-meta .toot-people li a {
+    background-image: url("../svg/dark/person.svg");
+  }
+  .toot-meta .toot-hashtags li a {
+    background-image: url("../svg/dark/hashtag.svg");
+  }
+  .toot-meta .toot-links li a {
+    background-image: url("../svg/dark/link.svg");
+  }
+  .toot-infos .published {
+    background-image: url("../svg/dark/calendar.svg");
+  }
+  .toot-type-post .toot-infos .type {
+    background-image: url("../svg/dark/type-post.svg");
+  }
+  .toot-type-boost .toot-infos .type {
+    background-image: url("../svg/dark/type-boost.svg");
+  }
+  .toot-visibility-public .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-public.svg");
+  }
+  .toot-visibility-unlisted .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-unlisted.svg");
+  }
+  .toot-visibility-followers .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-followers.svg");
+  }
+  .toot-visibility-mentioned .toot-infos .visibility {
+    background-image: url("../svg/dark/visibility-mentioned.svg");
+  }
+  .toot-infos .link a {
+    background-image: url("../svg/dark/open-in-new.svg");
+  }
+}
+
+// dark
+
+@media (prefers-color-scheme: dark) {
+  .toot-type-boost .toot-content::after {
+    opacity: 0.25;
+  }
+  .toot-meta .toot-people li a {
+    background-image: url("../svg/light/person.svg");
+  }
+  .toot-meta .toot-hashtags li a {
+    background-image: url("../svg/light/hashtag.svg");
+  }
+  .toot-meta .toot-links li a {
+    background-image: url("../svg/light/link.svg");
+  }
+  .toot-infos .published {
+    background-image: url("../svg/light/calendar.svg");
+  }
+  .toot-type-post .toot-infos .type {
+    background-image: url("../svg/light/type-post.svg");
+  }
+  .toot-type-boost .toot-infos .type {
+    background-image: url("../svg/light/type-boost.svg");
+  }
+  .toot-visibility-public .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-public.svg");
+  }
+  .toot-visibility-unlisted .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-unlisted.svg");
+  }
+  .toot-visibility-followers .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-followers.svg");
+  }
+  .toot-visibility-mentioned .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-mentioned.svg");
+  }
+  .toot-infos .link a {
+    background-image: url("../svg/light/open-in-new.svg");
+  }
+}
+html.dark {
+  .toot-type-boost .toot-content::after {
+    opacity: 0.25;
+  }
+  .toot-meta .toot-people li a {
+    background-image: url("../svg/light/person.svg");
+  }
+  .toot-meta .toot-hashtags li a {
+    background-image: url("../svg/light/hashtag.svg");
+  }
+  .toot-meta .toot-links li a {
+    background-image: url("../svg/light/link.svg");
+  }
+  .toot-infos .published {
+    background-image: url("../svg/light/calendar.svg");
+  }
+  .toot-type-post .toot-infos .type {
+    background-image: url("../svg/light/type-post.svg");
+  }
+  .toot-type-boost .toot-infos .type {
+    background-image: url("../svg/light/type-boost.svg");
+  }
+  .toot-visibility-public .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-public.svg");
+  }
+  .toot-visibility-unlisted .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-unlisted.svg");
+  }
+  .toot-visibility-followers .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-followers.svg");
+  }
+  .toot-visibility-mentioned .toot-infos .visibility {
+    background-image: url("../svg/light/visibility-mentioned.svg");
+  }
+  .toot-infos .link a {
+    background-image: url("../svg/light/open-in-new.svg");
   }
 }

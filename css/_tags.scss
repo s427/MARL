@@ -123,3 +123,33 @@ $display-wide: 340px;
   padding-top: 0.5rem;
   padding-bottom: 2rem;
 }
+
+/********************/
+/* THEME VARIATIONS */
+/********************/
+
+// light
+
+@media (prefers-color-scheme: light) {
+  .tags-group .active button div {
+    background-color: var(--accent);
+  }
+}
+html.light {
+  .tags-group .active button div {
+    background-color: var(--accent);
+  }
+}
+
+// dark
+
+@media (prefers-color-scheme: dark) {
+  .tags-group .active button div {
+    background-color: var(--accent-light);
+  }
+}
+html.dark {
+  .tags-group .active button div {
+    background-color: var(--accent-light);
+  }
+}

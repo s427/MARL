@@ -116,3 +116,77 @@
     }
   }
 }
+
+/********************/
+/* THEME VARIATIONS */
+/********************/
+
+// light
+
+@media (prefers-color-scheme: light) {
+  .toots-filter.checkbox label {
+    background-image: url("../svg/dark/checkbox-unchecked.svg");
+  }
+  .toots-filter.checkbox label:has(input:checked) {
+    background-image: url("../svg/dark/checkbox-checked.svg");
+  }
+  .toots-filter:hover label,
+  .toots-filter:focus-visible label,
+  .toots-filter:focus-within label {
+    background-color: rgba(255, 255, 255, 0.35);
+  }
+  .toots-filter.active label {
+    background-color: var(--accent);
+  }
+}
+html.light {
+  .toots-filter.checkbox label {
+    background-image: url("../svg/dark/checkbox-unchecked.svg");
+  }
+  .toots-filter.checkbox label:has(input:checked) {
+    background-image: url("../svg/dark/checkbox-checked.svg");
+  }
+  .toots-filter:hover label,
+  .toots-filter:focus-visible label,
+  .toots-filter:focus-within label {
+    background-color: rgba(255, 255, 255, 0.35);
+  }
+  .toots-filter.active label {
+    background-color: var(--accent);
+  }
+}
+
+// dark
+
+@media (prefers-color-scheme: dark) {
+  .toots-filter.checkbox label {
+    background-image: url("../svg/light/checkbox-unchecked.svg");
+  }
+  .toots-filter.checkbox label:has(input:checked) {
+    background-image: url("../svg/light/checkbox-checked.svg");
+  }
+  .toots-filter:hover label,
+  .toots-filter:focus-visible label,
+  .toots-filter:focus-within label {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .toots-filter.active label {
+    background-color: var(--accent-light);
+  }
+}
+html.dark {
+  .toots-filter.checkbox label {
+    background-image: url("../svg/light/checkbox-unchecked.svg");
+  }
+  .toots-filter.checkbox label:has(input:checked) {
+    background-image: url("../svg/light/checkbox-checked.svg");
+  }
+  .toots-filter:hover label,
+  .toots-filter:focus-visible label,
+  .toots-filter:focus-within label {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .toots-filter.active label {
+    background-color: var(--accent-light);
+  }
+}

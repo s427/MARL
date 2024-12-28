@@ -17,9 +17,11 @@ Alternatively, you can download this project from its [project page](https://git
 
 ⚠️ __Only ZIP files are supported__ —not GZ files. This is a limitation of the JSZip library which is used by MARL to unpack the archive file. Older versions of Mastodon (prior to version 4.2.0) used to export the archive in TAR.GZ. If this is your case, you will have to first convert your archive to a ZIP file.
 
-## Screenshot
+## Screenshots
 
 <img src="screenshot-multiple-archives.png" alt="app screenshot with multiple files loaded">
+
+<img src="screenshot-dark-theme.png" alt="app screenshot with dark theme">
 
 ## Features
 
@@ -119,6 +121,11 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 1.3
+  - [NEW] dark theme
+    - will be set automatically based on your OS or browser preference (default to light if no preference is detected)
+    - support to manually choose the app theme will come in a later update
+  - misc minor tweaks or fixes
 - v. 1.2
   - [NEW] support for multiple archive files. Notes:
     - you can select multiple files from the open dialog;

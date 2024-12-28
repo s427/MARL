@@ -127,8 +127,9 @@ button {
   &:disabled {
     top: 0;
     box-shadow: none;
-    cursor: not-allowed;
+    color: inherit;
     opacity: 0.35;
+    cursor: not-allowed;
     .btn-icon {
       fill: var(--button-svg);
       @media (forced-colors: active) {
@@ -192,6 +193,7 @@ details {
     white-space: pre-wrap;
     word-break: break-all;
     font-size: 0.8em;
+    color: inherit;
   }
   textarea {
     display: block;
@@ -207,6 +209,11 @@ details {
       field-sizing: content;
     }
   }
+}
+
+::selection {
+  color: var(--selection-text);
+  background-color: var(--selection-bg);
 }
 
 // focusable elements
@@ -233,4 +240,18 @@ details {
   font-weight: bold;
   border-radius: 0.5rem;
   background-color: #600;
+}
+
+@media (forced-colors: active) {
+  details {
+    summary {
+      color: ButtonText !important;
+      svg {
+        fill: ButtonText !important;
+      }
+    }
+  }
+  .tags-group button * {
+    color: ButtonText !important;
+  }
 }

@@ -1,183 +1,207 @@
-// tint and saturation factor for the app color scheme
+// tint for the app color scheme
 $hue: 30; // === 59.17 in oklch
 
 /*********************************/
 /* global background/text colors */
 /*********************************/
 
-$bg0: #fff; // post content
-$bg1: hsl($hue, 10%, 95%); // post
-$bg2: hsl($hue, 12%, 90%); // post attachment/meta/raw
-$bg3: hsl($hue, 15%, 87%); // posts header
-$bg4: hsl($hue, 17.5%, 84%); // filters/tags panels
+$bg0:                      #fff;                  // post content
+$bg1:                      hsl($hue, 10%,   95%); // post
+$bg2:                      hsl($hue, 12%,   90%); // post attachment/meta/raw
+$bg3:                      hsl($hue, 15%,   87%); // posts header
+$bg4:                      hsl($hue, 17.5%, 84%); // filters/tags panels
 
-$fg0: #000; // post content
-$fg1: hsl($hue, 10%, 20%); // body text; some SVG icons (panel close)
-$fg2: hsl($hue, 10%, 30%); // headings (h1, h2...)
+$fg0:                      #000;                  // post content
+$fg1:                      hsl($hue, 10%,   20%); // body text; some SVG icons (panel close)
+$fg2:                      hsl($hue, 10%,   30%); // headings (h1, h2...)
+$fg-inv:                   #fff;                  // misc highlighted text
 
-$fg-inv: #fff; // misc highlighted text
+// dark theme
+$dark-bg0:                 hsl($hue,  6%, 20%);
+$dark-bg1:                 hsl($hue,  8%, 13%);
+$dark-bg2:                 hsl($hue, 10%, 10%);
+$dark-bg3:                 hsl($hue, 12%,  8%);
+$dark-bg4:                 hsl($hue, 12%,  8%);
+$dark-fg0:                 hsl($hue,  5%, 95%);
+$dark-fg1:                 hsl($hue, 10%, 80%);
+$dark-fg2:                 hsl($hue, 15%, 50%);
+$dark-fg-inv:              #000;
 
 /***************/
 /* actor panel */
 /***************/
 
-$actor-bg0: hsl($hue, 37.5%, 11%); // bookmarks
-$actor-bg1: hsl($hue, 32.5%, 15%); // favorites
-$actor-bg2: hsl($hue, 25%, 20%); // actor raw data; tabs bg
-$actor-bg3: hsl($hue, 25%, 25%); // actor panel
-$actor-bg4: hsl($hue, 22.5%, 40%); // actor summary
+$actor-bg0:                hsl($hue, 37.5%, 11%); // bookmarks
+$actor-bg1:                hsl($hue, 32.5%, 15%); // favorites
+$actor-bg2:                hsl($hue, 25%,   20%); // actor raw data
+$actor-bg3:                hsl($hue, 25%,   25%); // actor panel
+$actor-bg4:                hsl($hue, 22.5%, 40%); // actor summary
 
-$actor-fg0: #fff;
-$actor-fg1: hsl($hue, 40%, 80%); // actor texts
-$actor-tabs-bg: hsl($hue, 12%, 17%);
+$actor-fg0:                #fff;
+$actor-fg1:                hsl($hue, 40%,   80%); // actor texts
+$actor-tabs-bg:            hsl($hue, 12%,   17%);
 
 // OKLCH variants (multiple archives opened)
-$actor-bg0-ok: oklch(21% 18% var(--actor-hue)); // bookmarks; tabs bg
-$actor-bg1-ok: oklch(24% 16% var(--actor-hue)); // favorites
-$actor-bg2-ok: oklch(27% 14% var(--actor-hue)); // actor raw data
-$actor-bg3-ok: oklch(30% 12% var(--actor-hue)); // actor panel
-$actor-bg4-ok: oklch(40% 10% var(--actor-hue)); // actor summary
-$actor-fg1-ok: oklch(92% 8% var(--actor-hue)); // actor texts
+$actor-bg0-ok:             oklch(21%  2% var(--actor-hue));
+$actor-bg1-ok:             oklch(24%  2% var(--actor-hue));
+$actor-bg2-ok:             oklch(27%  2% var(--actor-hue));
+$actor-bg3-ok:             oklch(30%  2% var(--actor-hue));
+$actor-bg4-ok:             oklch(40% 10% var(--actor-hue));
+$actor-fg1-ok:             oklch(92%  8% var(--actor-hue));
 
-$actor-accent: hsl($hue, 75%, 50%);
-$actor-accent-ok: oklch(80% 25% var(--actor-hue));
-$actor-accent2-ok: oklch(60% 20% var(--actor-hue));
-// -> outline; color code on post
+$actor-accent:             hsl($hue, 75%, 50%);
+$actor-accent-ok:          oklch(80% 25% var(--actor-hue));
+$actor-accent2-ok:         oklch(60% 20% var(--actor-hue)); // outline; color code on post
+
+// dark theme
+$dark-actor-bg0:           hsl($hue, 32%,  2%);
+$dark-actor-bg1:           hsl($hue, 30%,  4%);
+$dark-actor-bg2:           hsl($hue, 27%,  6%);
+$dark-actor-bg3:           hsl($hue, 25%,  8%);
+$dark-actor-bg4:           hsl($hue, 20%, 15%);
+$dark-actor-fg0:           $dark-fg0;
+$dark-actor-fg1:           hsl($hue, 65%, 65%);
+$dark-actor-tabs-bg:       hsl($hue, 20%,  8%);
+$dark-actor-bg0-ok:        oklch(11%  1% var(--actor-hue));
+$dark-actor-bg1-ok:        oklch(14%  1% var(--actor-hue));
+$dark-actor-bg2-ok:        oklch(17%  1% var(--actor-hue));
+$dark-actor-bg3-ok:        oklch(20%  1% var(--actor-hue));
+$dark-actor-bg4-ok:        oklch(30%  6% var(--actor-hue));
+$dark-actor-fg1-ok:        oklch(85% 25% var(--actor-hue));
+$dark-actor-accent:        hsl($hue, 75%, 50%);
+$dark-actor-accent-ok:     oklch(80% 25% var(--actor-hue));
+$dark-actor-accent2-ok:    oklch(60% 20% var(--actor-hue));
 
 /***************/
 /* mobile menu */
 /***************/
 
-$menu-bg: hsl($hue, 25%, 20%); // actor-bg2
-$menu-fg: hsl($hue, 40%, 80%); // actor-fg1
-$menu-fg-active: #fff;
-$menu-icon: #fff;
-$menu-filter-active: hsl($hue, 75%, 50%); // accent-light2
+$menu-bg:                  hsl($hue, 25%, 20%);
+$menu-fg:                  hsl($hue, 40%, 80%);
+$menu-fg-active:           #fff;
+$menu-icon:                #fff;
+$menu-filter-active:       hsl($hue, 75%, 50%);
 
-$menu-backdrop: rgba(0, 0, 0, 0.5);
+$menu-backdrop:            rgba(0, 0, 0, 0.5);
 
-$panel-close: hsl($hue, 10%, 20%); // fg1
-$panel-close-hover: hsl($hue, 75%, 38%); // accent-light
+$panel-close:              hsl($hue, 10%, 20%);
+$panel-close-hover:        hsl($hue, 75%, 38%);
+
+// dark theme
+$dark-menu-bg:             hsl($hue, 25%,  5%);
+$dark-menu-fg:             hsl($hue, 40%, 80%);
+$dark-menu-fg-active:      #fff;
+$dark-menu-icon:           #fff;
+$dark-menu-filter-active:  hsl($hue, 75%, 50%);
+$dark-menu-backdrop:       rgba(0, 0, 0, 0.5);
+$dark-panel-close:         hsl($hue, 5%,  90%);
+$dark-panel-close-hover:   hsl($hue, 0%, 100%);
 
 /**********/
 /* accent */
 /**********/
 
-$accent: hsl($hue, 100%, 30%);
-// -> links, active elements, counters, misc background stripes (color 1)
-$accent-dark: hsl($hue, 100%, 26%);
-// -> misc background stripes (color 2)
-$accent-light: hsl($hue, 75%, 38%);
-// -> focusable elements outline; main header counter
-$accent-light2: hsl($hue, 75%, 50%);
-// -> overlay hover/focus icons (SVG); private posts border; active filter indicator (mobile menu)
-// === oklch(56.48% 0.124 59.17)
-$accent-light3: hsl($hue, 75%, 75%);
-// -> hover effect on images
-$accent-light-bg: hsl($hue, 50%, 96%);
-// -> private posts background
+$accent:                   hsl($hue, 100%, 30%); // links, active elements
+$accent-dark:              hsl($hue, 100%, 26%); // counters
+$accent-light:             hsl($hue,  75%, 38%); // focusable elements outline; main header counter
+$accent-light2:            hsl($hue,  75%, 50%); // overlay hover/focus icons (SVG); active filter indicator (mobile menu)
+$accent-light3:            hsl($hue,  75%, 75%); // hover effect on images
+
+// dark theme
+$dark-accent:              hsl($hue, 70%, 65%);
+$dark-accent-dark:         hsl($hue, 55%, 50%);
+$dark-accent-light:        hsl($hue, 75%, 60%);
+$dark-accent-light2:       hsl($hue, 75%, 68%);
+$dark-accent-light3:       hsl($hue, 75%, 75%);
 
 /***********/
 /* overlay */
 /***********/
 
-$overlay-icon: #fff;
-$overlay-icon-hover: #fff;
-$overlay-backdrop: rgba(0, 0, 0, 0.75);
+$overlay-icon:             #fff;
+$overlay-icon-hover:       #fff;
+$overlay-backdrop:         rgba(0, 0, 0, 0.75);
+
+// dark theme
+$dark-overlay-icon:        #fff;
+$dark-overlay-icon-hover:  #fff;
+$dark-overlay-backdrop:    rgba(0, 0, 0, 0.9);
 
 /*****************/
 /* form elements */
 /*****************/
 
-$bg-input: rgba(255, 255, 255, 0.35);
-$bg-input-hover: rgba(255, 255, 255, 0.65);
-$bg-input-focus: rgba(255, 255, 255, 1);
+$bg-input:                 rgba(255, 255, 255, 0.35);
+$bg-input-hover:           rgba(255, 255, 255, 0.65);
+$bg-input-focus:           rgba(255, 255, 255, 1);
 
-$bg-button: rgba(255, 255, 255, 1);
-$bg-button-hover: hsl($hue, 50%, 95%);
-$button-svg: $fg1;
-$button-svg-hover: hsl($hue, 75%, 50%);
-$button-svg-focus: hsl($hue, 75%, 50%);
-$button-svg-active: hsl($hue, 75%, 50%);
+$bg-button:                rgba(255, 255, 255, 1);
+$bg-button-hover:          hsl($hue, 50%, 95%);
+$button-svg:               $fg1;
+$button-svg-hover:         hsl($hue, 75%, 50%);
+$button-svg-focus:         $button-svg-hover;
+$button-svg-active:        $button-svg-hover;
 
-$fg-button-focus: $accent;
-$fg-button-active: $accent;
+$fg-button-focus:          $accent;
+$fg-button-active:         $accent;
 
-// Note: some rgba values hardcoded, used mostly for box-shadow or backdrops
+// dark theme
+$dark-bg-input:            rgba(255, 255, 255, 0.10);
+$dark-bg-input-hover:      rgba(255, 255, 255, 0.15);
+$dark-bg-input-focus:      rgba(255, 255, 255, 0.25);
+$dark-bg-button:           hsl($hue, 25%, 20%);
+$dark-bg-button-hover:     hsl($hue, 25%, 30%);
+$dark-button-svg:          $dark-fg1;
+$dark-button-svg-hover:    hsl($hue, 65%, 65%);
+$dark-button-svg-focus:    $dark-button-svg-hover;
+$dark-button-svg-active:   $dark-button-svg-hover;
+$dark-fg-button-focus:     $dark-accent;
+$dark-fg-button-active:    $dark-accent;
+
+/********/
+/* misc */
+/********/
+
+$posts-count:              $accent-light;
+$selection-text:           #fff;
+$selection-bg:             $accent-light;
+$stripe1:                  $accent;
+$stripe2:                  $accent-dark;
+$stripe-fg:                $fg-inv;
+$private-post-bg:          hsl($hue, 50%, 96%);
+$private-post-border:      $accent-light2;
+
+// dark theme
+$dark-posts-count:         $dark-fg0;
+$dark-selection-text:      #fff;
+$dark-selection-bg:        hsl($hue, 75%, 40%);
+$dark-stripe1:             hsl($hue, 75%, 25%);
+$dark-stripe2:             hsl($hue, 75%, 30%);
+$dark-stripe-fg:           $dark-fg0;
+$dark-private-post-bg:     $dark-bg2;
+$dark-private-post-border: $dark-accent-dark;
+
+
+
+
+
+@import "colors-mixins";
 
 html {
-  --bg0: #{$bg0};
-  --bg1: #{$bg1};
-  --bg2: #{$bg2};
-  --bg3: #{$bg3};
-  --bg4: #{$bg4};
+  @include theme-vars();
 
-  --fg0: #{$fg0};
-  --fg1: #{$fg1};
-  --fg2: #{$fg2};
-  --fg-inv: #{$fg-inv};
-
-  --menu-bg: #{$menu-bg};
-  --menu-fg: #{$menu-fg};
-  --menu-fg-active: #{$menu-fg-active};
-  --menu-icon: #{$menu-icon};
-  --menu-filter-active: #{$menu-filter-active};
-  --panel-close: #{$panel-close};
-  --panel-close-hover: #{$panel-close-hover};
-
-  --accent: #{$accent};
-  --accent-dark: #{$accent-dark};
-  --accent-light: #{$accent-light};
-  --accent-light2: #{$accent-light2};
-  --accent-light3: #{$accent-light3};
-  --accent-light-bg: #{$accent-light-bg};
-
-  --overlay-icon: #{$overlay-icon};
-  --overlay-icon-hover: #{$overlay-icon-hover};
-  --overlay-backdrop: #{$overlay-backdrop};
-  --menu-backdrop: #{$menu-backdrop};
-
-  --bg-input: #{$bg-input};
-  --bg-input-hover: #{$bg-input-hover};
-  --bg-input-focus: #{$bg-input-focus};
-
-  --bg-button: #{$bg-button};
-  --bg-button-hover: #{$bg-button-hover};
-  --button-svg: #{$button-svg};
-  --button-svg-hover: #{$button-svg-hover};
-  --button-svg-focus: #{$button-svg-focus};
-  --button-svg-active: #{$button-svg-active};
-
-  --fg-button-focus: #{$fg-button-focus};
-  --fg-button-active: #{$fg-button-active};
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+    @include theme-vars("dark");
+  }
 }
 
-.actors-wrapper {
-  --actor-hue: 0;
-  --actor-bg0: #{$actor-bg0};
-  --actor-bg0-ok: #{$actor-bg0-ok};
-  --actor-bg1: #{$actor-bg1};
-  --actor-bg1-ok: #{$actor-bg1-ok};
-  --actor-bg2: #{$actor-bg2};
-  --actor-bg2-ok: #{$actor-bg2-ok};
-  --actor-bg3: #{$actor-bg3};
-  --actor-bg3-ok: #{$actor-bg3-ok};
-  --actor-bg4: #{$actor-bg4};
-  --actor-bg4-ok: #{$actor-bg4-ok};
+html.light {
+  color-scheme: light;
+  @include theme-vars();
+}
 
-  --actor-fg0: #{$actor-fg0};
-  --actor-fg1: #{$actor-fg1};
-  --actor-fg1-ok: #{$actor-fg1-ok};
-  --actor-tabs-bg: #{$actor-tabs-bg};
-  --actor-accent: #{$actor-accent};
-  --actor-accent-ok: #{$actor-accent-ok};
-  --actor-accent2-ok: #{$actor-accent2-ok};
-}
-.actors-tabs button {
-  --actor-accent-ok: #{$actor-accent-ok};
-  --actor-accent2-ok: #{$actor-accent2-ok};
-}
-.toot-content {
-  --actor-accent-ok: #{$actor-accent-ok};
-  --actor-accent2-ok: #{$actor-accent2-ok};
+html.dark {
+  color-scheme: dark;
+  @include theme-vars("dark");
 }

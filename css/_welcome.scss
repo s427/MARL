@@ -66,13 +66,13 @@
     align-items: center;
     font-size: 2em;
     background-color: var(--accent);
-    color: var(--fg-inv);
+    color: var(--stripe-fg);
     background: repeating-linear-gradient(
       45deg,
-      var(--accent-dark),
-      var(--accent-dark) 1rem,
-      var(--accent) 1rem,
-      var(--accent) 2rem
+      var(--stripe1),
+      var(--stripe1) 1rem,
+      var(--stripe2) 1rem,
+      var(--stripe2) 2rem
     );
     background-size: 200% auto;
 
@@ -105,10 +105,10 @@
 
     background: repeating-linear-gradient(
       45deg,
-      var(--accent-dark),
-      var(--accent-dark) 1rem,
-      var(--accent) 1rem,
-      var(--accent) 2rem
+      var(--stripe1),
+      var(--stripe1) 1rem,
+      var(--stripe2) 1rem,
+      var(--stripe2) 2rem
     );
     background-size: 200% auto;
 

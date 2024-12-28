@@ -1,0 +1,170 @@
+@mixin theme-vars($theme: "") {
+  @if $theme == "dark" {
+    --bg0:                 #{$dark-bg0};
+    --bg1:                 #{$dark-bg1};
+    --bg2:                 #{$dark-bg2};
+    --bg3:                 #{$dark-bg3};
+    --bg4:                 #{$dark-bg4};
+
+    --fg0:                 #{$dark-fg0};
+    --fg1:                 #{$dark-fg1};
+    --fg2:                 #{$dark-fg2};
+    --fg-inv:              #{$dark-fg-inv};
+
+    --menu-bg:             #{$dark-menu-bg};
+    --menu-fg:             #{$dark-menu-fg};
+    --menu-fg-active:      #{$dark-menu-fg-active};
+    --menu-icon:           #{$dark-menu-icon};
+    --menu-filter-active:  #{$dark-menu-filter-active};
+    --panel-close:         #{$dark-panel-close};
+    --panel-close-hover:   #{$dark-panel-close-hover};
+
+    --accent:              #{$dark-accent};
+    --accent-dark:         #{$dark-accent-dark};
+    --accent-light:        #{$dark-accent-light};
+    --accent-light2:       #{$dark-accent-light2};
+    --accent-light3:       #{$dark-accent-light3};
+
+    --overlay-icon:        #{$dark-overlay-icon};
+    --overlay-icon-hover:  #{$dark-overlay-icon-hover};
+    --overlay-backdrop:    #{$dark-overlay-backdrop};
+    --menu-backdrop:       #{$dark-menu-backdrop};
+
+    --bg-input:            #{$dark-bg-input};
+    --bg-input-hover:      #{$dark-bg-input-hover};
+    --bg-input-focus:      #{$dark-bg-input-focus};
+
+    --bg-button:           #{$dark-bg-button};
+    --bg-button-hover:     #{$dark-bg-button-hover};
+    --button-svg:          #{$dark-button-svg};
+    --button-svg-hover:    #{$dark-button-svg-hover};
+    --button-svg-focus:    #{$dark-button-svg-focus};
+    --button-svg-active:   #{$dark-button-svg-active};
+
+    --fg-button-focus:     #{$dark-fg-button-focus};
+    --fg-button-active:    #{$dark-fg-button-active};
+
+    --posts-count:         #{$dark-posts-count};
+    --selection-text:      #{$dark-selection-text};
+    --selection-bg:        #{$dark-selection-bg};
+    --stripe1:             #{$dark-stripe1};
+    --stripe2:             #{$dark-stripe2};
+    --stripe-fg:           #{$dark-stripe-fg};
+    --private-post-bg:     #{$dark-private-post-bg};
+    --private-post-border: #{$dark-private-post-border};
+
+    .actors-wrapper {
+      --actor-hue:          0;
+      --actor-bg0:          #{$dark-actor-bg0};
+      --actor-bg0-ok:       #{$dark-actor-bg0-ok};
+      --actor-bg1:          #{$dark-actor-bg1};
+      --actor-bg1-ok:       #{$dark-actor-bg1-ok};
+      --actor-bg2:          #{$dark-actor-bg2};
+      --actor-bg2-ok:       #{$dark-actor-bg2-ok};
+      --actor-bg3:          #{$dark-actor-bg3};
+      --actor-bg3-ok:       #{$dark-actor-bg3-ok};
+      --actor-bg4:          #{$dark-actor-bg4};
+      --actor-bg4-ok:       #{$dark-actor-bg4-ok};
+
+      --actor-fg0:          #{$dark-actor-fg0};
+      --actor-fg1:          #{$dark-actor-fg1};
+      --actor-fg1-ok:       #{$dark-actor-fg1-ok};
+      --actor-tabs-bg:      #{$dark-actor-tabs-bg};
+      --actor-accent:       #{$dark-actor-accent};
+      --actor-accent-ok:    #{$dark-actor-accent-ok};
+      --actor-accent2-ok:   #{$dark-actor-accent2-ok};
+    }
+    .actors-tabs button {
+      --actor-accent-ok:    #{$dark-actor-accent-ok};
+      --actor-accent2-ok:   #{$dark-actor-accent2-ok};
+    }
+    .toot-content {
+      --actor-accent-ok:    #{$dark-actor-accent-ok};
+      --actor-accent2-ok:   #{$dark-actor-accent2-ok};
+    }
+
+  } @else {
+
+    --bg0:                 #{$bg0};
+    --bg1:                 #{$bg1};
+    --bg2:                 #{$bg2};
+    --bg3:                 #{$bg3};
+    --bg4:                 #{$bg4};
+
+    --fg0:                 #{$fg0};
+    --fg1:                 #{$fg1};
+    --fg2:                 #{$fg2};
+    --fg-inv:              #{$fg-inv};
+
+    --menu-bg:             #{$menu-bg};
+    --menu-fg:             #{$menu-fg};
+    --menu-fg-active:      #{$menu-fg-active};
+    --menu-icon:           #{$menu-icon};
+    --menu-filter-active:  #{$menu-filter-active};
+    --panel-close:         #{$panel-close};
+    --panel-close-hover:   #{$panel-close-hover};
+
+    --accent:              #{$accent};
+    --accent-dark:         #{$accent-dark};
+    --accent-light:        #{$accent-light};
+    --accent-light2:       #{$accent-light2};
+    --accent-light3:       #{$accent-light3};
+
+    --overlay-icon:        #{$overlay-icon};
+    --overlay-icon-hover:  #{$overlay-icon-hover};
+    --overlay-backdrop:    #{$overlay-backdrop};
+    --menu-backdrop:       #{$menu-backdrop};
+
+    --bg-input:            #{$bg-input};
+    --bg-input-hover:      #{$bg-input-hover};
+    --bg-input-focus:      #{$bg-input-focus};
+
+    --bg-button:           #{$bg-button};
+    --bg-button-hover:     #{$bg-button-hover};
+    --button-svg:          #{$button-svg};
+    --button-svg-hover:    #{$button-svg-hover};
+    --button-svg-focus:    #{$button-svg-focus};
+    --button-svg-active:   #{$button-svg-active};
+
+    --fg-button-focus:     #{$fg-button-focus};
+    --fg-button-active:    #{$fg-button-active};
+
+    --posts-count:         #{$posts-count};
+    --selection-text:      #{$selection-text};
+    --selection-bg:        #{$selection-bg};
+    --stripe1:             #{$stripe1};
+    --stripe2:             #{$stripe2};
+    --stripe-fg:           #{$stripe-fg};
+    --private-post-bg:     #{$private-post-bg};
+    --private-post-border: #{$private-post-border};
+
+    .actors-wrapper {
+      --actor-hue:          0;
+      --actor-bg0:          #{$actor-bg0};
+      --actor-bg0-ok:       #{$actor-bg0-ok};
+      --actor-bg1:          #{$actor-bg1};
+      --actor-bg1-ok:       #{$actor-bg1-ok};
+      --actor-bg2:          #{$actor-bg2};
+      --actor-bg2-ok:       #{$actor-bg2-ok};
+      --actor-bg3:          #{$actor-bg3};
+      --actor-bg3-ok:       #{$actor-bg3-ok};
+      --actor-bg4:          #{$actor-bg4};
+      --actor-bg4-ok:       #{$actor-bg4-ok};
+      --actor-fg0:          #{$actor-fg0};
+      --actor-fg1:          #{$actor-fg1};
+      --actor-fg1-ok:       #{$actor-fg1-ok};
+      --actor-tabs-bg:      #{$actor-tabs-bg};
+      --actor-accent:       #{$actor-accent};
+      --actor-accent-ok:    #{$actor-accent-ok};
+      --actor-accent2-ok:   #{$actor-accent2-ok};
+    }
+    .actors-tabs button {
+      --actor-accent-ok:    #{$actor-accent-ok};
+      --actor-accent2-ok:   #{$actor-accent2-ok};
+    }
+    .toot-content {
+      --actor-accent-ok:    #{$actor-accent-ok};
+      --actor-accent2-ok:   #{$actor-accent2-ok};
+    }
+  }
+}
