@@ -1,0 +1,37 @@
+---
+const { type } = Astro.props;
+
+let label = "Favorites";
+if (type === "bookmarks") {
+  label = "Bookmarks";
+}
+---
+
+<div class={`actor-${type}`}>
+  <details>
+    <summary>
+      <span class="summary-icon">
+        <svg aria-hidden="true">
+          <use href="#favorite" />
+        </svg>
+      </span>
+      <h2 class="summary-label">
+        {label} (<span class="count" x-text={`source.${type}.length`}></span>)
+      </h2>
+    </summary>
+    <div class="details-content">
+      <template x-if={`source.${type}.length`}>
+        <ul>
+          <template x-for={`url in source.${type}`}>
+            <li>
+              <a :href="url" x-html="formatLikesBookmarks(url)"></a>
+            </li>
+          </template>
+        </ul>
+      </template>
+      <template x-if={`! source.${type}.length`}>
+        <p class="no-content">... no {label?.toLowerCase()} ...</p>
+      </template>
+    </div>
+  </details>
+</div>

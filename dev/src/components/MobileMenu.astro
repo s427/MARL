@@ -1,0 +1,44 @@
+<div class="mobile-menu" id="mobile-menu">
+  <nav>
+    <ul>
+      <li>
+        <button class="menu-actor" @click="$store.ui.menuToggle('actor')">
+          <svg aria-hidden="true"><use href="#menu-actor" /></svg>
+          <span>Profile</span>
+        </button>
+      </li>
+      <li>
+        <button
+          class="menu-filters"
+          :class="$store.files.filtersActive ? 'filters-active' : ''"
+          @click="$store.ui.menuToggle('filters')"
+        >
+          <svg aria-hidden="true"><use href="#menu-filters" /></svg>
+          <span
+            >Filters
+            <em x-show="$store.files.filtersActive" class="visually-hidden">(some filters are active)</em>
+          </span>
+        </button>
+      </li>
+      <li>
+        <button class="menu-tags" @click="$store.ui.menuToggle('tags')">
+          <svg aria-hidden="true"><use href="#menu-tags" /></svg>
+          <span>Tags</span>
+        </button>
+      </li>
+      <li>
+        <button class="menu-new" @click="startOver">
+          <svg aria-hidden="true"><use href="#menu-new" /></svg>
+          <span>New File</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div
+  class="panel-backdrop"
+  aria-hidden="true"
+  @click="$store.ui.menuClose()"
+  @keyup.esc="$store.ui.menuClose()"
+/>

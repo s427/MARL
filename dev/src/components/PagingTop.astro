@@ -1,0 +1,59 @@
+---
+import PagingOptions from "./PagingOptions.astro";
+---
+
+<div class="paging">
+  <div class="direction-back">
+    <button
+      id="paging-btn-first"
+      @click="$store.files.firstPage()"
+      :disabled="$store.files.currentPage <= 1"
+    >
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-first" /></svg
+      ><span class="btn-label">First</span>
+    </button>
+    <button
+      id="paging-btn-prev"
+      @click="$store.files.prevPage()"
+      :disabled="$store.files.currentPage <= 1"
+    >
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-prev" /></svg
+      ><span class="btn-label">Prev</span>
+    </button>
+  </div>
+
+  <div class="paging-options-toggle">
+    <button @click="$store.ui.togglePagingOptions()">
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#options" /></svg
+      ><span class="btn-label">Paging options</span>
+    </button>
+  </div>
+
+  <PagingOptions />
+
+  <div class="direction-fwd">
+    <button
+      id="paging-btn-next"
+      @click="$store.files.nextPage()"
+      :disabled="$store.files.currentPage >= $store.files.totalPages"
+    >
+      <span class="btn-label">Next</span
+      ><svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-next" />
+      </svg>
+    </button>
+    <button
+      id="paging-btn-last"
+      @click="$store.files.lastPage()"
+      :disabled="$store.files.currentPage >= $store.files.totalPages"
+    >
+      <span class="btn-label">Last</span
+      ><svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-last" />
+      </svg>
+    </button>
+  </div>
+</div>

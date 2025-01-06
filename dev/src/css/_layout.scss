@@ -1,3 +1,5 @@
+@use "mixins";
+
 html {
   width: 100dvw;
   height: 100dvh;
@@ -100,7 +102,7 @@ html {
     .direction-fwd,
     .paging-options-toggle {
       .btn-label {
-        @include visually-hidden();
+        @include mixins.visually-hidden();
       }
     }
   }
@@ -194,7 +196,7 @@ html {
       .direction-fwd,
       .paging-options-toggle {
         .btn-label {
-          @include visually-hidden();
+          @include mixins.visually-hidden();
         }
       }
     }

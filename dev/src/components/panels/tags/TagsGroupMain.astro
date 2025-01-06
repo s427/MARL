@@ -1,0 +1,58 @@
+---
+const { type } = Astro.props;
+let storeData, storeFilter, filterProp, btnId, clickCmd;
+
+switch (type) {
+  case 'hashtags':
+    storeData = "listHashtags";
+    storeFilter = "hashtagText";
+    filterProp = "name";
+    btnId = "hashtag";
+    clickCmd = `.slice(1)`;
+    break;
+  case 'mentions':
+    storeData = "listMentions";
+    storeFilter = "mentionText";
+    filterProp = "name";
+    btnId = "mention";
+    clickCmd = `.replaceAll('@', '_').replaceAll('.', '_')`;
+    break;
+  case 'boosts':
+    storeData = "listBoostsAuthors";
+    storeFilter = "fullText";
+    filterProp = "url";
+    btnId = "boost-author";
+    clickCmd = `.replaceAll('/', '_')`;
+    break;
+}
+
+---
+<div class="tags-group-scroll">
+  <ul x-show={`$store.files.${storeData}.length`}>
+    <template x-for={`item in await $store.files.${storeData}`}>
+      <li :class={`item.${filterProp} === $store.files.filters.${storeFilter} ? 'active' : ''`}>
+        <button
+          :id={`'filter-${btnId}-' + item.${filterProp}.toLowerCase()${clickCmd}`}
+          @click={`$store.files.filterByTag('${storeFilter}', item.${filterProp}, 'filter-${btnId}-' + item.${filterProp}.toLowerCase()${clickCmd})`}
+        >
+          <div>
+            <span
+              class="visually-hidden"
+              x-text={`item.${filterProp} === $store.files.filters.${storeFilter} ? 'active item:' : ''`}
+            ></span>
+            <span class="count" x-text="`(${item.nb})`"></span>
+{type !== 'boosts' && (
+            <span class="name" x-text="item.name"></span>
+)}
+{type === 'boosts' && (
+            <span class="name">
+                <span x-text="item.name"></span>
+                <span x-text="item.domain" class="domain"></span>
+              </span>
+)}
+          </div>
+        </button>
+      </li>
+    </template>
+  </ul>
+</div>

@@ -1,0 +1,43 @@
+---
+const { type } = Astro.props;
+let title, filterLabel, storeEntry, filterId;
+
+switch (type) {
+  case 'hashtags':
+    title = "Hashtags";
+    filterLabel = "filter hashtags";
+    filterId = 'hashtags';
+    storeEntry = "listHashtags";
+    break;
+  case 'mentions':
+    title = "Mentions";
+    filterLabel = "filter mentions";
+    filterId = 'mentions';
+    storeEntry = "listMentions";
+    break;
+  case 'boosts':
+    title = "Boosted users";
+    filterLabel = "filter boosted users";
+    filterId = 'boostsAuthors';
+    storeEntry = "listBoostsAuthors";
+    break;
+}
+
+---
+<div class="tags-group-header">
+  <h3>
+    {title}
+    <span class="count">
+      (<span x-text={`formatNumber($store.files.${storeEntry}.length)`}></span>)
+    </span>
+  </h3>
+  <div class="tags-group-filter">
+    <label for={`tags-group-${filterId}-filter`} class="visually-hidden">{filterLabel}</label>
+    <input
+      id={`tags-group-${filterId}-filter`}
+      type="text"
+      onclick="this.select()"
+      x-model.debounce={`$store.files.tagsFilters.${filterId}`}
+    />
+  </div>
+</div>

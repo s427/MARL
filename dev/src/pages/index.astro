@@ -1,0 +1,26 @@
+---
+import '../css/main.scss';
+import App from '../components/App.astro';
+import SvgSprites from '../components/SvgSprites.astro';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+    <meta charset="UTF-8" />
+    <title>MARL - Mastodon Archive Reader Lite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <base target="_blank" />
+	</head>
+	<body>
+    <noscript>
+      <div class="nojs">JavaScript is required for this app to run.</div>
+    </noscript>
+
+		<App />
+		<SvgSprites />
+
+    <script src="/js/main.js" is:inline></script>
+	</body>
+</html>

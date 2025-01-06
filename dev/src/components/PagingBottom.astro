@@ -1,0 +1,40 @@
+<div class="paging">
+  <div class="direction-back">
+    <button
+      @click="$store.files.firstPage('toots')"
+      :disabled="$store.files.currentPage <= 1"
+    >
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-first" /></svg
+      ><span class="btn-label">First</span>
+    </button>
+    <button
+      @click="$store.files.prevPage('paging-btn-prev')"
+      :disabled="$store.files.currentPage <= 1"
+    >
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-prev" /></svg
+      ><span class="btn-label">Prev</span>
+    </button>
+  </div>
+  <div class="direction-fwd">
+    <button
+      @click="$store.files.nextPage('paging-btn-next')"
+      :disabled="$store.files.currentPage >= $store.files.totalPages"
+    >
+      <span class="btn-label">Next</span
+      ><svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-next" />
+      </svg>
+    </button>
+    <button
+      @click="$store.files.lastPage('toots')"
+      :disabled="$store.files.currentPage >= $store.files.totalPages"
+    >
+      <span class="btn-label">Last</span
+      ><svg class="btn-icon" aria-hidden="true">
+        <use href="#nav-last" />
+      </svg>
+    </button>
+  </div>
+</div>

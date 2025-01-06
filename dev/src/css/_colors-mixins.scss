@@ -1,0 +1,172 @@
+@use 'colors';
+
+@mixin theme-vars($theme: "") {
+  @if $theme == "dark" {
+    --bg0:                 #{colors.$dark-bg0};
+    --bg1:                 #{colors.$dark-bg1};
+    --bg2:                 #{colors.$dark-bg2};
+    --bg3:                 #{colors.$dark-bg3};
+    --bg4:                 #{colors.$dark-bg4};
+
+    --fg0:                 #{colors.$dark-fg0};
+    --fg1:                 #{colors.$dark-fg1};
+    --fg2:                 #{colors.$dark-fg2};
+    --fg-inv:              #{colors.$dark-fg-inv};
+
+    --menu-bg:             #{colors.$dark-menu-bg};
+    --menu-fg:             #{colors.$dark-menu-fg};
+    --menu-fg-active:      #{colors.$dark-menu-fg-active};
+    --menu-icon:           #{colors.$dark-menu-icon};
+    --menu-filter-active:  #{colors.$dark-menu-filter-active};
+    --panel-close:         #{colors.$dark-panel-close};
+    --panel-close-hover:   #{colors.$dark-panel-close-hover};
+
+    --accent:              #{colors.$dark-accent};
+    --accent-dark:         #{colors.$dark-accent-dark};
+    --accent-light:        #{colors.$dark-accent-light};
+    --accent-light2:       #{colors.$dark-accent-light2};
+    --accent-light3:       #{colors.$dark-accent-light3};
+
+    --overlay-icon:        #{colors.$dark-overlay-icon};
+    --overlay-icon-hover:  #{colors.$dark-overlay-icon-hover};
+    --overlay-backdrop:    #{colors.$dark-overlay-backdrop};
+    --menu-backdrop:       #{colors.$dark-menu-backdrop};
+
+    --bg-input:            #{colors.$dark-bg-input};
+    --bg-input-hover:      #{colors.$dark-bg-input-hover};
+    --bg-input-focus:      #{colors.$dark-bg-input-focus};
+
+    --bg-button:           #{colors.$dark-bg-button};
+    --bg-button-hover:     #{colors.$dark-bg-button-hover};
+    --button-svg:          #{colors.$dark-button-svg};
+    --button-svg-hover:    #{colors.$dark-button-svg-hover};
+    --button-svg-focus:    #{colors.$dark-button-svg-focus};
+    --button-svg-active:   #{colors.$dark-button-svg-active};
+
+    --fg-button-focus:     #{colors.$dark-fg-button-focus};
+    --fg-button-active:    #{colors.$dark-fg-button-active};
+
+    --posts-count:         #{colors.$dark-posts-count};
+    --selection-text:      #{colors.$dark-selection-text};
+    --selection-bg:        #{colors.$dark-selection-bg};
+    --stripe1:             #{colors.$dark-stripe1};
+    --stripe2:             #{colors.$dark-stripe2};
+    --stripe-fg:           #{colors.$dark-stripe-fg};
+    --private-post-bg:     #{colors.$dark-private-post-bg};
+    --private-post-border: #{colors.$dark-private-post-border};
+
+    .actors-wrapper {
+      --actor-hue:          0;
+      --actor-bg0:          #{colors.$dark-actor-bg0};
+      --actor-bg0-ok:       #{colors.$dark-actor-bg0-ok};
+      --actor-bg1:          #{colors.$dark-actor-bg1};
+      --actor-bg1-ok:       #{colors.$dark-actor-bg1-ok};
+      --actor-bg2:          #{colors.$dark-actor-bg2};
+      --actor-bg2-ok:       #{colors.$dark-actor-bg2-ok};
+      --actor-bg3:          #{colors.$dark-actor-bg3};
+      --actor-bg3-ok:       #{colors.$dark-actor-bg3-ok};
+      --actor-bg4:          #{colors.$dark-actor-bg4};
+      --actor-bg4-ok:       #{colors.$dark-actor-bg4-ok};
+
+      --actor-fg0:          #{colors.$dark-actor-fg0};
+      --actor-fg1:          #{colors.$dark-actor-fg1};
+      --actor-fg1-ok:       #{colors.$dark-actor-fg1-ok};
+      --actor-tabs-bg:      #{colors.$dark-actor-tabs-bg};
+      --actor-accent:       #{colors.$dark-actor-accent};
+      --actor-accent-ok:    #{colors.$dark-actor-accent-ok};
+      --actor-accent2-ok:   #{colors.$dark-actor-accent2-ok};
+    }
+    .actors-tabs button {
+      --actor-accent-ok:    #{colors.$dark-actor-accent-ok};
+      --actor-accent2-ok:   #{colors.$dark-actor-accent2-ok};
+    }
+    .toot-content {
+      --actor-accent-ok:    #{colors.$dark-actor-accent-ok};
+      --actor-accent2-ok:   #{colors.$dark-actor-accent2-ok};
+    }
+
+  } @else {
+
+    --bg0:                 #{colors.$bg0};
+    --bg1:                 #{colors.$bg1};
+    --bg2:                 #{colors.$bg2};
+    --bg3:                 #{colors.$bg3};
+    --bg4:                 #{colors.$bg4};
+
+    --fg0:                 #{colors.$fg0};
+    --fg1:                 #{colors.$fg1};
+    --fg2:                 #{colors.$fg2};
+    --fg-inv:              #{colors.$fg-inv};
+
+    --menu-bg:             #{colors.$menu-bg};
+    --menu-fg:             #{colors.$menu-fg};
+    --menu-fg-active:      #{colors.$menu-fg-active};
+    --menu-icon:           #{colors.$menu-icon};
+    --menu-filter-active:  #{colors.$menu-filter-active};
+    --panel-close:         #{colors.$panel-close};
+    --panel-close-hover:   #{colors.$panel-close-hover};
+
+    --accent:              #{colors.$accent};
+    --accent-dark:         #{colors.$accent-dark};
+    --accent-light:        #{colors.$accent-light};
+    --accent-light2:       #{colors.$accent-light2};
+    --accent-light3:       #{colors.$accent-light3};
+
+    --overlay-icon:        #{colors.$overlay-icon};
+    --overlay-icon-hover:  #{colors.$overlay-icon-hover};
+    --overlay-backdrop:    #{colors.$overlay-backdrop};
+    --menu-backdrop:       #{colors.$menu-backdrop};
+
+    --bg-input:            #{colors.$bg-input};
+    --bg-input-hover:      #{colors.$bg-input-hover};
+    --bg-input-focus:      #{colors.$bg-input-focus};
+
+    --bg-button:           #{colors.$bg-button};
+    --bg-button-hover:     #{colors.$bg-button-hover};
+    --button-svg:          #{colors.$button-svg};
+    --button-svg-hover:    #{colors.$button-svg-hover};
+    --button-svg-focus:    #{colors.$button-svg-focus};
+    --button-svg-active:   #{colors.$button-svg-active};
+
+    --fg-button-focus:     #{colors.$fg-button-focus};
+    --fg-button-active:    #{colors.$fg-button-active};
+
+    --posts-count:         #{colors.$posts-count};
+    --selection-text:      #{colors.$selection-text};
+    --selection-bg:        #{colors.$selection-bg};
+    --stripe1:             #{colors.$stripe1};
+    --stripe2:             #{colors.$stripe2};
+    --stripe-fg:           #{colors.$stripe-fg};
+    --private-post-bg:     #{colors.$private-post-bg};
+    --private-post-border: #{colors.$private-post-border};
+
+    .actors-wrapper {
+      --actor-hue:          0;
+      --actor-bg0:          #{colors.$actor-bg0};
+      --actor-bg0-ok:       #{colors.$actor-bg0-ok};
+      --actor-bg1:          #{colors.$actor-bg1};
+      --actor-bg1-ok:       #{colors.$actor-bg1-ok};
+      --actor-bg2:          #{colors.$actor-bg2};
+      --actor-bg2-ok:       #{colors.$actor-bg2-ok};
+      --actor-bg3:          #{colors.$actor-bg3};
+      --actor-bg3-ok:       #{colors.$actor-bg3-ok};
+      --actor-bg4:          #{colors.$actor-bg4};
+      --actor-bg4-ok:       #{colors.$actor-bg4-ok};
+      --actor-fg0:          #{colors.$actor-fg0};
+      --actor-fg1:          #{colors.$actor-fg1};
+      --actor-fg1-ok:       #{colors.$actor-fg1-ok};
+      --actor-tabs-bg:      #{colors.$actor-tabs-bg};
+      --actor-accent:       #{colors.$actor-accent};
+      --actor-accent-ok:    #{colors.$actor-accent-ok};
+      --actor-accent2-ok:   #{colors.$actor-accent2-ok};
+    }
+    .actors-tabs button {
+      --actor-accent-ok:    #{colors.$actor-accent-ok};
+      --actor-accent2-ok:   #{colors.$actor-accent2-ok};
+    }
+    .toot-content {
+      --actor-accent-ok:    #{colors.$actor-accent-ok};
+      --actor-accent2-ok:   #{colors.$actor-accent2-ok};
+    }
+  }
+}

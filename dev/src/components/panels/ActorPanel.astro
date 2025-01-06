@@ -1,0 +1,145 @@
+---
+import CloseBtn from './CloseBtn.astro'
+import ImgAvatar from './actor/ImgAvatar.astro'
+import ImgHeader from './actor/ImgHeader.astro'
+import LikesBookmarks from './actor/LikesBookmarks.astro'
+---
+
+<div
+  class="actor mobile-menu-panel"
+  id="panel-actor"
+  role="region"
+  aria-labelledby="actor-title"
+  tabindex="-1"
+>
+  <CloseBtn />
+
+  <h2 class="visually-hidden" id="actor-title">Account info</h2>
+  <h3 class="visually-hidden" id="actor-tabs-title">Accounts</h3>
+
+  <div class="actors-wrapper" :style="'--actor-hue: '+ $store.files.sources[$store.ui.actorPanel].hue">
+    <template x-if="$store.files.sources.length > 1">
+      <div class="actors-tabs" role="tablist" aria-labelledby="actor-tabs-title">
+        <template x-for="(_, source) in $store.files.sources">
+          <button
+            type="button"
+            role="tab"
+            :id="'actortab-' + source"
+            :aria-selected="source === $store.ui.actorPanel ? 'true': 'false'"
+            :aria-controls="'actorpanel-' + source"
+            :style="'--actor-hue: '+ $store.files.sources[source].hue"
+            @click="$store.ui.openActorPanel(source)"
+            @keyup.right="$store.ui.switchActorPanel('up')"
+            @keyup.left="$store.ui.switchActorPanel('down')"
+          >
+            <span x-text="$store.files.sources[source].actor.name"></span>
+          </button>
+        </template>
+      </div>
+    </template>
+    <template x-if="$store.files.sources.length === 1">
+      <span class="visually-hidden" id="actortab-0" x-text="$store.files.sources[0].actor.name"></span>
+    </template>
+
+    <template x-for="source in $store.files.sources">
+      <div
+        class="actor-panel"
+        :id="'actorpanel-' + source.id"
+        role="tabpanel"
+        tabindex="0"
+        :aria-labelledby="'actortab-' + source.id"
+        x-data="{a: source.actor}"
+        x-show="$store.ui.actorPanel === source.id"
+      >
+        <div class="actor-pretty">
+          <div class="actor-banner">
+            <ImgHeader />
+          </div>
+
+          <div class="actor-id">
+            <ImgAvatar />
+            <h1 class="actor-name" x-text="await a.name"></h1>
+            <div class="actor-url">
+              <a :href="await a.url" x-text="await a.url"></a>
+            </div>
+          </div>
+
+          <div class="actor-summary" x-show="a.summary" x-html="await a.summary"></div>
+
+          <div class="actor-infos">
+            <dl>
+              <dt>Member since</dt>
+              <dd x-text="await formatDate(a.published)"></dd>
+            </dl>
+            <template x-for="item in await a.attachment">
+              <dl>
+                <dt x-text="item.name"></dt>
+                <dd x-html="item.value"></dd>
+              </dl>
+            </template>
+          </div>
+
+          <div class="actor-posts-count">
+            <div class="total">
+              <span class="count" x-text="formatNumber(source.outbox.totalItems)"></span>
+              <span class="label">posts</span>
+            </div>
+
+            <div class="archive">
+              <span class="count" x-text="formatNumber(source.nbToots)"></span>
+              <span class="label">in archive</span>
+            </div>
+
+            <details class="comment" x-show="source.nbToots != source.outbox.totalItems">
+              <summary>
+                <span class="summary-icon">
+                  <svg aria-hidden="true">
+                    <use href="#question" />
+                  </svg>
+                </span>
+                <span class="summary-label">Why are those two numbers different?</span>
+              </summary>
+              <div class="details-content">
+                <p>
+                  Posts that are not directly hosted on your instance are kept in a cache by your instance
+                  for a given time, after what they are deleted from that cache. Posts that are not in your
+                  instance cache any more are not included in your archive. This affects boosts, likes, and
+                  bookmarks.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="actor-raw">
+          <div class="actor-raw-inner">
+            <details>
+              <summary>
+                <span class="summary-icon">
+                  <svg aria-hidden="true">
+                    <use href="#json" />
+                  </svg>
+                </span>
+                <span class="summary-label" :id="source + 'raw-data-label'"
+                  >Raw data <em>(actor.json)</em></span
+                >
+              </summary>
+              <div class="details-content">
+                <textarea
+                  x-text="formatJson(await a)"
+                  :aria-labelledby="source + 'raw-data-label'"
+                  readonly
+                ></textarea>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="actor-likes-bookmarks">
+          <LikesBookmarks type="likes" />
+          <LikesBookmarks type="bookmarks" />
+        </div>
+      </div>
+    </template>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+---
+import CloseBtn from './CloseBtn.astro'
+import TagsGroup from './tags/TagsGroup.astro';
+---
+
+<aside
+  class="toots-tags mobile-menu-panel"
+  id="panel-tags"
+  aria-labelledby="toots-tags-title"
+  tabindex="-1"
+>
+  <CloseBtn />
+
+  <h2 class="tags-title" id="toots-tags-title">Tags</h2>
+
+  <TagsGroup type="hashtags" />
+  <TagsGroup type="mentions" />
+  <TagsGroup type="boosts" />
+</aside>

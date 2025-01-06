@@ -1,0 +1,24 @@
+---
+import AttachmentDescription from './AttachmentDescription.astro'
+---
+
+<template
+  x-if="attachmentIsImage(att) && $store.files.sources[toot._marl.source][att.url]"
+>
+  <div class="att-wrapper">
+    <button
+      class="att-img-wrapper"
+      @click="$store.lightbox.open(toot, index, toot._marl.id + '-' + index)"
+      :id="'att-' + toot._marl.id + '-' + index"
+    >
+      <img
+        alt=""
+        :src="`data:${att.mediaType}; base64,${await $store.files.sources[toot._marl.source][att.url].content}`"
+        :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
+      />
+    </button>
+
+    <AttachmentDescription />
+
+  </div>
+</template>

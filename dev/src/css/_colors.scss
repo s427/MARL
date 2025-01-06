@@ -181,27 +181,3 @@ $dark-stripe-fg:           $dark-fg0;
 $dark-private-post-bg:     $dark-bg2;
 $dark-private-post-border: $dark-accent-dark;
 
-
-
-
-
-@import "colors-mixins";
-
-html {
-  @include theme-vars();
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-    @include theme-vars("dark");
-  }
-}
-
-html.light {
-  color-scheme: light;
-  @include theme-vars();
-}
-
-html.dark {
-  color-scheme: dark;
-  @include theme-vars("dark");
-}

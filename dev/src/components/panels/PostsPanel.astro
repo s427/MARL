@@ -1,0 +1,47 @@
+---
+import PagingBottom from '../PagingBottom.astro';
+import Post from './posts/Post.astro';
+---
+
+<div
+  class="toots"
+  id="toots"
+  role="region"
+  aria-labelledby="toots-title"
+  tabindex="-1"
+>
+  <h2 id="toots-title" class="visually-hidden">Posts</h2>
+
+  <template
+    x-show="$store.files.pagedToots.length"
+    x-for="toot in await $store.files.pagedToots"
+  >
+    <Post />
+  </template>
+
+  <div
+    class="toots-no-results"
+    x-show="$store.files.pagedToots.length === 0"
+  >
+    <div x-show="$store.files.filtersActive">
+      <p>No results for the specified filters</p>
+      <p class="action">
+        <button
+          @click="$store.files.resetFilters(true)"
+          :disabled="!$store.files.filtersActive"
+        >
+          <svg class="btn-icon" aria-hidden="true">
+            <use href="#reset-filters" />
+          </svg>
+          <span class="btn-label">Reset filters</span>
+        </button>
+      </p>
+    </div>
+    <div x-show="!$store.files.filtersActive">
+      <p>No posts found in archive (?!)</p>
+    </div>
+  </div>
+
+  <PagingBottom />
+
+</div>

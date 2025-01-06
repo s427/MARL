@@ -121,6 +121,11 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.0
+  - code refactoring: MARL now uses Astro to build its HTML code as well as optimize and bundle its assets (CSS, SVG, images).
+  - all assets used to build MARL are now stored in the `dev` folder.
+  - the compiled, ready-to-use app can be found in the `dist` folder.
+  - except for the fact that it's now minified and packaged differently, everything works exactly the same as in version 1.3 for the end user (no new features).
 - v. 1.3
   - [NEW] dark theme
     - will be set automatically based on your OS or browser preference (default to light if no preference is detected)
@@ -134,4 +139,5 @@ Mastodon: https://lou.lt/@s427
 - v. 1.1
   - [NEW] paging preferences (page size and posts order) are automatically saved to the browser and restored on app load if present
   - various bug fixes and improvements
-- v. 1.0 - Initial release
+- v. 1.0
+  - initial release

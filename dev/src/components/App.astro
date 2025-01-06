@@ -1,0 +1,27 @@
+---
+import WelcomeScreen from './screens/WelcomeScreen.astro';
+import LoadingScreen from './screens/LoadingScreen.astro';
+import MainScreen from './screens/MainScreen.astro';
+---
+
+<div
+  class="main-page"
+  id="app"
+  x-data
+  :class="$store.ui.appClasses"
+  x-init="$watch('$store.files.appReady', value => checkAppReady(value))"
+>
+
+<template x-if="!$store.files.appReady && !$store.files.someFilesLoaded && !$store.files.loading">
+    <WelcomeScreen />
+  </template>
+
+  <template x-if="(!$store.files.appReady && $store.files.someFilesLoaded) || $store.files.loading">
+    <LoadingScreen />
+  </template>
+
+  <template x-if="$store.files.appReady">
+    <MainScreen />
+  </template>
+
+</div>

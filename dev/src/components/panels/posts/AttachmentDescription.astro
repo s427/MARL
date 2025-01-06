@@ -1,0 +1,11 @@
+<div class="att-description">
+  <span
+    class="desc-body"
+    x-text="att.name ?? 'No description provided'"
+    :id="'att-' + toot._marl.id + '-' + index + '-desc'"
+    aria-hidden="true"
+  ></span>
+  <span class="desc-source">
+    <strong>In archive:</strong> <span x-text="att.url"></span>
+  </span>
+</div>

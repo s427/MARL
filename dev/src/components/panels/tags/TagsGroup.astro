@@ -1,0 +1,10 @@
+---
+import TagsGroupHeader from './TagsGroupHeader.astro';
+import TagsGroupMain from './TagsGroupMain.astro';
+const { type } = Astro.props;
+---
+
+<div class="tags-group">
+  <TagsGroupHeader type={type} />
+  <TagsGroupMain type={type} />
+</div>

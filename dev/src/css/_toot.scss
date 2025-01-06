@@ -1,3 +1,5 @@
+@use "mixins";
+
 $meta-visible: 100ch;
 
 .toot {
@@ -45,7 +47,7 @@ $meta-visible: 100ch;
     var(--stripe2) 10px,
     var(--stripe2) 20px
   );
-  @include box-shadow-inner();
+  @include mixins.box-shadow-inner();
   border-radius: 0.5rem;
   @media (forced-colors: active) {
     outline: 1px solid Highlight;
@@ -226,7 +228,7 @@ $meta-visible: 100ch;
   padding: 1rem;
   background-color: var(--bg2);
   border-radius: 0.5rem;
-  @include box-shadow-inner();
+  @include mixins.box-shadow-inner();
 
   & + .att-sound {
     margin-top: 1rem;
@@ -286,7 +288,7 @@ $meta-visible: 100ch;
     padding: 1rem;
     background-color: var(--bg2);
     border-radius: 0.5rem;
-    @include box-shadow-inner();
+    @include mixins.box-shadow-inner();
 
     @media (forced-colors: active) {
       border: 1px solid CanvasText;
@@ -342,7 +344,7 @@ $meta-visible: 100ch;
   container-type: inline-size;
   background: var(--bg2);
   border-radius: 0.5rem;
-  @include box-shadow-inner();
+  @include mixins.box-shadow-inner();
 
   & > span {
     margin-bottom: 0.25rem;
@@ -474,7 +476,7 @@ $meta-visible: 100ch;
 
   details[open] {
     background-color: var(--bg2);
-    @include box-shadow-inner();
+    @include mixins.box-shadow-inner();
 
     @media (forced-colors: active) {
       border: 1px solid CanvasText;

@@ -1,0 +1,47 @@
+<template x-if="$store.lightbox.show && $store.lightbox.data.length">
+  <div
+    id="lightbox"
+    class="lightbox overlay"
+    tabindex="-1"
+    @keyup.left="$store.lightbox.showPrev()"
+    @keyup.right="$store.lightbox.showNext()"
+    @keyup.esc="$store.lightbox.close()"
+  >
+    <div class="overlay-content">
+      <img
+        :alt="$store.lightbox.data[$store.lightbox.index].name"
+        :src="`data:${$store.lightbox.data[$store.lightbox.index].mediaType}; base64,${$store.files.sources[$store.lightbox.source][$store.lightbox.data[$store.lightbox.index].url].content}`"
+        @click="$store.lightbox.showNext()"
+      />
+    </div>
+    <div class="overlay-ui">
+      <div class="backdrop" @click="$store.lightbox.close()"></div>
+
+      <button
+        x-show="$store.lightbox.data.length > 1"
+        class="viewer-next"
+        @click="$store.lightbox.showNext()"
+      >
+        <svg class="btn-icon" aria-hidden="true">
+          <use href="#viewer-next" /></svg
+        ><span class="visually-hidden">Next image</span>
+      </button>
+
+      <button
+        x-show="$store.lightbox.data.length > 1"
+        class="viewer-prev"
+        @click="$store.lightbox.showPrev()"
+      >
+        <svg class="btn-icon" aria-hidden="true">
+          <use href="#viewer-prev" /></svg
+        ><span class="visually-hidden">Previous image</span>
+      </button>
+
+      <button class="viewer-close" @click="$store.lightbox.close()">
+        <svg class="btn-icon" aria-hidden="true">
+          <use href="#close" /></svg
+        ><span class="visually-hidden">Close image</span>
+      </button>
+    </div>
+  </div>
+</template>

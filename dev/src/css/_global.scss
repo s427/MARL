@@ -1,3 +1,6 @@
+@use 'mixins';
+@use 'colors-mixins';
+
 /* mini-reset */
 *,
 *::before,
@@ -24,6 +27,27 @@
   a {
     color: var(--accent);
   }
+}
+
+/* color schemes */
+
+html {
+  @include colors-mixins.theme-vars();
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+    @include colors-mixins.theme-vars('dark');
+  }
+}
+
+html.light {
+  color-scheme: light;
+  @include colors-mixins.theme-vars();
+}
+
+html.dark {
+  color-scheme: dark;
+  @include colors-mixins.theme-vars('dark');
 }
 
 /* global rules */
@@ -158,14 +182,14 @@ input {
   }
 }
 
-input[type="number"] {
+input[type='number'] {
   width: 6ch;
   text-align: center;
   -moz-appearance: textfield;
   appearance: textfield;
 }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -219,7 +243,7 @@ details {
 // focusable elements
 *:focus-visible,
 .tags-group button:focus-visible div,
-.toots-filter:has([type="checkbox"]:focus-visible) {
+.toots-filter:has([type='checkbox']:focus-visible) {
   text-decoration: none;
   outline: 2px solid var(--accent-light);
   outline-offset: 2px;
@@ -229,7 +253,7 @@ details {
 }
 
 .visually-hidden:not(:focus):not(:active) {
-  @include visually-hidden();
+  @include mixins.visually-hidden();
 }
 
 .nojs {

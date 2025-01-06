@@ -1,0 +1,22 @@
+---
+import NoAvatar from '../../../img/no-avatar.png'
+---
+
+<template x-if="source.avatar.noImg">
+  <div class="actor-avatar no-avatar">
+    <img :alt="a.name" src={NoAvatar.src} />
+  </div>
+</template>
+
+<template x-if="! source.avatar.noImg">
+  <button
+    id="actor-avatar"
+    class="actor-avatar"
+    @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar', source.id)"
+  >
+    <img
+      :alt="a.name"
+      :src="`data:${source.avatar.type}; base64,${source.avatar.content}`"
+    />
+  </button>
+</template>

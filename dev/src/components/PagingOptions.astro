@@ -1,0 +1,38 @@
+<div class="paging-options" id="paging-options" :class="$store.ui.pagingOptionsClass" tabindex="-1">
+  <div class="paging-options-inner">
+    <label for="paging-current-page">Page</label>
+    <input
+      class="current-page"
+      id="paging-current-page"
+      type="number"
+      min="1"
+      max="$store.files.totalPages"
+      x-model="$store.files.currentPage"
+      @keyup="$store.files.checkPagingValue()"
+      @change="$store.files.checkPagingValue()"
+      onclick="this.select()"
+    />
+    /
+    <span class="total-pages" x-text="formatNumber($store.files.totalPages)"></span>
+    (
+    <input
+      class="page-size"
+      id="paging-page-size"
+      type="number"
+      min="1"
+      x-model="$store.files.pageSize"
+      @keyup="$store.files.checkPagingValue()"
+      @change="$store.files.checkPagingValue()"
+      onclick="this.select()"
+    />
+    <label for="paging-page-size">posts per page)</label>
+  </div>
+  <div class="paging-options-reverse">
+    <button @click="$store.files.toggleTootsOrder()">
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#toggle-order" />
+      </svg>
+      <span class="btn-label">Reverse order</span>
+    </button>
+  </div>
+</div>

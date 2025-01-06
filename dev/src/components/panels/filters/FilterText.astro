@@ -1,0 +1,19 @@
+---
+const { label, name } = Astro.props;
+---
+
+<div
+  class="toots-filter text"
+  :class={"isFilterActive('"+name+"') ? 'active' : ''"}
+>
+  <label for={"filter-"+name}>{label}</label>
+  <div class="input-wrapper">
+    <input
+      id={"filter-"+name}
+      type="text"
+      x-model.debounce={"$store.files.filters."+name}
+      @keyup.debounce="$store.files.setFilter()"
+      @change.debounce="$store.files.setFilter()"
+    />
+  </div>
+</div>

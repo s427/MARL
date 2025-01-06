@@ -1,0 +1,130 @@
+---
+import CloseBtn from './CloseBtn.astro'
+import FilterText from './filters/FilterText.astro';
+import FilterCheckbox from './filters/FilterCheckbox.astro';
+---
+
+<div
+  class="toots-filters mobile-menu-panel"
+  id="panel-filters"
+  role="search"
+  aria-labelledby="toots-filter-title"
+  tabindex="-1"
+>
+  <CloseBtn />
+
+  <h2 id="toots-filter-title">Filter posts</h2>
+
+  <p class="visually-hidden">
+    The list of posts will be automatically updated based on the active filters below.
+  </p>
+
+  <div class="toots-filters-group">
+    <FilterText label="Full text" name="fullText" />
+    <FilterText label="Hashtags" name="hashtagText" />
+    <FilterText label="Mentions" name="mentionText" />
+    <FilterText label="External links" name="externalLink" />
+    <FilterText label="Summary (CW)" name="summary" />
+  </div>
+
+  <div class="toots-filters-group">
+    <FilterCheckbox label="Has been edited" name="isEdited" />
+    <template x-show="$store.files.duplicates">
+      <FilterCheckbox label="Non-exact duplicates" name="isDuplicate" />
+    </template>
+  </div>
+
+  <div class="toots-filters-group">
+    <h3 class="toots-filters-group-title">Must contain</h3>
+
+    <FilterCheckbox label="Hashtag(s)" name="hasHashtags" />
+    <FilterCheckbox label="Mention(s)" name="hasMentions" />
+    <FilterCheckbox label="External link(s)" name="hasExternalLink" />
+    <FilterCheckbox label="Summary (CW)" name="hasSummary" />
+  </div>
+
+  <div class="toots-filters-group">
+    <h3 class="toots-filters-group-title">Type</h3>
+
+    <FilterCheckbox label="Original posts (incl. replies)" name="typeOriginal" />
+    <FilterCheckbox label="Boosts" name="typeBoost" />
+  </div>
+  <div class="toots-filters-group">
+    <FilterCheckbox label='Does not start with "@"' name="noStartingAt" />
+    <FilterCheckbox label="Marked as sensitive" name="isSensitive" />
+  </div>
+
+  <div class="toots-filters-group">
+    <h3 class="toots-filters-group-title">Must have attachment</h3>
+
+    <FilterCheckbox label="Any type" name="attachmentAny" />
+    <FilterCheckbox label="Image(s)" name="attachmentImage" />
+    <FilterCheckbox label="Video(s)" name="attachmentVideo" />
+    <FilterCheckbox label="Sound(s)" name="attachmentSound" />
+  </div>
+
+  <div class="toots-filters-group">
+    <FilterCheckbox label="Without alt text" name="attachmentNoAltText" />
+    <FilterCheckbox label="With alt text" name="attachmentWithAltText" />
+  </div>
+
+  <div class="toots-filters-group">
+    <h3 class="toots-filters-group-title">Visibility</h3>
+
+    <FilterCheckbox label="Public" name="visibilityPublic" />
+    <FilterCheckbox label="Unlisted" name="visibilityUnlisted" />
+    <FilterCheckbox label="Followers only" name="visibilityFollowers" />
+    <FilterCheckbox label="Mentioned people only" name="visibilityMentioned" />
+  </div>
+
+  <div class="toots-filters-group" x-show="$store.files.toots.length">
+    <h3 class="toots-filters-group-title">Language</h3>
+    <template x-for="lang in $store.files.sortedLanguages">
+
+      <div class="toots-filter checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
+        <label :for="'filter-lang-' + lang[0]">
+          <input
+            :id="'filter-lang-' + lang[0]"
+            type="checkbox"
+            x-model="$store.files.filters['lang_' + lang[0]]"
+            @change="$store.files.setFilter()"
+          />
+          <span>
+            <span x-text="lang[0]"></span>
+            (<span x-text="lang[1]"></span>)
+          </span>
+        </label>
+      </div>
+    </template>
+  </div>
+
+  <template x-if="$store.files.sources.length > 1">
+    <div class="toots-filters-group">
+      <h3 class="toots-filters-group-title">Author</h3>
+      <template x-for="source in $store.files.sources">
+
+        <div class="toots-filter checkbox" :class="isFilterActive('actor_' + source.id) ? 'active' : ''">
+          <label :for="'filter-actor-' + source.id">
+            <input
+              :id="'filter-actor-' + source.id"
+              type="checkbox"
+              x-model="$store.files.filters['actor_' + source.id]"
+              @change="$store.files.setFilter()"
+            />
+            <span>
+              <span x-text="source.actor.name"></span>
+            </span>
+          </label>
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <div class="toots-filters-reset">
+    <button @click="$store.files.resetFilters(true)" :disabled="!$store.files.filtersActive">
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#reset-filters" /></svg
+      ><span class="btn-label">Reset filters</span>
+    </button>
+  </div>
+</div>

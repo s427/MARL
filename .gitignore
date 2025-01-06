@@ -1,2 +1,10 @@
 .data
 .docs
+.astro
+node_modules
+
+# unused Astro generated files
+dist/content-assets.mjs
+dist/content-modules.mjs
+dist/data-store.json
+dist/settings.json

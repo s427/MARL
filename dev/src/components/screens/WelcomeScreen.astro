@@ -1,0 +1,35 @@
+<main class="welcome">
+  <div class="intro">
+    <h1>
+      Welcome to MARL
+      <span class="accronym">(Mastodon Archive Reader Lite)</span>
+    </h1>
+    <p>
+      MARL allows you to explore the content of your Mastodon archive file in a user-friendly interface.
+      Everything takes place in the browser: your archive stays strictly on your computer; none of its data is
+      sent to any server.
+    </p>
+    <p>
+      You can request your Mastodon archive by logging into your account on the web, then visiting
+      "Preferences > Import and export > Request your archive".<br />
+      <strong>Please note:</strong> only ZIP files are supported (not GZ).
+    </p>
+    <p>
+      <strong>Start by opening your archive file with MARL.</strong><br />
+      You can drag and drop it anywhere on this page, or
+      <label for="file-loader" tabindex="0">click here to select it</label>.
+    </p>
+
+    <input
+      id="file-loader"
+      class="file-loader"
+      type="file"
+      accept=".zip"
+      multiple
+      @change="unZip(Object.values($event.target.files))"
+    />
+  </div>
+  <div class="about">
+    <a href="https://github.com/s427/MARL">Project page (github)</a>
+  </div>
+</main>

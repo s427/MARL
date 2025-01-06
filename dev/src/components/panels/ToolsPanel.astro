@@ -1,0 +1,20 @@
+---
+import CloseBtn from './CloseBtn.astro'
+---
+
+<aside
+  class="panel-tools mobile-menu-panel"
+  id="panel-tools"
+  aria-labelledby="panel-tools-title"
+  tabindex="-1"
+>
+  <CloseBtn />
+
+  <h2 class="tools-title visually-hidden" id="panel-tools-title">Tools</h2>
+
+  <button @click="startOver" class="load-new">
+    <svg class="btn-icon" aria-hidden="true">
+      <use href="#load-file" /></svg
+    ><span class="btn-label">Load new file</span>
+  </button>
+</aside>
