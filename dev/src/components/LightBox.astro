@@ -23,8 +23,9 @@
         @click="$store.lightbox.showNext()"
       >
         <svg class="btn-icon" aria-hidden="true">
-          <use href="#viewer-next" /></svg
-        ><span class="visually-hidden">Next image</span>
+          <use href="#viewer-next" />
+        </svg>
+        <span class="visually-hidden" x-text="$t('lightbox.next')"></span>
       </button>
 
       <button
@@ -33,14 +34,16 @@
         @click="$store.lightbox.showPrev()"
       >
         <svg class="btn-icon" aria-hidden="true">
-          <use href="#viewer-prev" /></svg
-        ><span class="visually-hidden">Previous image</span>
+          <use href="#viewer-prev" />
+        </svg>
+        <span class="visually-hidden" x-text="$t('lightbox.prev')"></span>
       </button>
 
       <button class="viewer-close" @click="$store.lightbox.close()">
         <svg class="btn-icon" aria-hidden="true">
-          <use href="#close" /></svg
-        ><span class="visually-hidden">Close image</span>
+          <use href="#close" />
+        </svg>
+        <span class="visually-hidden" x-text="$t('lightbox.close')"></span>
       </button>
     </div>
   </div>

@@ -4,7 +4,7 @@
       <li>
         <button class="menu-actor" @click="$store.ui.menuToggle('actor')">
           <svg aria-hidden="true"><use href="#menu-actor" /></svg>
-          <span>Profile</span>
+          <span x-text="$t('menu.profile')"></span>
         </button>
       </li>
       <li>
@@ -14,22 +14,24 @@
           @click="$store.ui.menuToggle('filters')"
         >
           <svg aria-hidden="true"><use href="#menu-filters" /></svg>
-          <span
-            >Filters
-            <em x-show="$store.files.filtersActive" class="visually-hidden">(some filters are active)</em>
-          </span>
+          <span x-text="$t('menu.filters')"></span>
+          <em
+            x-text="$t('menu.filtersActive')"
+            x-show="$store.files.filtersActive"
+            class="visually-hidden"
+          ></em>
         </button>
       </li>
       <li>
         <button class="menu-tags" @click="$store.ui.menuToggle('tags')">
           <svg aria-hidden="true"><use href="#menu-tags" /></svg>
-          <span>Tags</span>
+          <span x-text="$t('menu.tags')"></span>
         </button>
       </li>
       <li>
         <button class="menu-new" @click="startOver">
           <svg aria-hidden="true"><use href="#menu-new" /></svg>
-          <span>New File</span>
+          <span x-text="$t('menu.newFile')"></span>
         </button>
       </li>
     </ul>

@@ -4,7 +4,7 @@ import NoHeader from '../../../img/no-header.png'
 
 <template x-if="source.header.noImg">
   <div class="actor-header no-header">
-    <img alt="header" src={NoHeader.src} />
+    <img alt="$t(actor.noHeaderImage)" src={NoHeader.src} />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import NoHeader from '../../../img/no-header.png'
     @click="$store.lightbox.openProfileImg('header', 'actor-header', source.id)"
   >
     <img
-      alt="header"
+      alt="$t(actor.headerImage)"
       :src="`data:${source.header.type}; base64,${source.header.content}`"
     />
   </button>

@@ -1,10 +1,5 @@
 ---
 const { type } = Astro.props;
-
-let label = "Favorites";
-if (type === "bookmarks") {
-  label = "Bookmarks";
-}
 ---
 
 <div class={`actor-${type}`}>
@@ -16,7 +11,8 @@ if (type === "bookmarks") {
         </svg>
       </span>
       <h2 class="summary-label">
-        {label} (<span class="count" x-text={`source.${type}.length`}></span>)
+        <span x-text={`$t('actor.${type}')`}></span>
+        (<span class="count" x-text={`source.${type}.length`}></span>)
       </h2>
     </summary>
     <div class="details-content">
@@ -30,7 +26,7 @@ if (type === "bookmarks") {
         </ul>
       </template>
       <template x-if={`! source.${type}.length`}>
-        <p class="no-content">... no {label?.toLowerCase()} ...</p>
+        <p class="no-content">…&nbsp;<span x-text={`$t('actor.${type}Empty')`}></span>&nbsp;…</p>
       </template>
     </div>
   </details>

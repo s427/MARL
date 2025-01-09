@@ -11,7 +11,7 @@ import AttachmentVideo from "./AttachmentVideo.astro";
 >
   <h3 class="toot-header visually-hidden">
     <span x-text="contentType(toot.type)"></span>
-    by <span x-text="formatAuthor(toot.actor, true)"></span>,
+    <span x-text="$t('post.by')"></span> <span x-text="formatAuthor(toot.actor, true)"></span>,
     <span x-text="formatDateTime(toot.published)"></span>
   </h3>
 
@@ -59,17 +59,18 @@ import AttachmentVideo from "./AttachmentVideo.astro";
   </template>
 
   <div class="toot-infos">
-    <span class="type"> <span x-text="contentType(toot.type)"></span>  </span>
+    <span class="type">
+      <span x-text="contentType(toot.type)"></span>&nbsp;
+    </span>
 
     <span class="author">
-      by
-      <span x-html="formatAuthor(toot.actor)"></span>
+      <span x-text="$t('post.by')"></span>&nbsp;<span x-html="formatAuthor(toot.actor)"></span>
     </span>
 
     <span class="published"
       ><span x-text="formatDateTime(toot.published)"></span>
       <span x-show="toot.object && toot.object.updated" class="updated">
-        Last updated
+        <span x-text="$t('post.lastUpdated')"></span>
         <span x-text="formatDateTime(toot.object.updated)"></span>
       </span>
     </span>
@@ -79,7 +80,11 @@ import AttachmentVideo from "./AttachmentVideo.astro";
     </span>
 
     <span class="link">
-      <a x-show="toot.object.id" :href="toot.object.id">link</a>
+      <a
+        x-show="toot.object.id"
+        :href="toot.object.id"
+        x-text="$t('post.linkToPost')"
+      ></a>
     </span>
   </div>
 
@@ -89,7 +94,7 @@ import AttachmentVideo from "./AttachmentVideo.astro";
     <div class="toot-meta">
       <template x-if="toot.object.tag && toot.object.tag.filter(x => x.type === 'Mention').length">
         <div class="toot-people">
-          <h4>People</h4>
+          <h4 x-text="$t('post.people')"></h4>
           <ul>
             <template x-for="tag in toot.object.tag">
               <li x-show="tag.type === 'Mention'">
@@ -102,7 +107,7 @@ import AttachmentVideo from "./AttachmentVideo.astro";
 
       <template x-if="toot.object.tag && toot.object.tag.filter(x => x.type === 'Hashtag').length">
         <div class="toot-hashtags">
-          <h4>Hashtags</h4>
+          <h4 x-text="$t('post.hashtags')"></h4>
           <ul>
             <template x-for="tag in toot.object.tag">
               <li x-show="tag.type === 'Hashtag'">
@@ -115,7 +120,7 @@ import AttachmentVideo from "./AttachmentVideo.astro";
 
       <template x-if="toot._marl.externalLinks.length">
         <div class="toot-links">
-          <h4>External links</h4>
+          <h4 x-text="$t('post.extLinks')"></h4>
           <ul>
             <template x-for="link in toot._marl.externalLinks">
               <li>
@@ -136,7 +141,11 @@ import AttachmentVideo from "./AttachmentVideo.astro";
             <use href="#json" />
           </svg>
         </span>
-        <span class="summary-label" :id="'raw-' + toot._marl.id">Raw data</span>
+        <span
+          class="summary-label"
+          :id="'raw-' + toot._marl.id"
+          x-text="$t('post.rawData')"
+        ></span>
       </summary>
       <div class="details-content">
         <textarea

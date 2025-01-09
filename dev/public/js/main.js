@@ -22,14 +22,13 @@ const userPrefsStore = {
         break;
       case "pageSize":
         value = +value;
-        if (
-          typeof value == "number" &&
-          !isNaN(value) &&
-          value > 0 &&
-          value !== Alpine.store("files").pageSize
-        ) {
+        if (typeof value == "number" && !isNaN(value) && value > 0 && value !== Alpine.store("files").pageSize) {
           Alpine.store("files").pageSize = value;
         }
+        break;
+      case "lang":
+        // ### validation
+        Alpine.store("ui").lang = value;
         break;
     }
   },
@@ -165,11 +164,7 @@ const filesStore = {
         if (t._marl.textContent) {
           const filterValue = f.fullText.toLowerCase();
 
-          if (
-            filterValue &&
-            t._marl.textContent &&
-            t._marl.textContent.indexOf(filterValue) >= 0
-          ) {
+          if (filterValue && t._marl.textContent && t._marl.textContent.indexOf(filterValue) >= 0) {
             show = true;
           }
         }
@@ -183,10 +178,7 @@ const filesStore = {
           const filterValue = f.hashtagText.toLowerCase();
           if (
             !t.object.tag.some((t) => {
-              return (
-                t.type === "Hashtag" &&
-                t.name.toLowerCase().indexOf(filterValue) > -1
-              );
+              return t.type === "Hashtag" && t.name.toLowerCase().indexOf(filterValue) > -1;
             })
           ) {
             return false;
@@ -201,10 +193,7 @@ const filesStore = {
           const filterValue = f.mentionText.toLowerCase();
           if (
             !t.object.tag.some((t) => {
-              return (
-                t.type === "Mention" &&
-                t.name.toLowerCase().indexOf(filterValue) > -1
-              );
+              return t.type === "Mention" && t.name.toLowerCase().indexOf(filterValue) > -1;
             })
           ) {
             return false;
@@ -226,13 +215,7 @@ const filesStore = {
       }
 
       if (f.isEdited) {
-        if (
-          !(
-            typeof t.object === "object" &&
-            t.object !== null &&
-            t.object.updated
-          )
-        ) {
+        if (!(typeof t.object === "object" && t.object !== null && t.object.updated)) {
           return false;
         }
       }
@@ -308,10 +291,7 @@ const filesStore = {
         if (t._marl.externalLinks && t._marl.externalLinks.length) {
           const filterValue = f.externalLink.toLowerCase();
           show = t._marl.externalLinks.some((link) => {
-            return (
-              link.href.indexOf(filterValue) > -1 ||
-              link.text.indexOf(filterValue) > -1
-            );
+            return link.href.indexOf(filterValue) > -1 || link.text.indexOf(filterValue) > -1;
           });
         }
         if (!show) {
@@ -457,9 +437,7 @@ const filesStore = {
             tag.type &&
             tag.type === type &&
             tag.name &&
-            tag.name
-              .toLowerCase()
-              .indexOf(this.tagsFilters[filterSource].toLowerCase()) >= 0
+            tag.name.toLowerCase().indexOf(this.tagsFilters[filterSource].toLowerCase()) >= 0
           ) {
             if (
               accu.some((item) => {
@@ -496,11 +474,7 @@ const filesStore = {
   },
   get listBoostsAuthors() {
     let r = this.boostsAuthors.reduce((accu, item) => {
-      if (
-        item.name
-          .toLowerCase()
-          .indexOf(this.tagsFilters.boostsAuthors.toLowerCase()) >= 0
-      ) {
+      if (item.name.toLowerCase().indexOf(this.tagsFilters.boostsAuthors.toLowerCase()) >= 0) {
         accu.push(item);
       }
       return accu;
@@ -707,6 +681,7 @@ const uiStore = {
     this.openMenu = "";
     this.actorPanel = 0;
     this.menuIsActive = false;
+    this.lang = "en";
   },
 
   togglePagingOptions() {
@@ -748,9 +723,7 @@ const uiStore = {
     this.setInert();
 
     // bring focus back to where it was before the panel was opened
-    document
-      .querySelector("#main-section-inner .mobile-menu .menu-" + name)
-      .focus();
+    document.querySelector("#main-section-inner .mobile-menu .menu-" + name).focus();
   },
   menuOpen(name) {
     this.openMenu = name;
@@ -805,19 +778,14 @@ const uiStore = {
     if (this.menuIsActive) {
       if (this.openMenu) {
         document
-          .querySelectorAll(
-            "#main-section-inner > *:not(.mobile-menu, .panel-backdrop, #panel-" +
-              this.openMenu
-          )
+          .querySelectorAll("#main-section-inner > *:not(.mobile-menu, .panel-backdrop, #panel-" + this.openMenu)
           .forEach((e) => {
             e.setAttribute("inert", true);
           });
       } else {
-        document
-          .querySelectorAll("#panel-actor, #panel-filters, #panel-tags")
-          .forEach((e) => {
-            e.setAttribute("inert", true);
-          });
+        document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags").forEach((e) => {
+          e.setAttribute("inert", true);
+        });
       }
     }
   },
@@ -842,6 +810,7 @@ function resetStores() {
 
   Alpine.store("userPrefs").load("sortAsc");
   Alpine.store("userPrefs").load("pageSize");
+  Alpine.store("userPrefs").load("lang");
 }
 
 function unZip(files) {
@@ -922,15 +891,11 @@ function loadJsonFile(name, index, fileInfos) {
   if (content[name + ".json"] === undefined) {
     if (name === "likes" || name === "bookmarks") {
       // we can still run the app without those files
-      console.warn(
-        `${fileInfos.name}: File ${name}.json not found in archive.`
-      );
+      console.warn(`${fileInfos.name}: File ${name}.json not found in archive.`);
       Alpine.store("files").sources[index].loaded[name] = true;
     } else {
       // this should NOT happen and will prevent the app from running
-      console.error(
-        `${fileInfos.name}: File ${name}.json not found in archive.`
-      );
+      console.error(`${fileInfos.name}: File ${name}.json not found in archive.`);
     }
     return;
   }
@@ -1010,11 +975,7 @@ function buildTootsInfos() {
             if (url.length > 2) {
               domain = url[2];
 
-              if (
-                url[0] === "https:" &&
-                url[3] === "users" &&
-                url[5] === "statuses"
-              ) {
+              if (url[0] === "https:" && url[3] === "users" && url[5] === "statuses") {
                 // Mastodon URL format -> user name
                 name = url[4];
                 user = `https://${url[2]}/users/${url[4]}/`;
@@ -1101,11 +1062,7 @@ function preprocessToots(t, index) {
   }
 
   if (t.type === "Create") {
-    if (
-      typeof t.object === "object" &&
-      t.object !== null &&
-      t.object.contentMap
-    ) {
+    if (typeof t.object === "object" && t.object !== null && t.object.contentMap) {
       let langs = [];
       for (let lang in t.object.contentMap) {
         langs.push(lang);
@@ -1146,12 +1103,7 @@ function loadActorImages(index) {
   const actor = Alpine.store("files").sources[index].actor;
   const content = Alpine.store("files").sources[index]._raw;
 
-  if (
-    actor.icon &&
-    actor.icon.type === "Image" &&
-    actor.icon.url &&
-    content[actor.icon.url]
-  ) {
+  if (actor.icon && actor.icon.type === "Image" && actor.icon.url && content[actor.icon.url]) {
     const image = actor.icon;
     content[image.url].async("base64").then(function (content) {
       Alpine.store("files").sources[index].avatar = {
@@ -1166,12 +1118,7 @@ function loadActorImages(index) {
     Alpine.store("files").sources[index].loaded.avatar = true;
   }
 
-  if (
-    actor.image &&
-    actor.image.type === "Image" &&
-    actor.image.url &&
-    content[actor.image.url]
-  ) {
+  if (actor.image && actor.image.type === "Image" && actor.image.url && content[actor.image.url]) {
     const image = actor.image;
     content[image.url].async("base64").then(function (content) {
       Alpine.store("files").sources[index].header = {
@@ -1236,11 +1183,7 @@ function cleanUpRaw() {
 }
 
 function loadAttachedMedia(att, index) {
-  if (
-    attachmentIsImage(att) ||
-    attachmentIsVideo(att) ||
-    attachmentIsSound(att)
-  ) {
+  if (attachmentIsImage(att) || attachmentIsVideo(att) || attachmentIsSound(att)) {
     const data = Alpine.store("files").sources[index]._raw;
     let url = att.url;
     // ?! some instances seem to add their own name in front of the path,
@@ -1298,38 +1241,33 @@ function contentType(data) {
 
 function tootVisibility(data) {
   if (data.to.includes("https://www.w3.org/ns/activitystreams#Public")) {
-    return ["public", "Public"];
+    return ["public", AlpineI18n.t("filters.visibilityPublic")];
   }
   if (
     data.to.some((x) => x.indexOf("/followers") > -1) &&
     !data.to.includes("https://www.w3.org/ns/activitystreams#Public") &&
     data.cc.includes("https://www.w3.org/ns/activitystreams#Public")
   ) {
-    return ["unlisted", "Unlisted"];
+    return ["unlisted", AlpineI18n.t("filters.visibilityUnlisted")];
   }
   if (
     data.to.some((x) => x.indexOf("/followers") > -1) &&
     !data.to.includes("https://www.w3.org/ns/activitystreams#Public") &&
     !data.cc.includes("https://www.w3.org/ns/activitystreams#Public")
   ) {
-    return ["followers", "Followers only"];
+    return ["followers", AlpineI18n.t("filters.visibilityFollowers")];
   }
   if (
     !data.to.some((x) => x.indexOf("/followers") > -1) &&
     !data.to.includes("https://www.w3.org/ns/activitystreams#Public") &&
     !data.cc.includes("https://www.w3.org/ns/activitystreams#Public")
   ) {
-    return ["mentioned", "Mentioned people only"];
+    return ["mentioned", AlpineI18n.t("filters.visibilityMentioned")];
   }
 }
 
 function tootHasTags(toot) {
-  return (
-    typeof toot.object === "object" &&
-    toot.object !== null &&
-    toot.object.tag &&
-    toot.object.tag.length
-  );
+  return typeof toot.object === "object" && toot.object !== null && toot.object.tag && toot.object.tag.length;
 }
 
 function formatJson(data) {
@@ -1447,14 +1385,12 @@ function attachmentWrapperClass(att) {
 }
 
 function isFilterActive(name) {
-  return (
-    Alpine.store("files").filters[name] !==
-    Alpine.store("files").filtersDefault[name]
-  );
+  return Alpine.store("files").filters[name] !== Alpine.store("files").filtersDefault[name];
 }
 
 function startOver() {
-  if (confirm("Discard current data and load a new archive file?")) {
+  const txt = AlpineI18n.t("menu.newFileConfirm");
+  if (confirm(txt)) {
     location.reload();
   }
 }
@@ -1468,25 +1404,13 @@ const drag = {
     this.dropArea = document.getElementById(el);
 
     ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
-      this.dropArea.addEventListener(
-        eventName,
-        (e) => this.preventDragDefaults(e),
-        false
-      );
+      this.dropArea.addEventListener(eventName, (e) => this.preventDragDefaults(e), false);
     });
     ["dragenter", "dragover"].forEach((eventName) => {
-      this.dropArea.addEventListener(
-        eventName,
-        () => this.highlightDrag(),
-        false
-      );
+      this.dropArea.addEventListener(eventName, () => this.highlightDrag(), false);
     });
     ["dragleave", "drop"].forEach((eventName) => {
-      this.dropArea.addEventListener(
-        eventName,
-        () => this.unhighlightDrag(),
-        false
-      );
+      this.dropArea.addEventListener(eventName, () => this.unhighlightDrag(), false);
     });
     this.dropArea.addEventListener("drop", (e) => this.handleDrop(e), false);
   },
@@ -1510,19 +1434,25 @@ const drag = {
 
 // initialization
 
+drag.init("app");
+
 const isFileProtocol = window.location.protocol === "file:";
 const scripts = [
   {
     src: "js/jszip.min.js",
-    integrity:
-      "sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==",
+    integrity: "sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==",
     crossorigin: "anonymous",
     defer: false,
   },
   {
+    src: "js/alpinejs-i18n.min.js",
+    integrity: "sha256-o204NcFyHPFzboSC51fufMqFe2KJdQfSCl8AlvSZO/E=",
+    crossorigin: "anonymous",
+    defer: true,
+  },
+  {
     src: "js/alpinejs.min.js",
-    integrity:
-      "sha512-FUaEyIgi9bspXaH6hUadCwBLxKwdH7CW24riiOqA5p8hTNR/RCLv9UpAILKwqs2AN5WtKB52CqbiePBei3qjKg==",
+    integrity: "sha512-FUaEyIgi9bspXaH6hUadCwBLxKwdH7CW24riiOqA5p8hTNR/RCLv9UpAILKwqs2AN5WtKB52CqbiePBei3qjKg==",
     crossorigin: "anonymous",
     defer: true,
   },
@@ -1549,13 +1479,29 @@ document.addEventListener("alpine:init", () => {
 
   resetStores();
 
+  // watch user preference values for changes
   Alpine.effect(() => {
     const pageSize = Alpine.store("files").pageSize;
     const sortAsc = Alpine.store("files").sortAsc;
+    const lang = Alpine.store("ui").lang;
+
+    console.log("===> effect!");
 
     Alpine.store("userPrefs").save("pageSize", pageSize);
     Alpine.store("userPrefs").save("sortAsc", sortAsc ? 1 : 0);
+    Alpine.store("userPrefs").save("lang", lang);
   });
 });
 
-drag.init("app");
+document.addEventListener("alpine-i18n:ready", function () {
+  window.AlpineI18n.create("en", appStrings);
+  window.AlpineI18n.fallbackLocale = "en";
+
+  console.log("\tlocale 1", AlpineI18n.locale);
+  // Alpine.store("userPrefs").load("lang");
+  const lang = Alpine.store("ui").lang;
+  // ### if undefined
+  // ### validate against list of langs
+  AlpineI18n.locale = lang;
+  // console.log("\tlocale 2", AlpineI18n.locale);
+});

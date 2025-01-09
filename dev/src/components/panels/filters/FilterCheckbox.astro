@@ -1,5 +1,5 @@
 ---
-const { label, name } = Astro.props;
+const { name } = Astro.props;
 ---
 
 <div class="toots-filter checkbox" :class={`isFilterActive('${name}') ? 'active' : ''`}>
@@ -10,6 +10,6 @@ const { label, name } = Astro.props;
       x-model.debounce={"$store.files.filters."+name}
       @change.debounce="$store.files.setFilter()"
     />
-    <span>{label}</span>
+    <span x-text={`$t('filters.${name}')`}></span>
   </label>
 </div>

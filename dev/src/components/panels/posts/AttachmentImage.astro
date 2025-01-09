@@ -8,7 +8,7 @@ import AttachmentDescription from './AttachmentDescription.astro'
   <div class="att-wrapper">
     <button
       class="att-img-wrapper"
-      @click="$store.lightbox.open(toot, index, toot._marl.id + '-' + index)"
+      @click="$store.lightbox.open(toot, index, 'att-' + toot._marl.id + '-' + index)"
       :id="'att-' + toot._marl.id + '-' + index"
     >
       <img

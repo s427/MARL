@@ -10,7 +10,11 @@ import Post from './posts/Post.astro';
   aria-labelledby="toots-title"
   tabindex="-1"
 >
-  <h2 id="toots-title" class="visually-hidden">Posts</h2>
+  <h2
+    id="toots-title"
+    class="visually-hidden"
+    x-text="$t('posts.panelTitle')"
+  ></h2>
 
   <template
     x-show="$store.files.pagedToots.length"
@@ -24,7 +28,7 @@ import Post from './posts/Post.astro';
     x-show="$store.files.pagedToots.length === 0"
   >
     <div x-show="$store.files.filtersActive">
-      <p>No results for the specified filters</p>
+      <p x-text="$t('posts.noResults')"></p>
       <p class="action">
         <button
           @click="$store.files.resetFilters(true)"
@@ -33,12 +37,12 @@ import Post from './posts/Post.astro';
           <svg class="btn-icon" aria-hidden="true">
             <use href="#reset-filters" />
           </svg>
-          <span class="btn-label">Reset filters</span>
+          <span class="btn-label" x-text="$t('filters.resetFilters')"></span>
         </button>
       </p>
     </div>
     <div x-show="!$store.files.filtersActive">
-      <p>No posts found in archive (?!)</p>
+      <p x-text="$t('posts.noPostsError')"></p>
     </div>
   </div>
 

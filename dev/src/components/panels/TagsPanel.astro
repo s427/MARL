@@ -11,7 +11,11 @@ import TagsGroup from './tags/TagsGroup.astro';
 >
   <CloseBtn />
 
-  <h2 class="tags-title" id="toots-tags-title">Tags</h2>
+  <h2
+    class="tags-title"
+    id="toots-tags-title"
+    x-text="$t('tags.panelTitle')"
+  ></h2>
 
   <TagsGroup type="hashtags" />
   <TagsGroup type="mentions" />

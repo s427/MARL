@@ -6,23 +6,23 @@ import PagingTop from '../PagingTop.astro';
   <h2 id="toots-header-title">
     <span class="count">
       <span x-text="await formatNumber($store.files.filteredToots.length)" class="nb"></span>
-      posts
+      <span x-text="$t('header.countLabel')"></span>
     </span>
     <span class="order">
       -
-      <span x-text="await $store.files.sortAsc ? 'oldest' : 'latest'"></span>
-      first
+      <span x-text="await $store.files.sortAsc ? $t('header.oldestFirst') : $t('header.latestFirst')"></span>
       <button @click="$store.files.toggleTootsOrder()" class="toggle-order">
         <svg class="btn-icon" aria-hidden="true">
-          <use href="#toggle-order" /></svg
-        ><span class="btn-label">Reverse</span>
+          <use href="#toggle-order" />
+        </svg>
+        <span class="btn-label" x-text="$t('header.reverse')"></span>
       </button>
     </span>
 
     <button @click="startOver" class="load-new">
       <svg class="btn-icon" aria-hidden="true">
         <use href="#load-file" /></svg
-      ><span class="btn-label">Load new file</span>
+      ><span class="btn-label" x-text="$t('header.loadNewFile')"></span>
     </button>
   </h2>
 

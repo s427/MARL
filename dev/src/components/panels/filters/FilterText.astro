@@ -1,12 +1,15 @@
 ---
-const { label, name } = Astro.props;
+const { name } = Astro.props;
 ---
 
 <div
   class="toots-filter text"
   :class={"isFilterActive('"+name+"') ? 'active' : ''"}
 >
-  <label for={"filter-"+name}>{label}</label>
+  <label
+    for={"filter-"+name}
+    x-text={`$t('filters.${name}')`}
+  ></label>
   <div class="input-wrapper">
     <input
       id={"filter-"+name}

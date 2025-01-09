@@ -14,8 +14,8 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
 >
   <CloseBtn />
 
-  <h2 class="visually-hidden" id="actor-title">Account info</h2>
-  <h3 class="visually-hidden" id="actor-tabs-title">Accounts</h3>
+  <h2 class="visually-hidden" id="actor-title" x-text="$t('actor.accountInfo')"></h2>
+  <h3 class="visually-hidden" id="actor-tabs-title" x-text="$t('actor.accounts')"></h3>
 
   <div class="actors-wrapper" :style="'--actor-hue: '+ $store.files.sources[$store.ui.actorPanel].hue">
     <template x-if="$store.files.sources.length > 1">
@@ -44,9 +44,9 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
     <template x-for="source in $store.files.sources">
       <div
         class="actor-panel"
-        :id="'actorpanel-' + source.id"
-        role="tabpanel"
         tabindex="0"
+        role="tabpanel"
+        :id="'actorpanel-' + source.id"
         :aria-labelledby="'actortab-' + source.id"
         x-data="{a: source.actor}"
         x-show="$store.ui.actorPanel === source.id"
@@ -68,7 +68,7 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
 
           <div class="actor-infos">
             <dl>
-              <dt>Member since</dt>
+              <dt x-text="$t('actor.memberSince')"></dt>
               <dd x-text="await formatDate(a.published)"></dd>
             </dl>
             <template x-for="item in await a.attachment">
@@ -82,12 +82,12 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
           <div class="actor-posts-count">
             <div class="total">
               <span class="count" x-text="formatNumber(source.outbox.totalItems)"></span>
-              <span class="label">posts</span>
+              <span class="label" x-text="$t('actor.countPosts')"></span>
             </div>
 
             <div class="archive">
               <span class="count" x-text="formatNumber(source.nbToots)"></span>
-              <span class="label">in archive</span>
+              <span class="label" x-text="$t('actor.countInArchive')"></span>
             </div>
 
             <details class="comment" x-show="source.nbToots != source.outbox.totalItems">
@@ -97,15 +97,10 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
                     <use href="#question" />
                   </svg>
                 </span>
-                <span class="summary-label">Why are those two numbers different?</span>
+                <span class="summary-label" x-text="$t('actor.countDiffWhy')"></span>
               </summary>
               <div class="details-content">
-                <p>
-                  Posts that are not directly hosted on your instance are kept in a cache by your instance
-                  for a given time, after what they are deleted from that cache. Posts that are not in your
-                  instance cache any more are not included in your archive. This affects boosts, likes, and
-                  bookmarks.
-                </p>
+                <p x-text="$t('actor.countDiffExplanation')"></p>
               </div>
             </details>
           </div>
@@ -120,9 +115,11 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
                     <use href="#json" />
                   </svg>
                 </span>
-                <span class="summary-label" :id="source + 'raw-data-label'"
-                  >Raw data <em>(actor.json)</em></span
-                >
+                <span
+                  class="summary-label"
+                  x-html="$t('actor.rawData', {fileName: `<em>(actor.json)</em>`})"
+                  :id="source + 'raw-data-label'"
+                ></span>
               </summary>
               <div class="details-content">
                 <textarea
