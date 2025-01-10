@@ -4,6 +4,7 @@ const userPrefsStore = {
   prefix: "marl_",
 
   save(pref, value) {
+    console.info("Saving user preference:", pref, value);
     localStorage.setItem(this.prefix + pref, value);
   },
   load(pref) {
@@ -27,7 +28,14 @@ const userPrefsStore = {
         }
         break;
       case "lang":
-        // ### validation
+        // if (!value || !Alpine.store("ui").appLangs.some((l) => l[0] === value)) {
+        if (!value || !Alpine.store("ui").appLangs[value]) {
+          if (value) {
+            console.warn("Unrecognized language in user preferences:", value);
+          }
+          value = "en";
+          this.save("lang", value);
+        }
         Alpine.store("ui").lang = value;
         break;
     }
@@ -96,6 +104,9 @@ const filesStore = {
       mentions: "",
       boostsAuthors: "",
     };
+
+    Alpine.store("userPrefs").load("sortAsc");
+    Alpine.store("userPrefs").load("pageSize");
   },
 
   setFilter() {
@@ -682,6 +693,9 @@ const uiStore = {
     this.actorPanel = 0;
     this.menuIsActive = false;
     this.lang = "en";
+    this.appLangs = appLangs ?? [["en", "English"]];
+
+    Alpine.store("userPrefs").load("lang");
   },
 
   togglePagingOptions() {
@@ -807,10 +821,6 @@ function resetStores() {
   Alpine.store("files").resetState();
   Alpine.store("lightbox").resetState();
   Alpine.store("ui").resetState();
-
-  Alpine.store("userPrefs").load("sortAsc");
-  Alpine.store("userPrefs").load("pageSize");
-  Alpine.store("userPrefs").load("lang");
 }
 
 function unZip(files) {
@@ -1444,6 +1454,7 @@ const scripts = [
     crossorigin: "anonymous",
     defer: false,
   },
+  // Note: Alpine plug-ins must be inserted BEFORE alpinejs
   {
     src: "js/alpinejs-i18n.min.js",
     integrity: "sha256-o204NcFyHPFzboSC51fufMqFe2KJdQfSCl8AlvSZO/E=",
@@ -1472,6 +1483,7 @@ scripts.forEach(({ src, integrity, crossorigin, defer }) => {
 });
 
 document.addEventListener("alpine:init", () => {
+  // create and init stores
   Alpine.store("files", filesStore);
   Alpine.store("lightbox", lightboxStore);
   Alpine.store("ui", uiStore);
@@ -1483,25 +1495,15 @@ document.addEventListener("alpine:init", () => {
   Alpine.effect(() => {
     const pageSize = Alpine.store("files").pageSize;
     const sortAsc = Alpine.store("files").sortAsc;
-    const lang = Alpine.store("ui").lang;
-
-    console.log("===> effect!");
 
     Alpine.store("userPrefs").save("pageSize", pageSize);
     Alpine.store("userPrefs").save("sortAsc", sortAsc ? 1 : 0);
-    Alpine.store("userPrefs").save("lang", lang);
   });
 });
 
 document.addEventListener("alpine-i18n:ready", function () {
-  window.AlpineI18n.create("en", appStrings);
-  window.AlpineI18n.fallbackLocale = "en";
-
-  console.log("\tlocale 1", AlpineI18n.locale);
-  // Alpine.store("userPrefs").load("lang");
-  const lang = Alpine.store("ui").lang;
-  // ### if undefined
-  // ### validate against list of langs
-  AlpineI18n.locale = lang;
-  // console.log("\tlocale 2", AlpineI18n.locale);
+  AlpineI18n.create("en", appStrings);
+  AlpineI18n.fallbackLocale = "en";
+  AlpineI18n.locale = Alpine.store("ui").lang;
+  console.info(`App language set to '${AlpineI18n.locale}' (${Alpine.store("ui").appLangs[AlpineI18n.locale]})`);
 });

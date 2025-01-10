@@ -1,7 +1,7 @@
-const appLangs = [
-  ["en", "English"],
-  ["fr", "Français"],
-];
+const appLangs = {
+  en: "English",
+  fr: "Français",
+};
 
 const appStrings = {
   en: {
