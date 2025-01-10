@@ -48,14 +48,15 @@ $display-wide: 340px;
       cursor: pointer;
 
       .count {
+        color: var(--accent-dark);
+        font-size: 0.85em;
+        font-weight: bold;
+
         @container (width >= #{$display-wide}) {
           display: inline-block;
           min-width: 5ch;
           text-align: right;
         }
-        color: var(--accent-dark);
-        font-size: 0.85em;
-        font-weight: bold;
       }
       .name {
         flex-grow: 1;

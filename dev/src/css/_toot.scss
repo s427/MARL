@@ -3,6 +3,8 @@
 $meta-visible: 100ch;
 
 .toot {
+  background: var(--bg1);
+
   @container (width >= #{$meta-visible}) {
     display: grid;
     grid-template-areas:
@@ -13,8 +15,6 @@ $meta-visible: 100ch;
     grid-template-columns: 50% 50%;
     grid-template-rows: min-content min-content 1fr min-content;
   }
-
-  background: var(--bg1);
 
   &:last-child {
     border-bottom: none;
@@ -80,8 +80,8 @@ $meta-visible: 100ch;
       top: 0;
       bottom: 0;
       z-index: 1;
-      background: transparent url("../svg/light/type-boost.svg") no-repeat
-        calc(100% - 1rem) calc(100% - 0.5rem) / auto 50% scroll;
+      background: transparent url("../svg/light/type-boost.svg") no-repeat calc(100% - 1rem) calc(100% - 0.5rem) / auto
+        50% scroll;
     }
 
     a {
@@ -218,8 +218,7 @@ $meta-visible: 100ch;
       width: 1.5rem;
       height: 1.5rem;
       border-radius: 10rem;
-      background: #c00 url("../svg/light/no-alt-text.svg") no-repeat 50% 50% /
-        contain scroll;
+      background: #c00 url("../svg/light/no-alt-text.svg") no-repeat 50% 50% / contain scroll;
     }
   }
 }
@@ -262,15 +261,17 @@ $meta-visible: 100ch;
 }
 
 .toot-meta {
-  @container (width < #{$meta-visible}) {
-    display: none;
-  }
   grid-area: meta;
   display: flex;
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
   padding-left: 0;
+
+  @container (width < #{$meta-visible}) {
+    display: none;
+  }
+
   dl {
     margin: 0;
     display: grid;
