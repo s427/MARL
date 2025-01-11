@@ -18,6 +18,10 @@
   line-height: 1.4;
   position: relative;
   z-index: 1;
+
+  .load-new {
+    display: none;
+  }
 }
 
 .intro {
@@ -60,7 +64,7 @@
     outline-offset: 2px;
   }
 
-  &.loading {
+  .loading & {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -85,12 +89,6 @@
       animation: movingStripes 2s linear infinite;
     }
   }
-}
-
-.about {
-  margin-top: auto;
-  font-size: 0.85em;
-  text-align: center;
 }
 
 .main-page.highlight-drag {
@@ -129,7 +127,7 @@
   }
 }
 
-.loading-more {
+.loading {
   justify-content: center;
   .file-loader {
     margin: 0;

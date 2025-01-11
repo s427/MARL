@@ -13,9 +13,9 @@ html {
   max-width: 100dvw;
   display: grid;
   grid-template-areas:
-    "actor filters header tags"
-    "actor filters toots  tags";
-  grid-template-columns: min(25%, 600px) min(20%, 400px) 1fr min(20%, 400px);
+    "tools actor filters header tags"
+    "tools actor filters toots  tags";
+  grid-template-columns: 150px min(25%, 600px) min(20%, 400px) 1fr min(20%, 400px);
   grid-template-rows: min-content 1fr;
 }
 
@@ -33,6 +33,9 @@ html {
 }
 .toots-tags {
   grid-area: tags;
+}
+.panel-tools {
+  grid-area: tools;
 }
 .mobile-menu {
   display: none;

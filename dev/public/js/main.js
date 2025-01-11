@@ -28,7 +28,6 @@ const userPrefsStore = {
         }
         break;
       case "lang":
-        // if (!value || !Alpine.store("ui").appLangs.some((l) => l[0] === value)) {
         if (!value || !Alpine.store("ui").appLangs[value]) {
           if (value) {
             console.warn("Unrecognized language in user preferences:", value);
@@ -1309,7 +1308,7 @@ function formatDateTime(data) {
     minute: "2-digit",
     second: "2-digit",
   };
-  return date.toLocaleDateString(undefined, dateOptions);
+  return date.toLocaleDateString(Alpine.store("ui").lang, dateOptions);
 }
 
 function formatDate(data) {
@@ -1320,7 +1319,7 @@ function formatDate(data) {
     month: "long",
     day: "numeric",
   };
-  return date.toLocaleDateString(undefined, dateOptions);
+  return date.toLocaleDateString(Alpine.store("ui").lang, dateOptions);
 }
 
 function formatNumber(nb) {
@@ -1403,6 +1402,11 @@ function startOver() {
   if (confirm(txt)) {
     location.reload();
   }
+}
+
+function setLang() {
+  AlpineI18n.locale = Alpine.store("ui").lang;
+  Alpine.store("userPrefs").save("lang", AlpineI18n.locale);
 }
 
 // drag'n'drop over entire page

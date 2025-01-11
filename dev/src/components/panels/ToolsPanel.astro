@@ -12,9 +12,48 @@ import CloseBtn from './CloseBtn.astro'
 
   <h2 class="tools-title visually-hidden" id="panel-tools-title">Tools</h2>
 
+  <select
+    @change="setLang"
+    x-model="$store.ui.lang"
+  >
+    <template x-for="(lang, id) in $store.ui.appLangs">
+      <option
+        :value="id"
+        x-text="lang"
+        :selected="$store.ui.lang === id"
+      ></option>
+    </template>
+  </select>
+
+  <select>
+    <option value="dark">Dark</option>
+  </select>
+
+  <div class="loaded-files">
+    <h3>Loaded files</h3>
+    <ul>
+      <li>File 1</li>
+    </ul>
+  </div>
+
   <button @click="startOver" class="load-new">
     <svg class="btn-icon" aria-hidden="true">
       <use href="#load-file" /></svg
     ><span class="btn-label">Load new file</span>
   </button>
+
+  <div class="app-log">
+    <ul>
+      <li>Message 4 amet consectetur adipisicing elit</li>
+      <li>Message 3 amet consectetur adipisicing elit</li>
+      <li>Message 2 Lorem ipsum dolor sit ipsum dolor sit amet consectetur adipisicing elit</li>
+      <li>Message 1 Lorem ipsum dolor sit amet consectetur adipisicing elit</li>
+    </ul>
+  </div>
+
+  <div class="about">
+    <a href="https://github.com/s427/MARL">
+      <span x-text="$t('welcome.projectPage')"></span>
+    </a>
+  </div>
 </aside>

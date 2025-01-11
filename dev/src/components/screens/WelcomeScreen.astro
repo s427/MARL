@@ -1,3 +1,7 @@
+---
+import ToolsPanel from '../panels/ToolsPanel.astro';
+---
+
 <main class="welcome">
   <div class="intro">
     <h1 x-html="$t('welcome.title', {appName: `MARL <span class='accronym'>(Mastodon Archive Reader Lite)</span>`})"></h1>
@@ -14,9 +18,7 @@
       @change="unZip(Object.values($event.target.files))"
     />
   </div>
-  <div class="about">
-    <a href="https://github.com/s427/MARL">
-      <span x-text="$t('welcome.projectPage')"></span>
-    </a>
-  </div>
+
+  <ToolsPanel />
+
 </main>
