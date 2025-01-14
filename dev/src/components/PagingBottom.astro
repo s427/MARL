@@ -6,8 +6,8 @@
     >
       <svg class="btn-icon" aria-hidden="true">
         <use href="#nav-first" />
-      </svg>
-      <span class="btn-label" x-text="$t('paging.first')"></span>
+      </svg
+      ><span class="btn-label" x-text="$t('paging.first')"></span>
     </button>
     <button
       @click="$store.files.prevPage('paging-btn-prev')"
@@ -15,8 +15,8 @@
     >
       <svg class="btn-icon" aria-hidden="true">
         <use href="#nav-prev" />
-      </svg>
-      <span class="btn-label" x-text="$t('paging.prev')"></span>
+      </svg
+      ><span class="btn-label" x-text="$t('paging.prev')"></span>
     </button>
   </div>
   <div class="direction-fwd">
@@ -24,8 +24,8 @@
       @click="$store.files.nextPage('paging-btn-next')"
       :disabled="$store.files.currentPage >= $store.files.totalPages"
     >
-      <span class="btn-label" x-text="$t('paging.next')"></span>
-      <svg class="btn-icon" aria-hidden="true">
+      <span class="btn-label" x-text="$t('paging.next')"></span
+      ><svg class="btn-icon" aria-hidden="true">
         <use href="#nav-next" />
       </svg>
     </button>
@@ -33,8 +33,8 @@
       @click="$store.files.lastPage('toots')"
       :disabled="$store.files.currentPage >= $store.files.totalPages"
     >
-      <span class="btn-label" x-text="$t('paging.last')"></span>
-      <svg class="btn-icon" aria-hidden="true">
+      <span class="btn-label" x-text="$t('paging.last')"></span
+      ><svg class="btn-icon" aria-hidden="true">
         <use href="#nav-last" />
       </svg>
     </button>

@@ -5,24 +5,24 @@ import PagingTop from '../PagingTop.astro';
 <header class="toots-header" aria-labelledby="toots-header-title">
   <h2 id="toots-header-title">
     <span class="count">
-      <span x-text="await formatNumber($store.files.filteredToots.length)" class="nb"></span>
+      <span x-text="formatNumber($store.files.filteredToots.length)" class="nb"></span>
       <span x-text="$t('header.countLabel')"></span>
     </span>
     <span class="order">
       -
-      <span x-text="await $store.files.sortAsc ? $t('header.oldestFirst') : $t('header.latestFirst')"></span>
+      <span x-text="$store.files.sortAsc ? $t('header.oldestFirst') : $t('header.latestFirst')"></span>
       <button @click="$store.files.toggleTootsOrder()" class="toggle-order">
         <svg class="btn-icon" aria-hidden="true">
           <use href="#toggle-order" />
-        </svg>
-        <span class="btn-label" x-text="$t('header.reverse')"></span>
+        </svg
+        ><span class="btn-label" x-text="$t('header.reverse')"></span>
       </button>
     </span>
 
-    <button @click="startOver" class="load-new">
+    <button class="open-tools" @click="$store.ui.menuToggle('tools')">
       <svg class="btn-icon" aria-hidden="true">
-        <use href="#load-file" /></svg
-      ><span class="btn-label" x-text="$t('header.loadNewFile')"></span>
+        <use href="#tools" /></svg
+      ><span class="btn-label" x-text="$t('menu.tools')"></span>
     </button>
   </h2>
 

@@ -1,0 +1,13 @@
+<div class="tools-section app-log">
+  <h3 x-text="$t('tools.appLog')"></h3>
+  <ul>
+    <template
+      x-for="m in $store.ui.log"
+    >
+      <li :class="m.type">
+        <span class="time"><time x-text="m.time"></time></span>
+        <span class="msg" x-html="m.msg"></span>
+      </li>
+    </template>
+  </ul>
+</div>

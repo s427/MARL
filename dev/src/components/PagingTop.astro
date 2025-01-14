@@ -11,8 +11,8 @@ import PagingOptions from "./PagingOptions.astro";
     >
       <svg class="btn-icon" aria-hidden="true">
         <use href="#nav-first" />
-      </svg>
-      <span class="btn-label" x-text="$t('paging.first')"></span>
+      </svg
+      ><span class="btn-label" x-text="$t('paging.first')"></span>
     </button>
     <button
       id="paging-btn-prev"
@@ -21,8 +21,8 @@ import PagingOptions from "./PagingOptions.astro";
     >
       <svg class="btn-icon" aria-hidden="true">
         <use href="#nav-prev" />
-      </svg>
-      <span class="btn-label" x-text="$t('paging.prev')"></span>
+      </svg
+      ><span class="btn-label" x-text="$t('paging.prev')"></span>
     </button>
   </div>
 
@@ -30,8 +30,8 @@ import PagingOptions from "./PagingOptions.astro";
     <button @click="$store.ui.togglePagingOptions()">
       <svg class="btn-icon" aria-hidden="true">
         <use href="#options" />
-      </svg>
-      <span class="btn-label" x-text="$t('paging.pagingOptions')"></span>
+      </svg
+      ><span class="btn-label" x-text="$t('paging.pagingOptions')"></span>
     </button>
   </div>
 
@@ -43,8 +43,8 @@ import PagingOptions from "./PagingOptions.astro";
       @click="$store.files.nextPage()"
       :disabled="$store.files.currentPage >= $store.files.totalPages"
     >
-      <span class="btn-label" x-text="$t('paging.next')"></span>
-      <svg class="btn-icon" aria-hidden="true">
+      <span class="btn-label" x-text="$t('paging.next')"></span
+      ><svg class="btn-icon" aria-hidden="true">
         <use href="#nav-next" />
       </svg>
     </button>
@@ -53,8 +53,8 @@ import PagingOptions from "./PagingOptions.astro";
       @click="$store.files.lastPage()"
       :disabled="$store.files.currentPage >= $store.files.totalPages"
     >
-      <span class="btn-label" x-text="$t('paging.last')"></span>
-      <svg class="btn-icon" aria-hidden="true">
+      <span class="btn-label" x-text="$t('paging.last')"></span
+      ><svg class="btn-icon" aria-hidden="true">
         <use href="#nav-last" />
       </svg>
     </button>

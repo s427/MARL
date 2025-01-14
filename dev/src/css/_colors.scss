@@ -6,10 +6,12 @@ $hue: 30; // === 59.17 in oklch
 /*********************************/
 
 $bg0:                      #fff;                  // post content
-$bg1:                      hsl($hue, 10%,   95%); // post
+$bg1:                      hsl($hue, 12%,   95%); // post
 $bg2:                      hsl($hue, 12%,   90%); // post attachment/meta/raw
 $bg3:                      hsl($hue, 15%,   87%); // posts header
 $bg4:                      hsl($hue, 17.5%, 84%); // filters/tags panels
+$bg5:                      hsl($hue, 25%,   95%); // settings
+$bg6:                      #fff;                  // settings > ul
 
 $fg0:                      #000;                  // post content
 $fg1:                      hsl($hue, 10%,   20%); // body text; some SVG icons (panel close)
@@ -22,6 +24,8 @@ $dark-bg1:                 hsl($hue,  8%, 13%);
 $dark-bg2:                 hsl($hue, 10%, 10%);
 $dark-bg3:                 hsl($hue, 12%,  8%);
 $dark-bg4:                 hsl($hue, 12%,  8%);
+$dark-bg5:                 $dark-bg2;
+$dark-bg6:                 rgba(255, 255, 255, 0.07);
 $dark-fg0:                 hsl($hue,  5%, 95%);
 $dark-fg1:                 hsl($hue, 10%, 80%);
 $dark-fg2:                 hsl($hue, 15%, 50%);

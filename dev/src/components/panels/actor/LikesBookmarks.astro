@@ -7,7 +7,7 @@ const { type } = Astro.props;
     <summary>
       <span class="summary-icon">
         <svg aria-hidden="true">
-          <use href="#favorite" />
+          <use href={`#${type}`} />
         </svg>
       </span>
       <h2 class="summary-label">

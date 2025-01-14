@@ -29,9 +29,9 @@
         </button>
       </li>
       <li>
-        <button class="menu-new" @click="startOver">
-          <svg aria-hidden="true"><use href="#menu-new" /></svg>
-          <span x-text="$t('menu.newFile')"></span>
+        <button class="menu-tools" @click="$store.ui.menuToggle('tools')">
+          <svg aria-hidden="true"><use href="#tools" /></svg>
+          <span x-text="$t('menu.tools')"></span>
         </button>
       </li>
     </ul>

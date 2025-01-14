@@ -16,7 +16,6 @@ const appStrings = {
       p3: `<strong>Start by opening your archive file with MARL.</strong><br />
         You can drag and drop it anywhere on this page, or
         {labelStart}click here to select it{labelEnd}.`,
-      projectPage: `Project page (github)`,
     },
     misc: {
       loading: "Loading",
@@ -27,8 +26,7 @@ const appStrings = {
       filters: "Filters",
       filtersActive: "some filters are active",
       tags: "Tags",
-      newFile: "New File",
-      newFileConfirm: "Discard current data and load a new archive file?",
+      tools: "Tools",
     },
     lightbox: {
       next: "Next image",
@@ -50,8 +48,8 @@ const appStrings = {
         cache. Posts that are not in your instance cache any more are not included in your
         archive. This affects boosts, likes, and bookmarks.`,
       rawData: "Raw data {fileName}",
-      favorites: "Favorites",
-      favoritesEmpty: "no favorites",
+      likes: "Favorites",
+      likesEmpty: "no favorites",
       bookmarks: "Bookmarks",
       bookmarksEmpty: "no bookmarks",
     },
@@ -140,6 +138,21 @@ const appStrings = {
       mentionsFilter: "Filter mentions",
       boostsFilter: "Filter boosted users",
     },
+    tools: {
+      panelTitle: "Tools",
+      appSettings: "App settings",
+      selectLanguage: "Select language",
+      useDarkTheme: "Use dark theme",
+      useLightTheme: "Use light theme",
+      loadedFiles: "Loaded files",
+      addAnother: "Add another archive",
+      addAnotherTip:
+        "Tip: You can open multiple archives at once.<br>You can also drag and drop your archive files anywhere on this window.",
+      startOver: "Start over",
+      startOverConfirm: "Discard current data and load a new archive file?",
+      appLog: "App log",
+      projectPage: `Project page (github)`,
+    },
   },
 
   fr: {
@@ -154,7 +167,6 @@ const appStrings = {
       p3: `<strong>Commencez par ouvrir votre archive avec MARL.</strong><br />
         Vous pouvez la glisser-déposer n'importe où sur cette page, ou
         {labelStart}cliquer ici pour la sélectionner{labelEnd}.`,
-      projectPage: `Page du project (github)`,
     },
     misc: {
       loading: "Chargement",
@@ -165,8 +177,7 @@ const appStrings = {
       filters: "Filtres",
       filtersActive: "certains filtres sont actifs",
       tags: "Tags",
-      newFile: "Nouveau fichier",
-      newFileConfirm: "Repartir de zéro et charger un nouveau fichier ?",
+      tools: "Outils",
     },
     lightbox: {
       next: "Image suivante",
@@ -188,8 +199,8 @@ const appStrings = {
         de ce cache. Les posts qui ne sont plus présents dans le cache de votre instance ne sont
         pas inclus dans votre archive. Cela concerne les partages, les favoris et les marque-pages.`,
       rawData: "Données brutes {fileName}",
-      favorites: "Favoris",
-      favoritesEmpty: "aucun favori",
+      likes: "Favoris",
+      likesEmpty: "aucun favori",
       bookmarks: "Marque-pages",
       bookmarksEmpty: "aucun marque-page",
     },
@@ -277,6 +288,21 @@ const appStrings = {
       hashtagsFilter: "Filtrer les hashtags",
       mentionsFilter: "Filtrer les mentions",
       boostsFilter: "Filter utilisateurs partagés",
+    },
+    tools: {
+      panelTitle: "Outils",
+      appSettings: "Réglages de l'app",
+      selectLanguage: "Choisir la langue",
+      useDarkTheme: "Utiliser le thème sombre",
+      useLightTheme: "Utiliser le thème clair",
+      loadedFiles: "Fichiers chargés",
+      addAnother: "Ajouter une autre archive",
+      addAnotherTip:
+        "Astuce: Vous pouvez ouvrir plusieurs archives en même temps.<br>Vous pouvez aussi glisser-déposer vos fichiers d'archive n'importe où dans cette fenêtre.",
+      startOver: "Recommencer",
+      startOverConfirm: "Repartir de zéro et charger un nouveau fichier ?",
+      appLog: "Journal",
+      projectPage: `Page du project (github)`,
     },
   },
 };

@@ -1,3 +1,199 @@
+@use "mixins";
+
+.tools-section {
+  h3 {
+    margin: 0 0 1rem;
+  }
+  ul {
+    list-style: none;
+    font-size: 0.85em;
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    background-color: var(--bg6);
+    border-radius: 0.5rem;
+    word-break: break-all;
+  }
+  li {
+    list-style: none;
+    margin: 0.5rem 0;
+  }
+}
+
 .panel-tools {
-  padding: 1rem;
+  position: absolute;
+  left: auto;
+  right: calc(0px - min(25%, 600px));
+  top: 0;
+  bottom: 0;
+  z-index: 4;
+
+  width: min(25%, 600px);
+  height: 100dvh;
+  overflow-y: scroll;
+  padding: 0;
+
+  box-shadow: 0.75rem 0 1rem 0.75rem rgba(0, 0, 0, 0.35);
+  background-color: var(--bg5);
+  backdrop-filter: blur(20px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: right 0.2s ease-out;
+    transition-property: right, box-shadow;
+    scroll-behavior: smooth;
+  }
+
+  .menu-open-tools & {
+    right: 0;
+  }
+
+  .panel-close {
+    display: block !important;
+  }
+  .tools-section {
+    padding: 1rem 1rem 2rem;
+    &.app-log {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.app-settings {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  h3 {
+    margin: 0;
+    flex: 0 0 100%;
+    user-select: none;
+  }
+}
+
+.switch-lang {
+  display: flex;
+  gap: 1rem;
+  line-height: 24px;
+  label {
+    display: block;
+    width: 24px;
+    height: 24px;
+    padding: 0.3rem 0.5rem;
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--button-svg);
+      @media (forced-colors: active) {
+        fill: ButtonText;
+      }
+    }
+  }
+}
+
+.switch-theme {
+  &.theme-dark {
+    .btn-label.dark {
+      display: none;
+    }
+  }
+  &.theme-light {
+    .btn-label.light {
+      display: none;
+    }
+  }
+}
+
+.loaded-files-list {
+  @include mixins.box-shadow-inner();
+
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  li + li {
+    margin-top: 1rem;
+  }
+  .name {
+    flex: 0 0 100%;
+    color: var(--accent);
+  }
+
+  @media (forced-colors: none) {
+    .multiple-files & li {
+      position: relative;
+      padding-left: 1.25rem;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 0.25rem;
+        border-radius: 0.25rem;
+        background-color: var(--actor-accent-ok, transparent);
+      }
+    }
+  }
+}
+
+.manage-files-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .file-loader {
+    @include mixins.visually-hidden();
+  }
+
+  .tip {
+    flex: 0 0 100%;
+    font-size: 0.8em;
+    text-align: center;
+    font-style: italic;
+    opacity: 0.85;
+  }
+}
+
+.app-log {
+  ul {
+    height: 20dvh;
+    overflow-y: auto;
+    @include mixins.box-shadow-inner();
+  }
+  .msg {
+    b {
+      font-weight: normal;
+      color: var(--accent);
+    }
+  }
+  .time {
+    opacity: 0.65;
+  }
+}
+
+.about {
+  font-size: 0.85em;
+  text-align: center;
+}
+
+.welcome {
+  .tools {
+    margin-top: auto;
+
+    h3,
+    .app-log {
+      display: none;
+    }
+  }
+  .manage-files {
+    display: none;
+  }
+  .about {
+    margin-top: 4rem;
+  }
 }

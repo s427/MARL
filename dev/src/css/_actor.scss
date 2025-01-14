@@ -1,3 +1,5 @@
+@use "mixins";
+
 .actor {
   position: relative;
   &::before {
@@ -144,13 +146,9 @@
   color: var(--actor-fg0);
   line-height: 1.3;
   background: var(--actor-bg4);
-  background: radial-gradient(
-    circle at 200% 150%,
-    var(--actor-bg3),
-    var(--actor-bg4)
-  );
+  background: radial-gradient(circle at 200% 150%, var(--actor-bg3), var(--actor-bg4));
   border-radius: 0.5rem;
-  box-shadow: 0 0.3rem 0.4rem -0.2rem rgba(0, 0, 0, 0.3);
+  @include mixins.box-shadow-post();
 }
 
 .actor-infos {

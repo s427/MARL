@@ -18,7 +18,7 @@ $display-wide: 340px;
   height: 100%;
   overflow: hidden;
   display: grid;
-  padding: 1rem 1rem 0;
+  padding: 0.5rem 1rem;
   grid-template-rows: min-content 1fr;
 
   ul {
@@ -92,15 +92,14 @@ $display-wide: 340px;
 }
 
 .tags-group-header {
-  white-space: nowrap;
-  overflow: hidden;
-
   @container (width >= #{$display-wide}) {
     display: flex;
     justify-content: space-between;
     gap: 0.25rem 1rem;
   }
   h3 {
+    white-space: nowrap;
+    overflow: hidden;
     .count {
       color: var(--accent-dark);
       font-weight: normal;
@@ -121,7 +120,7 @@ $display-wide: 340px;
 
 .tags-group-scroll {
   overflow: auto;
-  padding-top: 0.5rem;
+  margin-top: 0.5rem;
   padding-bottom: 2rem;
 }
 

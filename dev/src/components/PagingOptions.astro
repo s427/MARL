@@ -8,11 +8,10 @@
       min="1"
       max="$store.files.totalPages"
       x-model="$store.files.currentPage"
-      @keyup="$store.files.checkPagingValue()"
       @change="$store.files.checkPagingValue()"
       onclick="this.select()"
-    />
-    /
+      />
+      /
     <span class="total-pages" x-text="formatNumber($store.files.totalPages)"></span>
     (
     <input
@@ -21,10 +20,9 @@
       type="number"
       min="1"
       x-model="$store.files.pageSize"
-      @keyup="$store.files.checkPagingValue()"
-      @change="$store.files.checkPagingValue()"
+      @change="$store.files.setPostsPerPage()"
       onclick="this.select()"
-    />
+      />
     <label for="paging-page-size" x-text="$t('paging.postsPerPage')"></label>)
   </div>
   <div class="paging-options-reverse">

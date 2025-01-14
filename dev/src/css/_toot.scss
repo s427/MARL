@@ -62,7 +62,7 @@ $meta-visible: 100ch;
   overflow-wrap: break-word;
   background-color: var(--bg0);
   border-radius: 0.5rem;
-  box-shadow: 0 0.3rem 0.4rem -0.2rem rgba(0, 0, 0, 0.3);
+  @include mixins.box-shadow-post();
 
   @media (forced-colors: active) {
     border: 1px solid CanvasText;
@@ -113,7 +113,6 @@ $meta-visible: 100ch;
       z-index: 1;
       width: 0.25rem;
       border-radius: 0.25rem;
-      background-color: red;
       background-color: var(--actor-accent-ok, transparent);
     }
   }
@@ -193,7 +192,7 @@ $meta-visible: 100ch;
     object-fit: cover;
     font-size: 0.6em;
     border-radius: 0.5rem;
-    box-shadow: 0 0.3rem 0.4rem -0.2rem rgba(0, 0, 0, 0.3);
+    @include mixins.box-shadow-post();
     mix-blend-mode: multiply;
     @media (prefers-reduced-motion: no-preference) {
       transition: filter 0.2s ease-out;
@@ -253,7 +252,7 @@ $meta-visible: 100ch;
     max-width: 100%;
     max-height: 75dvh;
     border-radius: 0.5rem;
-    box-shadow: 0 0.3rem 0.4rem -0.2rem rgba(0, 0, 0, 0.3);
+    @include mixins.box-shadow-post();
   }
   .att-description {
     padding: 1rem;

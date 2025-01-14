@@ -121,6 +121,9 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.1
+  - Internationalization: MARL is now usable in two languages (English and French), with support for more languages. Get in touch if you want to help translating MARL in your language!
+  - Tools panel: a new "Tools" button will a new panel, where you can change various settings for the app (language, theme) as well as see information about your loaded files, messages from the app, and an "about" section.
 - v. 2.0
   - code refactoring: MARL now uses Astro to build its HTML code as well as optimize and bundle its assets (CSS, SVG, images).
   - all assets used to build MARL are now stored in the `dev` folder.

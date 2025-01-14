@@ -1,0 +1,44 @@
+<div class="tools-section manage-files">
+  <div
+    class="loaded-files"
+    :class="$store.files.sources.length > 1 ? 'multiple-files' : 'single-file'"
+    x-show="$store.files.sources.length"
+  >
+    <h3 x-text="$t('tools.loadedFiles')"></h3>
+    <ul class="loaded-files-list">
+      <template
+        x-for="s in $store.files.sources"
+      >
+        <li :style="'--actor-hue: '+ s.hue">
+          <span class="name" x-text="s.fileInfos.name"></span>
+          <span class="date" x-text="formatFileDateTime(s.fileInfos.lastModified)"></span>
+          <span class="size" x-text="formatFileSize(s.fileInfos.size)"></span>
+        </li>
+      </template>
+    </ul>
+  </div>
+
+  <div class="manage-files-actions">
+    <label for="file-loader2" class="btn load-more">
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#load-file" /></svg
+      ><span class="btn-label" x-text="$t('tools.addAnother')"></span>
+      <input
+        id="file-loader2"
+        class="file-loader visually-hidden"
+        type="file"
+        accept=".zip"
+        multiple
+        @change="unZip(Object.values($event.target.files))"
+      />
+    </label>
+
+    <button @click="startOver">
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#home" /></svg
+      ><span class="btn-label" x-text="$t('tools.startOver')"></span>
+    </button>
+
+    <div class="tip" x-html="$t('tools.addAnotherTip')"></div>
+  </div>
+</div>

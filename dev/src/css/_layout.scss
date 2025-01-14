@@ -11,11 +11,12 @@ html {
   z-index: 1;
   height: 100dvh;
   max-width: 100dvw;
+  overflow: hidden;
   display: grid;
   grid-template-areas:
-    "tools actor filters header tags"
-    "tools actor filters toots  tags";
-  grid-template-columns: 150px min(25%, 600px) min(20%, 400px) 1fr min(20%, 400px);
+    "actor filters header tags"
+    "actor filters toots  tags";
+  grid-template-columns: min(25%, 600px) min(20%, 400px) 1fr min(20%, 400px);
   grid-template-rows: min-content 1fr;
 }
 
@@ -33,9 +34,6 @@ html {
 }
 .toots-tags {
   grid-area: tags;
-}
-.panel-tools {
-  grid-area: tools;
 }
 .mobile-menu {
   display: none;
@@ -57,7 +55,7 @@ html {
   .toggle-order {
     margin-bottom: 5px;
   }
-  .load-new {
+  .open-tools {
     float: right;
     margin-left: 5px;
   }

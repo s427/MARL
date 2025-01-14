@@ -116,6 +116,36 @@ $panel-width: 400px;
   bottom: 0;
   z-index: 3;
   background-color: var(--menu-backdrop);
+
+  .main-page.menu-open & {
+    display: block;
+  }
+}
+
+.panel-close {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  z-index: 1;
+  color: var(--panel-close);
+  background: transparent;
+  box-shadow: none;
+  .btn-icon {
+    fill: currentColor;
+  }
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    color: var(--panel-close-hover);
+  }
+
+  @media (forced-colors: active) {
+    color: buttonText;
+  }
+
+  .actor & {
+    color: #fff;
+  }
 }
 
 @media screen and (width < 1200px) {
@@ -124,7 +154,7 @@ $panel-width: 400px;
   .toots-header {
     z-index: 2;
     box-shadow: 0 -10px 10px 10px rgba(0, 0, 0, 0.5);
-    .load-new {
+    .open-tools {
       display: none;
     }
   }
@@ -147,6 +177,7 @@ $panel-width: 400px;
   .mobile-menu-panel {
     position: fixed;
     left: 0 - ($menu-width + $panel-width);
+    right: auto;
     top: 0;
     bottom: 0;
     z-index: 3;
@@ -163,31 +194,6 @@ $panel-width: 400px;
       scroll-behavior: smooth;
     }
   }
-  .panel-close {
-    position: absolute;
-    right: 6px;
-    top: 6px;
-    z-index: 1;
-    color: var(--panel-close);
-    background: transparent;
-    box-shadow: none;
-    .btn-icon {
-      fill: currentColor;
-    }
-    &:hover,
-    &:focus,
-    &:focus-visible {
-      color: var(--panel-close-hover);
-    }
-
-    @media (forced-colors: active) {
-      color: buttonText;
-    }
-
-    .actor & {
-      color: #fff;
-    }
-  }
 
   .mobile-menu {
     display: block;
@@ -196,13 +202,10 @@ $panel-width: 400px;
   }
 
   .main-page.menu-open {
-    .panel-backdrop {
-      display: block;
-    }
-
     &.menu-open-actor .actor,
     &.menu-open-filters .toots-filters,
-    &.menu-open-tags .toots-tags {
+    &.menu-open-tags .toots-tags,
+    &.menu-open-tools .tools {
       left: $menu-width;
       box-shadow: -1rem 0 1rem 1rem rgba(0, 0, 0, 0.5);
       @media (prefers-reduced-motion: no-preference) {
@@ -212,7 +215,8 @@ $panel-width: 400px;
 
     &.menu-open-actor .menu-actor,
     &.menu-open-filters .menu-filters,
-    &.menu-open-tags .menu-tags {
+    &.menu-open-tags .menu-tags,
+    &.menu-open-tools .menu-tools {
       color: var(--menu-fg-active);
       background-color: rgba(255, 255, 255, 0.2);
     }
@@ -258,7 +262,8 @@ $panel-width: 400px;
   .main-page.menu-open {
     &.menu-open-actor .actor,
     &.menu-open-filters .toots-filters,
-    &.menu-open-tags .toots-tags {
+    &.menu-open-tags .toots-tags,
+    &.menu-open-tools .tools {
       left: 0;
     }
   }

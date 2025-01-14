@@ -1,5 +1,5 @@
-@use 'mixins';
-@use 'colors-mixins';
+@use "mixins";
+@use "colors-mixins";
 
 /* mini-reset */
 *,
@@ -36,7 +36,7 @@ html {
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
-    @include colors-mixins.theme-vars('dark');
+    @include colors-mixins.theme-vars("dark");
   }
 }
 
@@ -47,7 +47,7 @@ html.light {
 
 html.dark {
   color-scheme: dark;
-  @include colors-mixins.theme-vars('dark');
+  @include colors-mixins.theme-vars("dark");
 }
 
 /* global rules */
@@ -81,21 +81,33 @@ a,
   color: var(--accent);
 }
 
-button {
-  position: relative;
-  top: 0;
+input,
+button,
+label.btn,
+select {
   padding: 0.3em 0.5em;
-  line-height: 24px;
   font-family: inherit;
-  vertical-align: middle;
-  background: var(--bg-button);
   border: none;
-  border-radius: 5px;
-  box-shadow: 0 0.15em 0 0 rgba(0, 0, 0, 0.35);
-
   @media (forced-colors: active) {
     border: 1px solid ButtonText;
   }
+}
+
+button,
+label.btn,
+select {
+  border-radius: 5px;
+}
+
+button,
+label.btn {
+  position: relative;
+  top: 0;
+  line-height: 24px;
+  vertical-align: middle;
+  background: var(--bg-button);
+  border-radius: 5px;
+  box-shadow: 0 0.15em 0 0 rgba(0, 0, 0, 0.35);
 
   &:not(:has(svg)) {
     padding: 0.7em 1em;
@@ -163,15 +175,10 @@ button {
   }
 }
 
-input {
-  padding: 0.3em 0.5em;
+input,
+select {
   color: inherit;
-  border: none;
   background-color: var(--bg-input);
-
-  @media (forced-colors: active) {
-    border: 1px solid ButtonText;
-  }
 
   &:hover {
     background-color: var(--bg-input-hover);
@@ -182,14 +189,14 @@ input {
   }
 }
 
-input[type='number'] {
+input[type="number"] {
   width: 6ch;
   text-align: center;
   -moz-appearance: textfield;
   appearance: textfield;
 }
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -243,17 +250,26 @@ details {
 // focusable elements
 *:focus-visible,
 .tags-group button:focus-visible div,
-.toots-filter:has([type='checkbox']:focus-visible) {
+.toots-filter:has([type="checkbox"]:focus-visible) {
   text-decoration: none;
   outline: 2px solid var(--accent-light);
   outline-offset: 2px;
   border-radius: 2px;
   position: relative;
   z-index: 1;
+
+  &.mobile-menu-panel {
+    outline-offset: -4px;
+    border-radius: 6px;
+  }
 }
 
 .visually-hidden:not(:focus):not(:active) {
   @include mixins.visually-hidden();
+}
+
+[inert] > * {
+  opacity: 0.5;
 }
 
 .nojs {

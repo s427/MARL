@@ -1,5 +1,6 @@
 ---
-import ToolsPanel from '../panels/ToolsPanel.astro';
+import AppSettings from '../panels/tools/AppSettings.astro';
+import About from '../panels/tools/About.astro';
 ---
 
 <main class="welcome">
@@ -19,6 +20,8 @@ import ToolsPanel from '../panels/ToolsPanel.astro';
     />
   </div>
 
-  <ToolsPanel />
-
+  <div class="tools">
+    <AppSettings />
+    <About />
+  </div>
 </main>
