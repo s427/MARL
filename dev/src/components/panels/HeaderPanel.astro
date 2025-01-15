@@ -18,13 +18,15 @@ import PagingTop from '../PagingTop.astro';
         ><span class="btn-label" x-text="$t('header.reverse')"></span>
       </button>
     </span>
+  </h2>
 
-    <button class="open-tools" @click="$store.ui.menuToggle('tools')">
+  <div class="open-tools">
+    <button class="" id="header-open-tools" @click="$store.ui.menuToggle('tools')">
       <svg class="btn-icon" aria-hidden="true">
         <use href="#tools" /></svg
       ><span class="btn-label" x-text="$t('menu.tools')"></span>
     </button>
-  </h2>
+  </div>
 
   <PagingTop />
 

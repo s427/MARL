@@ -40,15 +40,21 @@ html {
 }
 
 .toots-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
   white-space: nowrap;
   overflow: hidden;
   background-color: var(--bg3);
+
   h2 {
     padding: 1rem 1rem 0;
     .order {
       font-weight: normal;
     }
   }
+
   .nb {
     color: var(--posts-count);
   }
@@ -56,8 +62,10 @@ html {
     margin-bottom: 5px;
   }
   .open-tools {
-    float: right;
-    margin-left: 5px;
+    padding: 1rem 1rem 0;
+  }
+  .paging {
+    flex: 0 0 100%;
   }
   .paging-options-toggle {
     display: none;

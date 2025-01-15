@@ -1,5 +1,3 @@
-// stores definitions
-
 const userPrefsStore = {
   prefix: "marl_",
 
@@ -790,7 +788,11 @@ const uiStore = {
     this.setInert();
 
     // bring focus back to where it was before the panel was opened
-    document.querySelector("#main-section-inner .mobile-menu .menu-" + name).focus();
+    if (name === "tools" && !this.menuIsActive) {
+      document.getElementById("header-open-tools").focus();
+    } else {
+      document.querySelector("#main-section-inner .mobile-menu .menu-" + name).focus();
+    }
   },
   menuOpen(name) {
     this.openMenu = name;

@@ -93,22 +93,42 @@ select {
   }
 }
 
-button,
-label.btn,
 select {
-  border-radius: 5px;
+  padding: 0.6em 1em;
 }
 
 button,
-label.btn {
+label.btn,
+select {
   position: relative;
   top: 0;
   line-height: 24px;
   vertical-align: middle;
-  background: var(--bg-button);
   border-radius: 5px;
+  background: var(--bg-button);
   box-shadow: 0 0.15em 0 0 rgba(0, 0, 0, 0.35);
+  &:hover {
+    background: var(--bg-button-hover);
+  }
+  &:focus {
+    color: var(--fg-button-focus);
+  }
+  &:active {
+    top: 0.15em;
+    color: var(--fg-button-active);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+  &:disabled {
+    top: 0;
+    box-shadow: none;
+    color: inherit;
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
 
+button,
+label.btn {
   &:not(:has(svg)) {
     padding: 0.7em 1em;
   }
@@ -132,7 +152,6 @@ label.btn {
   }
 
   &:hover {
-    background: var(--bg-button-hover);
     .btn-icon {
       fill: var(--button-svg-hover);
       @media (forced-colors: active) {
@@ -141,7 +160,6 @@ label.btn {
     }
   }
   &:focus {
-    color: var(--fg-button-focus);
     .btn-icon {
       fill: var(--button-svg-focus);
       @media (forced-colors: active) {
@@ -150,9 +168,6 @@ label.btn {
     }
   }
   &:active {
-    top: 0.15em;
-    color: var(--fg-button-active);
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
     .btn-icon {
       fill: var(--button-svg-active);
       @media (forced-colors: active) {
@@ -161,11 +176,6 @@ label.btn {
     }
   }
   &:disabled {
-    top: 0;
-    box-shadow: none;
-    color: inherit;
-    opacity: 0.35;
-    cursor: not-allowed;
     .btn-icon {
       fill: var(--button-svg);
       @media (forced-colors: active) {
@@ -175,8 +185,7 @@ label.btn {
   }
 }
 
-input,
-select {
+input {
   color: inherit;
   background-color: var(--bg-input);
 
@@ -266,10 +275,6 @@ details {
 
 .visually-hidden:not(:focus):not(:active) {
   @include mixins.visually-hidden();
-}
-
-[inert] > * {
-  opacity: 0.5;
 }
 
 .nojs {

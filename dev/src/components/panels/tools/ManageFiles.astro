@@ -19,11 +19,12 @@
   </div>
 
   <div class="manage-files-actions">
-    <label for="file-loader2" class="btn load-more">
+    <label for="file-loader2" class="btn load-more" tabindex="0">
       <svg class="btn-icon" aria-hidden="true">
         <use href="#load-file" /></svg
       ><span class="btn-label" x-text="$t('tools.addAnother')"></span>
       <input
+        tabindex="-1"
         id="file-loader2"
         class="file-loader visually-hidden"
         type="file"
