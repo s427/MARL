@@ -73,9 +73,14 @@ function unZip(files) {
         const msg = `Error loading <b>${file.name}</b>: ${error.message}`;
         console.error(msg);
         Alpine.store("ui").logMsg(msg, "error");
+        abortLoading();
       }
     );
   }
+}
+
+function abortLoading() {
+  Alpine.store("files").loading = false;
 }
 
 function loadJsonFile(name, index, fileInfos) {

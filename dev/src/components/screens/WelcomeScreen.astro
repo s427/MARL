@@ -1,5 +1,6 @@
 ---
 import AppSettings from '../panels/tools/AppSettings.astro';
+import AppLog from '../panels/tools/AppLog.astro';
 import About from '../panels/tools/About.astro';
 ---
 
@@ -18,6 +19,10 @@ import About from '../panels/tools/About.astro';
       multiple
       @change="unZip(Object.values($event.target.files))"
     />
+
+    <div class="app-log-wrapper" x-show="$store.ui.errorInLog">
+      <AppLog />
+    </div>
   </div>
 
   <div class="tools">

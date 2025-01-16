@@ -720,6 +720,7 @@ const uiStore = {
     this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
     this.theme = "light";
+    this.errorInLog = false;
     this.log = this.log ?? [];
 
     Alpine.store("userPrefs").load("lang");
@@ -727,6 +728,7 @@ const uiStore = {
   },
 
   logMsg(msg, type) {
+    // expected types: info, warn, error
     type = type ?? "info";
     const dateOptions = {
       hour12: false,
@@ -741,6 +743,9 @@ const uiStore = {
       time: time,
     };
     this.log.unshift(m);
+    if (type === "error") {
+      this.errorInLog = true;
+    }
   },
 
   toggleTheme() {

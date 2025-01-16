@@ -11,16 +11,41 @@
   max-width: 80ch;
   height: 100dvh;
   margin: 0 auto;
-  padding: 10dvh 2rem;
+  padding: 10dvh 2rem max(2dvh, 2rem);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   overflow: auto;
   line-height: 1.4;
   position: relative;
   z-index: 1;
+
+  .app-log {
+    h3 {
+      display: none;
+    }
+    ul {
+      height: auto;
+    }
+    li {
+      display: none;
+      &.error {
+        display: block;
+      }
+    }
+  }
+  .tools {
+    h3 {
+      display: none;
+    }
+  }
+  .about {
+    margin-top: 2rem;
+  }
 }
 
 .intro {
+  margin-bottom: 4dvh;
   h1 {
     margin-bottom: 7dvh;
     text-align: center;
@@ -49,9 +74,9 @@
   width: 100%;
   height: 10rem;
   max-height: 70dvh;
-  margin: 7dvh 0;
+  margin-top: 7dvh;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   background: var(--bg0);
   &:hover,
   &:focus {
