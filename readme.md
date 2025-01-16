@@ -104,8 +104,9 @@ As a result, MARL can only show you very little data for your boosts, bookmarks 
 ## Tech
 
 Third-party libraries and assets used:
-- [AlpineJs](https://alpinejs.dev/) v3.14.5
 - [JSZip](https://stuk.github.io/jszip/) v3.10.1
+- [AlpineJs](https://alpinejs.dev/) v3.14.5
+- [alpinejs-i18n](https://github.com/rehhouari/alpinejs-i18n) v2.5.2
 - [Material Icons](https://fonts.google.com/icons)
 
 All are stored within the project; no request to a CDN or third-party server is made by MARL.  
@@ -122,8 +123,13 @@ Mastodon: https://lou.lt/@s427
 ## Version history
 
 - v. 2.1
-  - Internationalization: MARL is now usable in two languages (English and French), with support for more languages. Get in touch if you want to help translating MARL in your language!
-  - Tools panel: a new "Tools" button will a new panel, where you can change various settings for the app (language, theme) as well as see information about your loaded files, messages from the app, and an "about" section.
+  - [NEW] Internationalization
+    - MARL is now usable in English and French, with support for more languages.
+    - Get in touch if you want to help translating MARL in your language!
+    - The language files can be found in `dev/public/js/i18n`.
+  - [NEW] Tools panel
+    - A new "Tools" button will open a new panel, where you can change various settings for the app (language, theme) as well as see information about your loaded files, messages from the app (app log), and the "about" section.
+    - Those settings are saved locally in the browser (localStorage) and automatically applied every time the app is launched.
 - v. 2.0
   - code refactoring: MARL now uses Astro to build its HTML code as well as optimize and bundle its assets (CSS, SVG, images).
   - all assets used to build MARL are now stored in the `dev` folder.

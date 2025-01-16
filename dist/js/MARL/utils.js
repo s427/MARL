@@ -512,6 +512,7 @@ function formatFileDateTime(data) {
   };
   return date.toLocaleDateString(Alpine.store("ui").lang, dateOptions);
 }
+
 function formatFileSize(size) {
   var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
   return +(size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["B", "kB", "MB", "GB", "TB"][i]; // ### i18n
@@ -631,6 +632,7 @@ function setLang() {
   const lang = Alpine.store("ui").lang;
   AlpineI18n.locale = lang;
   Alpine.store("userPrefs").save("lang", lang);
+  document.getElementsByTagName("html")[0].setAttribute("lang", lang);
 
   const msg = `App language set to <b>'${lang}' (${Alpine.store("ui").appLangs[lang]})</b>`;
   Alpine.store("ui").logMsg(msg);
