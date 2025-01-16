@@ -3,7 +3,7 @@ const userPrefsStore = {
 
   save(pref, value) {
     const msg = `Saving user preference <b>(${pref}: ${value})</b>`;
-    Alpine.store("ui").logMsg(msg, "info");
+    marlConsole(msg, "info");
     localStorage.setItem(this.prefix + pref, value);
   },
   load(pref) {
@@ -41,7 +41,7 @@ const userPrefsStore = {
           if (value) {
             const msg = `<b>Unrecognized language</b> in user preferences: ${value}`;
             console.warn(msg);
-            Alpine.store("ui").logMsg(msg, "warn");
+            marlConsole(msg, "warn");
           }
           value = "en";
           this.save("lang", value);
