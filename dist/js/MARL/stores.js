@@ -3,7 +3,7 @@ const userPrefsStore = {
 
   save(pref, value) {
     const msg = `Saving user preference <b>(${pref}: ${value})</b>`;
-    Alpine.store("ui").logMsg(msg, "info");
+    marlConsole(msg, "info");
     localStorage.setItem(this.prefix + pref, value);
   },
   load(pref) {
@@ -41,7 +41,7 @@ const userPrefsStore = {
           if (value) {
             const msg = `<b>Unrecognized language</b> in user preferences: ${value}`;
             console.warn(msg);
-            Alpine.store("ui").logMsg(msg, "warn");
+            marlConsole(msg, "warn");
           }
           value = "en";
           this.save("lang", value);
@@ -63,6 +63,11 @@ const userPrefsStore = {
 
 const filesStore = {
   resetState() {
+    this.loadingQueue = [];
+    this.currentlyLoading = {};
+    this.currentlyLoadingId = "";
+    this.currentlyLoadingName = "";
+
     this.sources = [];
     this.toots = [];
     this.toc = [];
@@ -73,7 +78,6 @@ const filesStore = {
     this.currentPage = 1;
 
     this.loading = false;
-    this.someFilesLoaded = false;
 
     this.languages = {};
     this.boostsAuthors = [];
@@ -106,7 +110,7 @@ const filesStore = {
       attachmentNoAltText: false,
       attachmentWithAltText: false,
 
-      // automatically generated (see loadJsonFile()):
+      // automatically generated (see unpackJsonFile()):
       // lang_en: true,
       // lang_fr: true,
       // lang_de: true,
@@ -554,25 +558,28 @@ const filesStore = {
   },
 
   get appReady() {
-    if (this.sources.length === 0) {
+    if (this.loading || !this.sources.length) {
       return false;
     }
 
-    let r = true;
-    for (let i = 0; i < this.sources.length; i++) {
-      const source = this.sources[i];
-      if (
-        !source.loaded.actor ||
-        !source.loaded.avatar ||
-        !source.loaded.header ||
-        !source.loaded.outbox ||
-        !source.loaded.likes ||
-        !source.loaded.bookmarks
-      ) {
-        r = false;
-      }
-    }
-    return r;
+    return true;
+
+    // ### refactor ?
+    // let r = true;
+    // for (let i = 0; i < this.sources.length; i++) {
+    //   const source = this.sources[i];
+    //   if (
+    //     !source.loaded.actor ||
+    //     !source.loaded.avatar ||
+    //     !source.loaded.header ||
+    //     !source.loaded.outbox ||
+    //     !source.loaded.likes ||
+    //     !source.loaded.bookmarks
+    //   ) {
+    //     r = false;
+    //   }
+    // }
+    // return r;
   },
 
   get totalPages() {
@@ -720,6 +727,7 @@ const uiStore = {
     this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
     this.theme = "light";
+    this.errorInLog = false;
     this.log = this.log ?? [];
 
     Alpine.store("userPrefs").load("lang");
@@ -727,6 +735,7 @@ const uiStore = {
   },
 
   logMsg(msg, type) {
+    // expected types: info, warn, error
     type = type ?? "info";
     const dateOptions = {
       hour12: false,
@@ -741,6 +750,9 @@ const uiStore = {
       time: time,
     };
     this.log.unshift(m);
+    if (type === "error") {
+      this.errorInLog = true;
+    }
   },
 
   toggleTheme() {

@@ -18,7 +18,7 @@ document.addEventListener("alpine:init", () => {
     "Bonjour!",
     "Oh hey!",
   ];
-  Alpine.store("ui").logMsg(`MARL loaded. ${salutations[Math.floor(Math.random() * salutations.length)]} 😊`);
+  marlConsole(`MARL loaded. ${salutations[Math.floor(Math.random() * salutations.length)]} 😊`);
 
   resetStores();
 });

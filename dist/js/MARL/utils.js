@@ -4,130 +4,108 @@ function resetStores() {
   Alpine.store("ui").resetState();
 }
 
-function unZip(files) {
-  const firstLoad = Alpine.store("files").sources.length === 0;
-  if (firstLoad) {
-    resetStores();
-  }
-  Alpine.store("files").loading = true;
-
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-
-    if (
-      Alpine.store("files").sources.some((source) => {
-        return (
-          source.fileInfos.name === file.name &&
-          source.fileInfos.size === file.size &&
-          source.fileInfos.lastModified === file.lastModified
-        );
-      })
-    ) {
-      const msg = `File already loaded: <b>${file.name}</b>`;
-      console.warn(msg);
-      Alpine.store("ui").logMsg(msg, "warn");
-      continue;
-    }
-
-    Alpine.store("ui").logMsg(`Loading file: <b>${file.name}</b>`, "info");
-
-    JSZip.loadAsync(file).then(
-      (content) => {
-        const index = Alpine.store("files").sources.length;
-        const fileInfos = {
-          name: file.name,
-          size: file.size,
-          lastModified: file.lastModified,
-        };
-
-        Alpine.store("files").sources[index] = {
-          id: index,
-          fileInfos: fileInfos,
-          nbToots: 0,
-
-          actor: {},
-          outbox: {},
-          likes: [],
-          bookmarks: [],
-          avatar: {},
-          header: {},
-
-          loaded: {
-            actor: false,
-            avatar: false,
-            header: false,
-            outbox: false,
-            likes: false,
-            bookmarks: false,
-          },
-        };
-
-        Alpine.store("files").sources[index]._raw = content.files;
-
-        loadJsonFile("actor", index, fileInfos);
-        loadJsonFile("outbox", index, fileInfos);
-        loadJsonFile("likes", index, fileInfos);
-        loadJsonFile("bookmarks", index, fileInfos);
-      },
-      (error) => {
-        const msg = `Error loading <b>${file.name}</b>: ${error.message}`;
-        console.error(msg);
-        Alpine.store("ui").logMsg(msg, "error");
-      }
-    );
+function zipFileAlreadyLoaded(file) {
+  if (
+    Alpine.store("files").sources.some((source) => {
+      return (
+        source.fileInfos.name === file.name &&
+        source.fileInfos.size === file.size &&
+        source.fileInfos.lastModified === file.lastModified
+      );
+    })
+  ) {
+    const msg = `File already loaded: <b>${file.name}</b>`;
+    console.warn(msg);
+    marlConsole(msg, "warn");
+    return true;
+  } else {
+    return false;
   }
 }
 
-function loadJsonFile(name, index, fileInfos) {
-  const content = Alpine.store("files").sources[index]._raw;
+function preprocessToots(t, index) {
+  // build the '_marl' prop for each toot
+  let marl = {
+    langs: [],
+    source: index,
+  };
 
-  if (content[name + ".json"] === undefined) {
-    if (name === "likes" || name === "bookmarks") {
-      // we can still run the app without those files
-      const msg = `<b>${fileInfos.name}</b>: File ${name}.json not found in archive.`;
-      console.warn(msg);
-      Alpine.store("ui").logMsg(msg, "warn");
-      Alpine.store("files").sources[index].loaded[name] = true;
-    } else {
-      // this should NOT happen and will prevent the app from running
-      const msg = `<b>Critical error - ${fileInfos.name}</b>: File ${name}.json not found in archive.`;
-      console.error(msg);
-      Alpine.store("ui").logMsg(msg, "error");
+  // check for duplicates (in case of multiple archive files)
+  if (Alpine.store("files").toc.includes(t.id)) {
+    const alts = Alpine.store("files").toots.filter((t2) => t2.id === t.id);
+
+    let identical = false;
+    const flat1 = JSON.stringify(t);
+
+    alts.forEach((alt) => {
+      let alt2 = JSON.parse(JSON.stringify(alt));
+      delete alt2._marl;
+      const flat2 = JSON.stringify(alt2);
+
+      if (flat1 === flat2) {
+        identical = true;
+      } else {
+        alt._marl.duplicate = true;
+        marl.duplicate = true;
+        Alpine.store("files").duplicates = true;
+      }
+    });
+    if (identical) {
+      return false;
     }
-    return;
+  } else {
+    Alpine.store("files").toc.push(t.id);
   }
 
-  content[name + ".json"].async("text").then(function (txt) {
-    if (name === "actor") {
-      Alpine.store("files").sources[index].actor = JSON.parse(txt);
-      loadActorImages(index);
-      Alpine.store("files").sources[index].loaded.actor = true;
-    } // actor.json
+  if (t.type === "Create") {
+    if (typeof t.object === "object" && t.object !== null && t.object.contentMap) {
+      let langs = [];
+      for (let lang in t.object.contentMap) {
+        langs.push(lang);
+      }
+      marl.langs = langs;
+    } else {
+      marl.langs = ["undefined"];
+    }
+  }
 
-    if (name === "outbox") {
-      let data = JSON.parse(txt);
+  if (typeof t.object === "object" && t.object !== null) {
+    if (t.object.content) {
+      const content = t.object.content.toLowerCase();
+      marl.textContent = stripHTML(content);
+      marl.externalLinks = extractExternalLinks(content);
+    }
+    if (t.object.summary) {
+      marl.summary = t.object.summary.toLowerCase();
+    }
 
-      let toots = data.orderedItems.reduce((accu, t) => {
-        let t2 = preprocessToots(t, index);
-        if (t2) {
-          accu.push(t2);
-        }
-        return accu;
-      }, []);
+    if (t.object.attachment && t.object.attachment.length) {
+      marl.hasAttachments = true;
+    }
+  } else if (t.object) {
+    marl.textContent = t.object.toLowerCase();
+  }
 
-      Alpine.store("files").toots = Alpine.store("files").toots.concat(toots);
-      Alpine.store("files").sources[index].nbToots = toots.length;
-      delete data.orderedItems;
-      Alpine.store("files").sources[index].outbox = data;
-      Alpine.store("files").sources[index].loaded.outbox = true;
-    } // outbox.json
+  marl.visibility = tootVisibility(t);
 
-    if (name === "likes" || name === "bookmarks") {
-      const tmp = JSON.parse(txt);
-      Alpine.store("files").sources[index][name] = tmp.orderedItems;
-      Alpine.store("files").sources[index].loaded[name] = true;
-    } // likes.json || bookmarks.json
-  });
+  const id = t.id.split("/");
+  marl.id = id[id.length - 2];
+
+  t._marl = marl;
+  return t;
+}
+
+function checkAppReady(ok) {
+  if (ok) {
+    buildTootsInfos();
+    buildDynamicFilters();
+    cleanUpRaw();
+    setHueForSources();
+    document.getElementById("main-section").focus();
+    Alpine.store("ui").checkMenuState();
+    Alpine.store("files").sortToots();
+    Alpine.store("files").loading = false;
+  }
 }
 
 function buildTootsInfos() {
@@ -224,137 +202,6 @@ function buildDynamicFilters() {
   Alpine.store("files").resetFilters(false);
 }
 
-function preprocessToots(t, index) {
-  // build the '_marl' prop for each toot
-  let marl = {
-    langs: [],
-    source: index,
-  };
-
-  // check for duplicates (in case of multiple archive files)
-  if (Alpine.store("files").toc.includes(t.id)) {
-    const alts = Alpine.store("files").toots.filter((t2) => t2.id === t.id);
-
-    let identical = false;
-    const flat1 = JSON.stringify(t);
-
-    alts.forEach((alt) => {
-      let alt2 = JSON.parse(JSON.stringify(alt));
-      delete alt2._marl;
-      const flat2 = JSON.stringify(alt2);
-
-      if (flat1 === flat2) {
-        identical = true;
-      } else {
-        alt._marl.duplicate = true;
-        marl.duplicate = true;
-        Alpine.store("files").duplicates = true;
-      }
-    });
-    if (identical) {
-      return false;
-    }
-  } else {
-    Alpine.store("files").toc.push(t.id);
-  }
-
-  if (t.type === "Create") {
-    if (typeof t.object === "object" && t.object !== null && t.object.contentMap) {
-      let langs = [];
-      for (let lang in t.object.contentMap) {
-        langs.push(lang);
-      }
-      marl.langs = langs;
-    } else {
-      marl.langs = ["undefined"];
-    }
-  }
-
-  if (typeof t.object === "object" && t.object !== null) {
-    if (t.object.content) {
-      const content = t.object.content.toLowerCase();
-      marl.textContent = stripHTML(content);
-      marl.externalLinks = extractExternalLinks(content);
-    }
-    if (t.object.summary) {
-      marl.summary = t.object.summary.toLowerCase();
-    }
-
-    if (t.object.attachment && t.object.attachment.length) {
-      marl.hasAttachments = true;
-    }
-  } else if (t.object) {
-    marl.textContent = t.object.toLowerCase();
-  }
-
-  marl.visibility = tootVisibility(t);
-
-  const id = t.id.split("/");
-  marl.id = id[id.length - 2];
-
-  t._marl = marl;
-  return t;
-}
-
-function loadActorImages(index) {
-  const actor = Alpine.store("files").sources[index].actor;
-  const content = Alpine.store("files").sources[index]._raw;
-
-  if (actor.icon && actor.icon.type === "Image" && actor.icon.url && content[actor.icon.url]) {
-    const image = actor.icon;
-    content[image.url].async("base64").then(function (content) {
-      Alpine.store("files").sources[index].avatar = {
-        type: image.mediaType,
-        content: content,
-        noImg: false,
-      };
-      Alpine.store("files").sources[index].loaded.avatar = true;
-    });
-  } else {
-    Alpine.store("files").sources[index].avatar = { noImg: true };
-    Alpine.store("files").sources[index].loaded.avatar = true;
-  }
-
-  if (actor.image && actor.image.type === "Image" && actor.image.url && content[actor.image.url]) {
-    const image = actor.image;
-    content[image.url].async("base64").then(function (content) {
-      Alpine.store("files").sources[index].header = {
-        type: image.mediaType,
-        content: content,
-        noImg: false,
-      };
-      Alpine.store("files").sources[index].loaded.header = true;
-    });
-  } else {
-    Alpine.store("files").sources[index].header = { noImg: true };
-    Alpine.store("files").sources[index].loaded.header = true;
-  }
-}
-
-function setHueForSources() {
-  const nbSources = Alpine.store("files").sources.length;
-  const hueStart = Math.round(Math.random() * 360); // MARL accent: 59.17
-  const hueSpacing = Math.round(360 / nbSources);
-
-  for (let i = 0; i < nbSources; i++) {
-    Alpine.store("files").sources[i].hue = hueStart + hueSpacing * i;
-  }
-}
-
-function checkAppReady(ok) {
-  if (ok) {
-    buildTootsInfos();
-    buildDynamicFilters();
-    cleanUpRaw();
-    setHueForSources();
-    document.getElementById("main-section").focus();
-    Alpine.store("ui").checkMenuState();
-    Alpine.store("files").sortToots();
-    Alpine.store("files").loading = false;
-    Alpine.store("files").someFilesLoaded = true;
-  }
-}
-
 function cleanUpRaw() {
   for (let i = 0; i < Alpine.store("files").sources.length; i++) {
     const content = Alpine.store("files").sources[i]._raw;
@@ -376,6 +223,16 @@ function cleanUpRaw() {
     content.cleanedUp = true;
 
     Alpine.store("files").sources[i]._raw = content;
+  }
+}
+
+function setHueForSources() {
+  const nbSources = Alpine.store("files").sources.length;
+  const hueStart = Math.round(Math.random() * 360); // MARL accent: 59.17
+  const hueSpacing = Math.round(360 / nbSources);
+
+  for (let i = 0; i < nbSources; i++) {
+    Alpine.store("files").sources[i].hue = hueStart + hueSpacing * i;
   }
 }
 
@@ -620,7 +477,7 @@ function detectLangFromBrowser() {
         const msg = `Setting language based on browser preference: <b>'${lang}' (${
           Alpine.store("ui").appLangs[lang]
         })</b>`;
-        Alpine.store("ui").logMsg(msg, "info");
+        marlConsole(msg, "info");
         return lang;
       }
     }
@@ -635,11 +492,15 @@ function setLang() {
   document.getElementsByTagName("html")[0].setAttribute("lang", lang);
 
   const msg = `App language set to <b>'${lang}' (${Alpine.store("ui").appLangs[lang]})</b>`;
-  Alpine.store("ui").logMsg(msg);
+  marlConsole(msg);
 }
 
 function setTheme(theme) {
   document.getElementsByTagName("html")[0].setAttribute("class", theme);
+}
+
+function marlConsole(msg, cls = "info") {
+  Alpine.store("ui").logMsg(msg, cls);
 }
 
 // drag'n'drop over entire page
@@ -675,6 +536,6 @@ const drag = {
   handleDrop(e) {
     const dt = e.dataTransfer;
     const files = dt.files;
-    unZip(files);
+    loadZipFiles(files);
   },
 };

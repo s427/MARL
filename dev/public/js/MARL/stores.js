@@ -63,6 +63,11 @@ const userPrefsStore = {
 
 const filesStore = {
   resetState() {
+    this.loadingQueue = [];
+    this.currentlyLoading = {};
+    this.currentlyLoadingId = "";
+    this.currentlyLoadingName = "";
+
     this.sources = [];
     this.toots = [];
     this.toc = [];
@@ -73,7 +78,6 @@ const filesStore = {
     this.currentPage = 1;
 
     this.loading = false;
-    this.someFilesLoaded = false;
 
     this.languages = {};
     this.boostsAuthors = [];
@@ -106,7 +110,7 @@ const filesStore = {
       attachmentNoAltText: false,
       attachmentWithAltText: false,
 
-      // automatically generated (see loadJsonFile()):
+      // automatically generated (see unpackJsonFile()):
       // lang_en: true,
       // lang_fr: true,
       // lang_de: true,
@@ -554,25 +558,28 @@ const filesStore = {
   },
 
   get appReady() {
-    if (this.sources.length === 0) {
+    if (this.loading || !this.sources.length) {
       return false;
     }
 
-    let r = true;
-    for (let i = 0; i < this.sources.length; i++) {
-      const source = this.sources[i];
-      if (
-        !source.loaded.actor ||
-        !source.loaded.avatar ||
-        !source.loaded.header ||
-        !source.loaded.outbox ||
-        !source.loaded.likes ||
-        !source.loaded.bookmarks
-      ) {
-        r = false;
-      }
-    }
-    return r;
+    return true;
+
+    // ### refactor ?
+    // let r = true;
+    // for (let i = 0; i < this.sources.length; i++) {
+    //   const source = this.sources[i];
+    //   if (
+    //     !source.loaded.actor ||
+    //     !source.loaded.avatar ||
+    //     !source.loaded.header ||
+    //     !source.loaded.outbox ||
+    //     !source.loaded.likes ||
+    //     !source.loaded.bookmarks
+    //   ) {
+    //     r = false;
+    //   }
+    // }
+    // return r;
   },
 
   get totalPages() {

@@ -49,7 +49,7 @@ Everything takes place in the browser, with no communication with any server (on
 
 ### Support for multiple archives
 
-You can open multiple archive files at once (or add some more after via drag'n'drop) and MARL will show you all their posts in a single chronological list, as well as all the profiles in a tabbed interface. Each profile is automatically color-coded. A new group of filters allow you to filter posts by author.
+You can open multiple archive files at once (or add some more after via drag'n'drop) and MARL will show you all their posts in a single chronological list, as well as all the profiles in a tabbed interface. Each profile is automatically color-coded. A new group of filters allows you to filter posts by author.
 
 ### Filters
 

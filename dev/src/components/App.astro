@@ -12,11 +12,11 @@ import MainScreen from './screens/MainScreen.astro';
   x-init="$watch('$store.files.appReady', value => checkAppReady(value))"
 >
 
-<template x-if="!$store.files.appReady && !$store.files.someFilesLoaded && !$store.files.loading">
+  <template x-if="!$store.files.loading && !$store.files.appReady">
     <WelcomeScreen />
   </template>
 
-  <template x-if="(!$store.files.appReady && $store.files.someFilesLoaded) || $store.files.loading">
+  <template x-if="$store.files.loading">
     <LoadingScreen />
   </template>
 
