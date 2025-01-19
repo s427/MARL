@@ -68,13 +68,17 @@ Posts attachments (images, videos or sounds) can be viewed or played in MARL. Ho
 MARL should be fully accessible to keyboard users. It also has been optimized for Forced Colors (aka "High Contrast" or "Contrast Theme") mode. Last but not least, it should be accessible to screen readers.  
 Accessibility is a vast and complex topic, and there's probably room for improvement. Feel free to let me know if you have feedback or suggestion!
 
+### Multilingual
+
+MARL is available in English and French. Get in touch if you want to help translating it in your language! (The file for English can be found at `dev/public/js/i18n/en.js`.)
+
 ### Responsive
 
 MARL should work on pretty much any screen size, as low as 300 pixels wide (and possibly less).
 
 ### Persistent settings
 
-Paging-related settings (namely: number of posts per page, and sorting order) are stored in the browser and automatically restored when the app is initialized, so that you don't have to re-set them the way you like it every time.
+Paging-related settings (namely: number of posts per page, and sorting order) are stored in the browser and automatically restored when the app is initialized, so that you don't have to re-set them the way you like it every time. The same goes for the language and theme of the app.
 
 ## Limitations
 
