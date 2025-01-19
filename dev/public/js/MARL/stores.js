@@ -563,23 +563,6 @@ const filesStore = {
     }
 
     return true;
-
-    // ### refactor ?
-    // let r = true;
-    // for (let i = 0; i < this.sources.length; i++) {
-    //   const source = this.sources[i];
-    //   if (
-    //     !source.loaded.actor ||
-    //     !source.loaded.avatar ||
-    //     !source.loaded.header ||
-    //     !source.loaded.outbox ||
-    //     !source.loaded.likes ||
-    //     !source.loaded.bookmarks
-    //   ) {
-    //     r = false;
-    //   }
-    // }
-    // return r;
   },
 
   get totalPages() {

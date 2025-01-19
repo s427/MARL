@@ -35,16 +35,11 @@ function startQueue() {
 function unzipFirstFile() {
   const file = Alpine.store("files").loadingQueue[0];
   const fileId = file.name + file.size;
-  // console.log("unzipFirstFile", fileId);
 
   if (Alpine.store("files").currentlyLoading[fileId] && Alpine.store("files").currentlyLoading[fileId].working) {
-    return false; // ### then what?
+    return false; // ### useful?
   }
 
-  // store which file is currently being unpacked
-  // as long as 'working' is true, we do not unzip another file
-  // ### actually useful?
-  // ### redundant with "loaded" below?
   Alpine.store("files").currentlyLoading[fileId] = {
     error: false,
     working: true,
@@ -64,7 +59,6 @@ function unzipFirstFile() {
 }
 
 function unzipStart(file) {
-  // console.log("unzipStart 1", file);
   JSZip.loadAsync(file).then(
     (content) => {
       if (!zipStructureIsOk(content, file)) {
@@ -72,7 +66,6 @@ function unzipStart(file) {
         return;
       }
 
-      // console.log("unzipStart 2", content);
       const index = Alpine.store("files").sources.length;
 
       Alpine.store("files").sources[index] = {
@@ -91,21 +84,9 @@ function unzipStart(file) {
         bookmarks: [],
         avatar: {},
         header: {},
-
-        // loaded: {
-        //   actor: false,
-        //   avatar: false,
-        //   header: false,
-        //   outbox: false,
-        //   likes: false,
-        //   bookmarks: false,
-        // }, // ### redundant with currentlyLoading (above)?
       };
 
       Alpine.store("files").sources[index]._raw = content.files;
-
-      // ### check file structure before going further (?)
-      // this should actually be done before inserting anything in "sources"
 
       unpackJsonFile("actor", index);
       unpackJsonFile("outbox", index);
@@ -123,7 +104,6 @@ function unzipStart(file) {
 }
 
 function zipStructureIsOk(content, file) {
-  // console.log("zipStructureIsOk?", content);
   let r = true;
   if (content.files["actor.json"] === undefined) {
     const msg = `<b>Critical error - ${file.name}</b>: File "actor.json" not found in archive. Archive cannot be loaded.`;
@@ -149,7 +129,6 @@ function unpackJsonFile(name, index) {
     const msg = `<b>${fileInfos.name}</b>: File ${name}.json not found in archive.`;
     console.warn(msg);
     marlConsole(msg, "warn");
-    // Alpine.store("files").sources[index].loaded[name] = true;
     Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId][name] = true;
     return;
   }
@@ -164,7 +143,6 @@ function loadJsonData(name, data, index) {
   if (name === "actor") {
     Alpine.store("files").sources[index].actor = data;
     loadActorImages(index);
-    // Alpine.store("files").sources[index].loaded.actor = true;
     Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].actor = true;
   } // actor.json
 
@@ -181,13 +159,11 @@ function loadJsonData(name, data, index) {
     Alpine.store("files").sources[index].nbToots = toots.length;
     delete data.orderedItems;
     Alpine.store("files").sources[index].outbox = data;
-    // Alpine.store("files").sources[index].loaded.outbox = true;
     Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].outbox = true;
   } // outbox.json
 
   if (name === "likes" || name === "bookmarks") {
     Alpine.store("files").sources[index][name] = data.orderedItems;
-    // Alpine.store("files").sources[index].loaded[name] = true;
     Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId][name] = true;
   } // likes.json || bookmarks.json
 
@@ -206,13 +182,11 @@ function loadActorImages(index) {
         content: content,
         noImg: false,
       };
-      // Alpine.store("files").sources[index].loaded.avatar = true;
       Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].avatar = true;
       unzipEnd();
     });
   } else {
     Alpine.store("files").sources[index].avatar = { noImg: true };
-    // Alpine.store("files").sources[index].loaded.avatar = true;
     Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].avatar = true;
   }
 
@@ -224,13 +198,11 @@ function loadActorImages(index) {
         content: content,
         noImg: false,
       };
-      // Alpine.store("files").sources[index].loaded.header = true;
       Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].header = true;
       unzipEnd();
     });
   } else {
     Alpine.store("files").sources[index].header = { noImg: true };
-    // Alpine.store("files").sources[index].loaded.header = true;
     Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].header = true;
   }
 
@@ -239,10 +211,7 @@ function loadActorImages(index) {
 
 function abortLoading(msg) {
   const fileId = Alpine.store("files").currentlyLoadingId;
-  // console.warn("abortLoading", fileId, msg);
-  // Alpine.store("files").loading = false;
   Alpine.store("files").currentlyLoading[fileId].error = msg;
-  // proceed to next file
   unzipEnd();
 }
 
@@ -253,22 +222,18 @@ function unpackingFinished() {
     status.error ||
     (status.actor && status.outbox && status.likes && status.bookmarks && status.avatar && status.header)
   ) {
-    // console.log("unpacking done!");
     return true;
   }
 
-  // console.log("unpacking is NOT finished", JSON.parse(JSON.stringify(status)));
   return false;
 }
 
 function unzipEnd() {
   const fileId = Alpine.store("files").currentlyLoadingId;
-  // console.log("unzipEnd", fileId);
   if (!unpackingFinished()) {
     return;
   }
 
-  // ### do some clean up and restart for the next file
   Alpine.store("files").currentlyLoading[fileId].working = false;
   Alpine.store("files").loadingQueue.shift();
   Alpine.store("files").currentlyLoadingId = "";
@@ -278,6 +243,5 @@ function unzipEnd() {
 }
 
 function endQueue() {
-  // console.log("Tout OK, charger l'app");
   Alpine.store("files").loading = false;
 }
