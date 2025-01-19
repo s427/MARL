@@ -1,13 +1,3 @@
-function marlConsole(msg, cls = "info") {
-  Alpine.store("ui").logMsg(msg, cls);
-}
-
-function resetStores() {
-  Alpine.store("files").resetState();
-  Alpine.store("lightbox").resetState();
-  Alpine.store("ui").resetState();
-}
-
 function unZip(files) {
   const firstLoad = Alpine.store("files").sources.length === 0;
   if (firstLoad) {
@@ -649,6 +639,16 @@ function setLang() {
 
 function setTheme(theme) {
   document.getElementsByTagName("html")[0].setAttribute("class", theme);
+}
+
+function resetStores() {
+  Alpine.store("files").resetState();
+  Alpine.store("lightbox").resetState();
+  Alpine.store("ui").resetState();
+}
+
+function marlConsole(msg, cls = "info") {
+  Alpine.store("ui").logMsg(msg, cls);
 }
 
 // drag'n'drop over entire page
