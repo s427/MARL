@@ -3,7 +3,7 @@ const userPrefsStore = {
 
   save(pref, value) {
     const msg = `Saving user preference <b>(${pref}: ${value})</b>`;
-    Alpine.store("ui").logMsg(msg, "info");
+    marlConsole(msg, "info");
     localStorage.setItem(this.prefix + pref, value);
   },
   load(pref) {
@@ -41,7 +41,7 @@ const userPrefsStore = {
           if (value) {
             const msg = `<b>Unrecognized language</b> in user preferences: ${value}`;
             console.warn(msg);
-            Alpine.store("ui").logMsg(msg, "warn");
+            marlConsole(msg, "warn");
           }
           value = "en";
           this.save("lang", value);
@@ -720,6 +720,7 @@ const uiStore = {
     this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
     this.theme = "light";
+    this.errorInLog = false;
     this.log = this.log ?? [];
 
     Alpine.store("userPrefs").load("lang");
@@ -727,6 +728,7 @@ const uiStore = {
   },
 
   logMsg(msg, type) {
+    // expected types: info, warn, error
     type = type ?? "info";
     const dateOptions = {
       hour12: false,
@@ -741,6 +743,9 @@ const uiStore = {
       time: time,
     };
     this.log.unshift(m);
+    if (type === "error") {
+      this.errorInLog = true;
+    }
   },
 
   toggleTheme() {

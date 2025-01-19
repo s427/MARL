@@ -1,3 +1,7 @@
+function marlConsole(msg, cls = "info") {
+  Alpine.store("ui").logMsg(msg, cls);
+}
+
 function resetStores() {
   Alpine.store("files").resetState();
   Alpine.store("lightbox").resetState();
@@ -25,11 +29,11 @@ function unZip(files) {
     ) {
       const msg = `File already loaded: <b>${file.name}</b>`;
       console.warn(msg);
-      Alpine.store("ui").logMsg(msg, "warn");
+      marlConsole(msg, "warn");
       continue;
     }
 
-    Alpine.store("ui").logMsg(`Loading file: <b>${file.name}</b>`, "info");
+    marlConsole(`Loading file: <b>${file.name}</b>`, "info");
 
     JSZip.loadAsync(file).then(
       (content) => {
@@ -72,10 +76,15 @@ function unZip(files) {
       (error) => {
         const msg = `Error loading <b>${file.name}</b>: ${error.message}`;
         console.error(msg);
-        Alpine.store("ui").logMsg(msg, "error");
+        marlConsole(msg, "error");
+        abortLoading();
       }
     );
   }
+}
+
+function abortLoading() {
+  Alpine.store("files").loading = false;
 }
 
 function loadJsonFile(name, index, fileInfos) {
@@ -86,13 +95,13 @@ function loadJsonFile(name, index, fileInfos) {
       // we can still run the app without those files
       const msg = `<b>${fileInfos.name}</b>: File ${name}.json not found in archive.`;
       console.warn(msg);
-      Alpine.store("ui").logMsg(msg, "warn");
+      marlConsole(msg, "warn");
       Alpine.store("files").sources[index].loaded[name] = true;
     } else {
       // this should NOT happen and will prevent the app from running
       const msg = `<b>Critical error - ${fileInfos.name}</b>: File ${name}.json not found in archive.`;
       console.error(msg);
-      Alpine.store("ui").logMsg(msg, "error");
+      marlConsole(msg, "error");
     }
     return;
   }
@@ -620,7 +629,7 @@ function detectLangFromBrowser() {
         const msg = `Setting language based on browser preference: <b>'${lang}' (${
           Alpine.store("ui").appLangs[lang]
         })</b>`;
-        Alpine.store("ui").logMsg(msg, "info");
+        marlConsole(msg, "info");
         return lang;
       }
     }
@@ -635,7 +644,7 @@ function setLang() {
   document.getElementsByTagName("html")[0].setAttribute("lang", lang);
 
   const msg = `App language set to <b>'${lang}' (${Alpine.store("ui").appLangs[lang]})</b>`;
-  Alpine.store("ui").logMsg(msg);
+  marlConsole(msg);
 }
 
 function setTheme(theme) {
