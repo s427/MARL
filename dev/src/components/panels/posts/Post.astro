@@ -67,8 +67,8 @@ import AttachmentVideo from "./AttachmentVideo.astro";
       <span x-text="$t('post.by')"></span>&nbsp;<span x-html="formatAuthor(toot.actor)"></span>
     </span>
 
-    <span class="published"
-      ><span x-text="formatDateTime(toot.published)"></span>
+    <span class="published">
+      <span x-text="formatDateTime(toot.published)"></span>
       <span x-show="toot.object && toot.object.updated" class="updated">
         <span x-text="$t('post.lastUpdated')"></span>
         <span x-text="formatDateTime(toot.object.updated)"></span>
