@@ -10,9 +10,9 @@ import NoAvatar from '../../../img/no-avatar.png'
 
 <template x-if="! source.avatar.noImg">
   <button
-    id="actor-avatar"
+    :id="'actor-avatar-' + source.id"
     class="actor-avatar"
-    @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar', source.id)"
+    @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar-' + source.id, source.id)"
   >
     <img
       :alt="a.name"

@@ -10,9 +10,9 @@ import NoHeader from '../../../img/no-header.png'
 
 <template x-if="! source.header.noImg">
   <button
-    id="actor-header"
+    :id="'actor-header-' + source.id"
     class="actor-header"
-    @click="$store.lightbox.openProfileImg('header', 'actor-header', source.id)"
+    @click="$store.lightbox.openProfileImg('header', 'actor-header-' + source.id, source.id)"
   >
     <img
       alt="$t(actor.headerImage)"
