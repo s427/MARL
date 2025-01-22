@@ -9,7 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.1.1",
+    "astro": "^5.1.7",
+    "astro-compress": "^2.3.6",
     "astro-relative-links": "^0.4.2"
   },
   "devDependencies": {

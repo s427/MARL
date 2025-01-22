@@ -63,6 +63,11 @@ const userPrefsStore = {
 
 const filesStore = {
   resetState() {
+    this.loadingQueue = [];
+    this.currentlyLoading = {};
+    this.currentlyLoadingId = "";
+    this.currentlyLoadingName = "";
+
     this.sources = [];
     this.toots = [];
     this.toc = [];
@@ -73,7 +78,6 @@ const filesStore = {
     this.currentPage = 1;
 
     this.loading = false;
-    this.someFilesLoaded = false;
 
     this.languages = {};
     this.boostsAuthors = [];
@@ -106,7 +110,7 @@ const filesStore = {
       attachmentNoAltText: false,
       attachmentWithAltText: false,
 
-      // automatically generated (see loadJsonFile()):
+      // automatically generated (see unpackJsonFile()):
       // lang_en: true,
       // lang_fr: true,
       // lang_de: true,
@@ -554,25 +558,11 @@ const filesStore = {
   },
 
   get appReady() {
-    if (this.sources.length === 0) {
+    if (this.loading || !this.sources.length) {
       return false;
     }
 
-    let r = true;
-    for (let i = 0; i < this.sources.length; i++) {
-      const source = this.sources[i];
-      if (
-        !source.loaded.actor ||
-        !source.loaded.avatar ||
-        !source.loaded.header ||
-        !source.loaded.outbox ||
-        !source.loaded.likes ||
-        !source.loaded.bookmarks
-      ) {
-        r = false;
-      }
-    }
-    return r;
+    return true;
   },
 
   get totalPages() {
@@ -769,6 +759,10 @@ const uiStore = {
 
   openActorPanel(id) {
     this.actorPanel = id;
+
+    setTimeout(() => {
+      document.getElementById("actorpanel-" + id).scrollTop = 0;
+    }, 50);
   },
   switchActorPanel(dir) {
     let id = this.actorPanel;
@@ -827,9 +821,17 @@ const uiStore = {
     document.querySelectorAll(`#panel-${name} details[open]`).forEach((e) => {
       e.removeAttribute("open");
     });
-    setTimeout(() => {
-      document.getElementById("panel-" + name).scrollTop = 0;
-    }, 250);
+
+    if (name === "actor") {
+      const panel = "actorpanel-" + this.actorPanel;
+      setTimeout(() => {
+        document.getElementById(panel).scrollTop = 0;
+      }, 250);
+    } else {
+      setTimeout(() => {
+        document.getElementById("panel-" + name).scrollTop = 0;
+      }, 250);
+    }
   },
   checkMenuState() {
     const menu = document.getElementById("mobile-menu");

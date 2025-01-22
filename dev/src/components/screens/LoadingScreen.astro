@@ -1,8 +1,18 @@
-<main class="welcome loading">
-  <div class="intro">
-    <div class="file-loader">
-      <div>... <span x-text="$t('misc.loading')"></span> ...</div>
-      <div class="filename" x-text="$store.files.loadingName"></div>
+<main class="loading">
+  <div class="loading-inner">
+    <div class="loading-current">
+      <div class="loading-txt">…&nbsp;<span x-text="$t('misc.loading')"></span>&nbsp;…</div>
+      <div class="loading-filename" x-text="$store.files.currentlyLoadingName"></div>
+    </div>
+    <div class="loading-next" x-show="$store.files.loadingQueue.length">
+      <ul>
+        <template x-for="(file, index) in $store.files.loadingQueue">
+          <li
+            x-text="file.name"
+            :class="'f'+index"
+          ></li>
+        </template>
+      </ul>
     </div>
   </div>
 </main>

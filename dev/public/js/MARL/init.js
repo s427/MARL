@@ -27,12 +27,6 @@ document.addEventListener("alpine:init", () => {
 
 let appStrings = {};
 
-for (const lang in appLangs) {
-  const script = document.createElement("script");
-  script.src = `js/i18n/${lang}.js`;
-  document.head.appendChild(script);
-}
-
 document.addEventListener("alpine-i18n:ready", function () {
   AlpineI18n.create("en", appStrings);
   AlpineI18n.fallbackLocale = "en";

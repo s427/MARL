@@ -17,7 +17,7 @@ import About from '../panels/tools/About.astro';
       type="file"
       accept=".zip"
       multiple
-      @change="unZip(Object.values($event.target.files))"
+      @change="loadZipFiles(Object.values($event.target.files))"
     />
 
     <div class="app-log-wrapper" x-show="$store.ui.errorInLog">

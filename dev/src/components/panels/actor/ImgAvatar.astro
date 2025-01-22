@@ -1,18 +1,20 @@
 ---
 import NoAvatar from '../../../img/no-avatar.png'
+import NoAvatarDark from '../../../img/no-avatar-dark.png'
 ---
 
 <template x-if="source.avatar.noImg">
   <div class="actor-avatar no-avatar">
-    <img alt="$t(actor.noAvatarImage)" src={NoAvatar.src} />
+    <img alt="$t(actor.noAvatarImage)" class="img-light" src={NoAvatar.src} />
+    <img alt="$t(actor.noAvatarImage)" class="img-dark" src={NoAvatarDark.src} />
   </div>
 </template>
 
 <template x-if="! source.avatar.noImg">
   <button
-    id="actor-avatar"
+    :id="'actor-avatar-' + source.id"
     class="actor-avatar"
-    @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar', source.id)"
+    @click="$store.lightbox.openProfileImg('avatar', 'actor-avatar-' + source.id, source.id)"
   >
     <img
       :alt="a.name"

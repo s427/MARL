@@ -13,7 +13,7 @@ $meta-visible: 100ch;
       "infos  meta"
       "raw    meta";
     grid-template-columns: 50% 50%;
-    grid-template-rows: min-content min-content 1fr min-content;
+    grid-template-rows: min-content min-content min-content 1fr;
   }
 
   &:last-child {
@@ -341,6 +341,7 @@ $meta-visible: 100ch;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  align-content: flex-start;
   container-type: inline-size;
   background: var(--bg2);
   border-radius: 0.5rem;

@@ -95,6 +95,21 @@
   }
 }
 
+.actor-header,
+.actor-avatar {
+  .img-dark {
+    display: none;
+  }
+  html.dark & {
+    .img-light {
+      display: none;
+    }
+    .img-dark {
+      display: block;
+    }
+  }
+}
+
 .actor-id {
   position: relative;
   z-index: 1;
