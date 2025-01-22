@@ -759,6 +759,10 @@ const uiStore = {
 
   openActorPanel(id) {
     this.actorPanel = id;
+
+    setTimeout(() => {
+      document.getElementById("actorpanel-" + id).scrollTop = 0;
+    }, 50);
   },
   switchActorPanel(dir) {
     let id = this.actorPanel;
@@ -817,9 +821,17 @@ const uiStore = {
     document.querySelectorAll(`#panel-${name} details[open]`).forEach((e) => {
       e.removeAttribute("open");
     });
-    setTimeout(() => {
-      document.getElementById("panel-" + name).scrollTop = 0;
-    }, 250);
+
+    if (name === "actor") {
+      const panel = "actorpanel-" + this.actorPanel;
+      setTimeout(() => {
+        document.getElementById(panel).scrollTop = 0;
+      }, 250);
+    } else {
+      setTimeout(() => {
+        document.getElementById("panel-" + name).scrollTop = 0;
+      }, 250);
+    }
   },
   checkMenuState() {
     const menu = document.getElementById("mobile-menu");
