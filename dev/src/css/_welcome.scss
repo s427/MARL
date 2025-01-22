@@ -7,7 +7,8 @@
   }
 }
 
-.welcome {
+.welcome,
+.loading {
   max-width: 80ch;
   height: 100dvh;
   margin: 0 auto;
@@ -19,7 +20,9 @@
   line-height: 1.4;
   position: relative;
   z-index: 1;
+}
 
+.welcome {
   .app-log {
     h3 {
       display: none;
@@ -84,32 +87,6 @@
     outline: 2px solid var(--accent-light);
     outline-offset: 2px;
   }
-
-  .loading & {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2em;
-    background-color: var(--accent);
-    color: var(--stripe-fg);
-    background: repeating-linear-gradient(
-      45deg,
-      var(--stripe1),
-      var(--stripe1) 1rem,
-      var(--stripe2) 1rem,
-      var(--stripe2) 2rem
-    );
-    background-size: 200% auto;
-
-    &:hover,
-    &:focus {
-      outline: none;
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      animation: movingStripes 2s linear infinite;
-    }
-  }
 }
 
 .main-page.highlight-drag {
@@ -149,8 +126,75 @@
 }
 
 .loading {
+  padding: 2rem;
   justify-content: center;
-  .file-loader {
-    margin: 0;
+}
+
+.loading-inner {
+}
+.loading-current {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 10rem;
+  max-height: 70dvh;
+  padding: 1rem;
+  color: var(--stripe-fg);
+  text-align: center;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--stripe1),
+    var(--stripe1) 1rem,
+    var(--stripe2) 1rem,
+    var(--stripe2) 2rem
+  );
+  background-size: 200% auto;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: movingStripes 2s linear infinite;
+  }
+}
+.loading-txt {
+  font-size: 2em;
+}
+.loading-filename {
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
+.loading-next {
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 0.85em;
+  ul {
+    list-style: none;
+    height: calc(4lh + (4 * 0.5rem));
+    overflow: visible;
+  }
+  li {
+    overflow-wrap: anywhere;
+    line-height: 1.2;
+    padding: 0.25rem 1rem;
+    display: none;
+    &.f1 {
+      display: block;
+      opacity: 1;
+    }
+    &.f2 {
+      display: block;
+      opacity: 0.75;
+    }
+    &.f3 {
+      display: block;
+      opacity: 0.5;
+    }
+    &.f4 {
+      display: block;
+      opacity: 0.25;
+    }
   }
 }
