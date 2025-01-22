@@ -11,11 +11,14 @@
     padding: 0.5rem 1rem;
     background-color: var(--bg6);
     border-radius: 0.5rem;
-    word-break: break-all;
   }
   li {
     list-style: none;
     margin: 0.5rem 0;
+  }
+  b,
+  .name {
+    word-break: break-all;
   }
 }
 
