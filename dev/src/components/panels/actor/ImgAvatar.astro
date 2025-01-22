@@ -1,10 +1,12 @@
 ---
 import NoAvatar from '../../../img/no-avatar.png'
+import NoAvatarDark from '../../../img/no-avatar-dark.png'
 ---
 
 <template x-if="source.avatar.noImg">
   <div class="actor-avatar no-avatar">
-    <img alt="$t(actor.noAvatarImage)" src={NoAvatar.src} />
+    <img alt="$t(actor.noAvatarImage)" class="img-light" src={NoAvatar.src} />
+    <img alt="$t(actor.noAvatarImage)" class="img-dark" src={NoAvatarDark.src} />
   </div>
 </template>
 

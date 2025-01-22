@@ -1,10 +1,12 @@
 ---
 import NoHeader from '../../../img/no-header.png'
+import NoHeaderDark from '../../../img/no-header-dark.png'
 ---
 
 <template x-if="source.header.noImg">
   <div class="actor-header no-header">
-    <img alt="$t(actor.noHeaderImage)" src={NoHeader.src} />
+    <img alt="$t(actor.noHeaderImage)" class="img-light" src={NoHeader.src} />
+    <img alt="$t(actor.noHeaderImage)" class="img-dark" src={NoHeaderDark.src} />
   </div>
 </template>
 
