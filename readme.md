@@ -122,6 +122,11 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.2
+  - Better error handling when loading files
+    - In case of errors, MARL should not remain stuck on the loading screen anymore, but will get back to the welcome screen (or the main screen if another archive is already loaded) and show an error message (either directly on the welcome screen, or in the tools panel).
+    - [Github issue #8](https://github.com/s427/MARL/issues/8) - If the JSON files are stored in a subfolder within the ZIP file (instead of being at its root), MARL will attempt to find them and use their location as root.
+  - Various small fixes
 - v. 2.1
   - [NEW] Internationalization
     - MARL is now usable in English and French, with support for more languages.

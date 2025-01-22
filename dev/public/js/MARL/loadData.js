@@ -61,9 +61,14 @@ function unzipFirstFile() {
 function unzipStart(file) {
   JSZip.loadAsync(file).then(
     (content) => {
-      if (!zipStructureIsOk(content, file)) {
+      let root = checkZipStructure(content, file.name);
+      if (root === false) {
         abortLoading(Alpine.store("files").currentlyLoadingId, "critical file is missing in archive");
         return;
+      } else if (root === true) {
+        root = "";
+      } else {
+        root += "/";
       }
 
       const index = Alpine.store("files").sources.length;
@@ -75,6 +80,7 @@ function unzipStart(file) {
           name: file.name,
           size: file.size,
           lastModified: file.lastModified,
+          archiveRoot: root,
         },
         nbToots: 0,
 
@@ -103,28 +109,68 @@ function unzipStart(file) {
   );
 }
 
-function zipStructureIsOk(content, file) {
+function checkZipStructure(content, filename) {
   let r = true;
+  let msgs = [];
   if (content.files["actor.json"] === undefined) {
-    const msg = `<b>Critical error - ${file.name}</b>: File "actor.json" not found in archive. Archive cannot be loaded.`;
-    console.error(msg);
-    marlConsole(msg, "error");
+    const msg = `<b>${filename}</b>: File "actor.json" not found in archive root.`;
+    msgs.push({ txt: msg, cls: "warn" });
     r = false;
   }
   if (content.files["outbox.json"] === undefined) {
-    const msg = `<b>Critical error - ${file.name}</b>: File "outbox.json" not found in archive. Archive cannot be loaded.`;
-    console.error(msg);
-    marlConsole(msg, "error");
+    const msg = `<b>${filename}</b>: File "outbox.json" not found in archive root.`;
+    msgs.push({ txt: msg, cls: "warn" });
     r = false;
   }
+
+  if (!r) {
+    let pathActor, pathOutbox;
+
+    const testActor = content.file(/actor.json$/);
+    if (testActor.length) {
+      pathActor = testActor[0].name.split("/");
+      pathActor.pop();
+      pathActor = pathActor.join("/");
+    }
+
+    const testOutbox = content.file(/outbox.json$/);
+    if (testOutbox.length) {
+      pathOutbox = testOutbox[0].name.split("/");
+      pathOutbox.pop();
+      pathOutbox = pathOutbox.join("/");
+    }
+
+    if (pathActor && pathOutbox) {
+      if (pathActor === pathOutbox) {
+        r = pathActor;
+        const msg = `<b>${filename}</b>: "outbox.json" and "actor.json" both found in the same subfolder (<b>${pathActor}</b>). We'll assume everything else is in that folder too.`;
+        msgs.push({ txt: msg, cls: "warn" });
+      } else {
+        const msg = `<b>${filename}</b>: incoherent structure ("actor.json" and "outbox.json" are not in the same location). Unable to load this archive.`;
+        msgs.push({ txt: msg, cls: "error" });
+      }
+    } else {
+      const msg = `<b>${filename}</b>: missing critical files ("actor.json" and/or "outbox.json"). Unable to load this archive.`;
+      msgs.push({ txt: msg, cls: "error" });
+    }
+  }
+
+  if (msgs.length) {
+    msgs.forEach((msg) => {
+      console.warn(msg.txt);
+      marlConsole(msg.txt, msg.cls);
+    });
+  }
+
   return r;
 }
 
 function unpackJsonFile(name, index) {
   const content = Alpine.store("files").sources[index]._raw;
   const fileInfos = Alpine.store("files").sources[index].fileInfos;
+  const path = fileInfos.archiveRoot + name + ".json";
 
-  if (content[name + ".json"] === undefined && (name === "likes" || name === "bookmarks")) {
+  if (content[path] === undefined && (name === "likes" || name === "bookmarks")) {
     // we can still run the app without those files
     const msg = `<b>${fileInfos.name}</b>: File ${name}.json not found in archive.`;
     console.warn(msg);
@@ -133,7 +179,7 @@ function unpackJsonFile(name, index) {
     return;
   }
 
-  content[name + ".json"].async("text").then(function (txt) {
+  content[path].async("text").then(function (txt) {
     let data = JSON.parse(txt);
     loadJsonData(name, data, index);
   });
@@ -172,11 +218,12 @@ function loadJsonData(name, data, index) {
 
 function loadActorImages(index) {
   const actor = Alpine.store("files").sources[index].actor;
+  const root = Alpine.store("files").sources[index].fileInfos.archiveRoot;
   const content = Alpine.store("files").sources[index]._raw;
 
-  if (actor.icon && actor.icon.type === "Image" && actor.icon.url && content[actor.icon.url]) {
+  if (actor.icon && actor.icon.type === "Image" && actor.icon.url && content[root + actor.icon.url]) {
     const image = actor.icon;
-    content[image.url].async("base64").then(function (content) {
+    content[root + image.url].async("base64").then(function (content) {
       Alpine.store("files").sources[index].avatar = {
         type: image.mediaType,
         content: content,
@@ -190,9 +237,9 @@ function loadActorImages(index) {
     Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].avatar = true;
   }
 
-  if (actor.image && actor.image.type === "Image" && actor.image.url && content[actor.image.url]) {
+  if (actor.image && actor.image.type === "Image" && actor.image.url && content[root + actor.image.url]) {
     const image = actor.image;
-    content[image.url].async("base64").then(function (content) {
+    content[root + image.url].async("base64").then(function (content) {
       Alpine.store("files").sources[index].header = {
         type: image.mediaType,
         content: content,

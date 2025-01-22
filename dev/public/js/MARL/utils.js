@@ -239,6 +239,7 @@ function setHueForSources() {
 function loadAttachedMedia(att, index) {
   if (attachmentIsImage(att) || attachmentIsVideo(att) || attachmentIsSound(att)) {
     const data = Alpine.store("files").sources[index]._raw;
+    const root = Alpine.store("files").sources[index].fileInfos.archiveRoot;
     let url = att.url;
     // ?! some instances seem to add their own name in front of the path,
     // resulting in an invalid path with relation to the archive
@@ -250,10 +251,10 @@ function loadAttachedMedia(att, index) {
     if (prefix > 0) {
       url = url.slice(prefix);
     }
-    if (!data[url]) {
+    if (!data[root + url]) {
       return;
     }
-    data[url].async("base64").then((content) => {
+    data[root + url].async("base64").then((content) => {
       Alpine.store("files").sources[index][att.url] = {
         type: att.mediaType,
         content: content,
