@@ -497,6 +497,11 @@ function setLang() {
 
 function setTheme(theme) {
   document.getElementsByTagName("html")[0].setAttribute("class", theme);
+  if (theme === "dark") {
+    document.querySelector('meta[name="color-scheme"]').setAttribute("content", "dark");
+  } else {
+    document.querySelector('meta[name="color-scheme"]').setAttribute("content", "light");
+  }
 }
 
 function marlConsole(msg, cls = "info") {
