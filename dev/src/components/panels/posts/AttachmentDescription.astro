@@ -1,12 +1,21 @@
 <div class="att-description">
-  <span
+  <div
+    class="att-not-found"
+    x-show="$store.files.sources[toot._marl.source][att.url].content === null"
+  >
+    <span x-text="$t('post.attachmentNotFound')"></span>
+    (<span x-text="att.mediaType"></span>)
+  </div>
+  <div
     class="desc-body"
     x-text="att.name ?? $t('post.attachmentNoAlt')"
     :id="'att-' + toot._marl.id + '-' + index + '-desc'"
     aria-hidden="true"
-  ></span>
-  <span class="desc-source">
-    <strong x-text="$t('post.attachmentInArchive')"></strong> <span
-      x-text="$store.files.sources[toot._marl.source].fileInfos.archiveRoot + att.url"></span>
-  </span>
+  ></div>
+  <div class="desc-source">
+    <strong x-text="$t('post.attachmentInArchive')"></strong>
+    <span
+      x-text="$store.files.sources[toot._marl.source].fileInfos.archiveRoot + att.url"
+    ></span>
+  </div>
 </div>

@@ -252,14 +252,21 @@ function loadAttachedMedia(att, index) {
       url = url.slice(prefix);
     }
     if (!data[root + url]) {
-      return;
-    }
-    data[root + url].async("base64").then((content) => {
+      // media not found in archive
+      // we still want to show the metadata for the attachement
       Alpine.store("files").sources[index][att.url] = {
         type: att.mediaType,
-        content: content,
+        content: null,
       };
-    });
+      return;
+    } else {
+      data[root + url].async("base64").then((content) => {
+        Alpine.store("files").sources[index][att.url] = {
+          type: att.mediaType,
+          content: content,
+        };
+      });
+    }
   }
 }
 

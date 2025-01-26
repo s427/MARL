@@ -125,12 +125,18 @@ $meta-visible: 100ch;
     list-style: none;
   }
 
+  .att-not-found {
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
   .att-description {
     font-size: 0.85em;
     line-height: 1.4;
   }
   .no-alt-text {
-    .att-description {
+    .desc-body {
       font-style: italic;
     }
   }

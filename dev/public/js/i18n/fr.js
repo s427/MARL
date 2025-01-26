@@ -118,6 +118,7 @@ appStrings["fr"] = {
     linkToPost: "lien",
     attachmentNoAlt: "Aucune description fournie",
     attachmentInArchive: "Dans l'archive :",
+    attachmentNotFound: "⚠️ Média introuvable à l'emplacement indiqué",
     people: "Personnes",
     hashtags: "Hashtags",
     extLinks: "Liens externes",

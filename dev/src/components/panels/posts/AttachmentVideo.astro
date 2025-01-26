@@ -8,6 +8,7 @@ import AttachmentDescription from './AttachmentDescription.astro'
   <div class="att-wrapper">
     <video
       controls
+      x-show="$store.files.sources[toot._marl.source][att.url].content"
       :width="att.width"
       :height="att.height"
       :src="`data:${att.mediaType}; base64,${await $store.files.sources[toot._marl.source][att.url].content}`"

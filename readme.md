@@ -17,6 +17,8 @@ Alternatively, you can download this project from its [project page](https://git
 
 ⚠️ __Only ZIP files are supported__ —not GZ files. This is a limitation of the JSZip library which is used by MARL to unpack the archive file. Older versions of Mastodon (prior to version 4.2.0) used to export the archive in TAR.GZ. If this is your case, you will have to first convert your archive to a ZIP file.
 
+⚠️ __A note about very large archives:__ Browsers may struggle opening very large ZIP files (several GB), in which case you will see an error and the archive will not be loaded. If this happens, you can try upacking your archive, removing the `media_attachments` folder, and repacking everything else. This will significantly reduce the size of the archive, by removing all attachments from your posts (images, videos or sounds). MARL will still be able to work without those attachments and display their media type and alt text (or lack thereof). Filters related to attachments still work too. Also note that for each attachment, MARL indicates where you can find it in your archive.
+
 ## Screenshots
 
 <img src="screenshot-multiple-archives.png" alt="app screenshot with multiple files loaded">
@@ -126,6 +128,8 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.3
+  - [Github issue #10](https://github.com/s427/MARL/issues/10) Support for archives with `media_attachments` folder removed. This allows very large archive files, which would normally fail to load because they exceed the browser cache capacity, to still be loaded, although without any attachment visible. Attachments metadata (alt text and path) are still shown, and attachment-related filters still work.
 - v. 2.2
   - Better error handling when loading files
     - In case of errors, MARL should not remain stuck on the loading screen anymore, but will get back to the welcome screen (or the main screen if another archive is already loaded) and show an error message (either directly on the welcome screen, or in the tools panel).

@@ -10,6 +10,7 @@ import AttachmentDescription from './AttachmentDescription.astro'
       class="att-img-wrapper"
       @click="$store.lightbox.open(toot, index, 'att-' + toot._marl.id + '-' + index)"
       :id="'att-' + toot._marl.id + '-' + index"
+      x-show="$store.files.sources[toot._marl.source][att.url].content"
     >
       <img
         alt=""
