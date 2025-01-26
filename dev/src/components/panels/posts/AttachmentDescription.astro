@@ -1,11 +1,12 @@
 <div class="att-description">
   <span
     class="desc-body"
-    x-text="att.name ?? $t('posts.attachmentNoAlt')"
+    x-text="att.name ?? $t('post.attachmentNoAlt')"
     :id="'att-' + toot._marl.id + '-' + index + '-desc'"
     aria-hidden="true"
   ></span>
   <span class="desc-source">
-    <strong x-text="$t('post.attachmentInArchive')"></strong> <span x-text="att.url"></span>
+    <strong x-text="$t('post.attachmentInArchive')"></strong> <span
+      x-text="$store.files.sources[toot._marl.source].fileInfos.archiveRoot + att.url"></span>
   </span>
 </div>
