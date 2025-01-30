@@ -195,13 +195,23 @@ const filesStore = {
 
       if (f.fullText) {
         let show = false;
-        if (t._marl.textContent) {
-          const filterValue = f.fullText.toLowerCase();
+        const filterValue = f.fullText.toLowerCase();
 
-          if (filterValue && t._marl.textContent && t._marl.textContent.indexOf(filterValue) >= 0) {
+        if (t._marl.textContent) {
+          if (t._marl.textContent && t._marl.textContent.indexOf(filterValue) >= 0) {
             show = true;
           }
         }
+
+        if (t._marl.hasAttachments) {
+          t.object.attachment.forEach((att) => {
+            const alt = att.name;
+            if (alt && alt.indexOf(filterValue) >= 0) {
+              show = true;
+            }
+          });
+        }
+
         if (!show) {
           return show;
         }
