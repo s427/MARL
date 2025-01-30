@@ -1,1 +1,1 @@
-const appLangs={en:"English",fr:"Français"};for(const n in appLangs){const s=document.createElement("script");s.src=`js/i18n/${n}.js`,document.head.appendChild(s)}
+const appLangs={en:"English",fr:"Français"};let appStrings={};
