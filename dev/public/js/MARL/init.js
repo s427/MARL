@@ -25,8 +25,6 @@ document.addEventListener("alpine:init", () => {
 
 // i18n
 
-let appStrings = {};
-
 document.addEventListener("alpine-i18n:ready", function () {
   AlpineI18n.create("en", appStrings);
   AlpineI18n.fallbackLocale = "en";
