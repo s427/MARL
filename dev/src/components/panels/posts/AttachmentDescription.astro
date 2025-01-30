@@ -6,12 +6,20 @@
     <span x-text="$t('post.attachmentNotFound')"></span>
     (<span x-text="att.mediaType"></span>)
   </div>
+
   <div
     class="desc-body"
     x-text="att.name ?? $t('post.attachmentNoAlt')"
-    :id="'att-' + toot._marl.id + '-' + index + '-desc'"
-    aria-hidden="true"
+    x-show="$store.files.sources[toot._marl.source][att.url].content === null"
   ></div>
+  <div
+    class="desc-body"
+    x-text="att.name ?? $t('post.attachmentNoAlt')"
+    aria-hidden="true"
+    :id="'att-' + toot._marl.id + '-' + index + '-desc'"
+    x-show="$store.files.sources[toot._marl.source][att.url].content"
+  ></div>
+
   <div class="desc-source">
     <strong x-text="$t('post.attachmentInArchive')"></strong>
     <span
