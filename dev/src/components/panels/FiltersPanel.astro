@@ -27,7 +27,7 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
 
   <div class="toots-filters-group">
     <FilterCheckbox name="isEdited" />
-    <template x-show="$store.files.duplicates">
+    <template x-if="$store.files.duplicates">
       <FilterCheckbox name="isDuplicate" />
     </template>
   </div>
