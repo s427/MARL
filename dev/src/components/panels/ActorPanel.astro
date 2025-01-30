@@ -58,20 +58,20 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
 
           <div class="actor-id">
             <ImgAvatar />
-            <h1 class="actor-name" x-text="await a.name"></h1>
+            <h1 class="actor-name" x-text="a.name"></h1>
             <div class="actor-url">
-              <a :href="await a.url" x-text="await a.url"></a>
+              <a :href="a.url" x-text="a.url"></a>
             </div>
           </div>
 
-          <div class="actor-summary" x-show="a.summary" x-html="await a.summary"></div>
+          <div class="actor-summary" x-show="a.summary" x-html="a.summary"></div>
 
           <div class="actor-infos">
             <dl>
               <dt x-text="$t('actor.memberSince')"></dt>
-              <dd x-text="await formatDate(a.published)"></dd>
+              <dd x-text="formatDate(a.published)"></dd>
             </dl>
-            <template x-for="item in await a.attachment">
+            <template x-for="item in a.attachment">
               <dl>
                 <dt x-text="item.name"></dt>
                 <dd x-html="item.value"></dd>
@@ -123,7 +123,7 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
               </summary>
               <div class="details-content">
                 <textarea
-                  x-text="formatJson(await a)"
+                  x-text="formatJson(a)"
                   :aria-labelledby="source + 'raw-data-label'"
                   readonly
                 ></textarea>

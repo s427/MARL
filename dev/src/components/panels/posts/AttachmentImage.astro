@@ -14,7 +14,7 @@ import AttachmentDescription from './AttachmentDescription.astro'
     >
       <img
         alt=""
-        :src="`data:${att.mediaType}; base64,${await $store.files.sources[toot._marl.source][att.url].content}`"
+        :src="`data:${att.mediaType}; base64,${$store.files.sources[toot._marl.source][att.url].content}`"
         :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
       />
     </button>

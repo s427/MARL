@@ -18,7 +18,7 @@ import Post from './posts/Post.astro';
 
   <template
     x-show="$store.files.pagedToots.length"
-    x-for="toot in await $store.files.pagedToots"
+    x-for="toot in $store.files.pagedToots"
   >
     <Post />
   </template>
