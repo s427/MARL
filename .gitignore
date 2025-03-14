@@ -2,10 +2,10 @@
 .docs
 .astro
 node_modules
+example-data
 
 # unused Astro generated files
 dist/content-assets.mjs
 dist/content-modules.mjs
 dist/data-store.json
 dist/settings.json
-example-data
