@@ -1,4 +1,6 @@
-drag.init("app");
+// Note: Alpine plug-ins must be inserted BEFORE alpinejs
+loadScript("alpine-i18n");
+loadScript("alpine");
 
 document.addEventListener("alpine:init", () => {
   // create and init stores
@@ -21,6 +23,7 @@ document.addEventListener("alpine:init", () => {
   marlConsole(`MARL loaded. ${salutations[Math.floor(Math.random() * salutations.length)]} 😊`);
 
   resetStores();
+  setMarlMode();
 });
 
 // i18n

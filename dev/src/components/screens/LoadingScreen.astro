@@ -1,8 +1,17 @@
+---
+import AppLog from '../panels/tools/AppLog.astro';
+---
+
 <main class="loading">
   <div class="loading-inner">
     <div class="loading-current">
-      <div class="loading-txt">…&nbsp;<span x-text="$t('misc.loading')"></span>&nbsp;…</div>
-      <div class="loading-filename" x-text="$store.files.currentlyLoadingName"></div>
+      <template x-if="! $store.files.loadingFailed">
+        <div class="loading-txt">…&nbsp;<span x-text="$t('misc.loading')"></span>&nbsp;…</div>
+        <div class="loading-filename" x-text="$store.files.currentlyLoadingName"></div>
+      </template>
+      <template x-if="$store.files.loadingFailed">
+        <div class="loading-txt">⚠️&nbsp;<span x-text="$t('misc.criticalFailure')"></span>&nbsp;⚠️</div>
+      </template>
     </div>
     <div class="loading-next" x-show="$store.files.loadingQueue.length">
       <ul>
@@ -13,6 +22,9 @@
           ></li>
         </template>
       </ul>
+    </div>
+    <div class="app-log-wrapper" x-show="$store.ui.errorInLog && $store.files.loadingFailed">
+      <AppLog />
     </div>
   </div>
 </main>

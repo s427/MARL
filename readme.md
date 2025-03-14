@@ -128,6 +128,11 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.4
+  - [NEW] Server mode
+    - You can now configure MARL to use it as publishing tool for your archive(s).
+    - Please read [server-mode.md](server-mode.md) for more information.
+    - A stand-alone script is available in `tools/outbox-cleanup` to generate a JSON file without private posts (it has its own [readme](tools/outbox-cleanup/readme.md)  file).
 - v. 2.3
   - [Github issue #10](https://github.com/s427/MARL/issues/10) Support for archives with `media_attachments` folder removed. This allows very large archive files, which would normally fail to load because they exceed the browser cache capacity, to still be loaded, although without any attachment visible. Attachments metadata (alt text and path) are still shown, and attachment-related filters still work.
 - v. 2.2

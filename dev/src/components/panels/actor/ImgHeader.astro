@@ -3,22 +3,35 @@ import NoHeader from '../../../img/no-header.png'
 import NoHeaderDark from '../../../img/no-header-dark.png'
 ---
 
-<template x-if="source.header.noImg">
+<template x-if="localMode() && source.header.noImg">
   <div class="actor-header no-header">
-    <img alt="$t(actor.noHeaderImage)" class="img-light" src={NoHeader.src} />
-    <img alt="$t(actor.noHeaderImage)" class="img-dark" src={NoHeaderDark.src} />
+    <img :alt="$t('actor.noHeaderImage')" class="img-light" src={NoHeader.src} />
+    <img :alt="$t('actor.noHeaderImage')" class="img-dark" src={NoHeaderDark.src} />
   </div>
 </template>
 
-<template x-if="! source.header.noImg">
+<template x-if="localMode() && ! source.header.noImg">
   <button
     :id="'actor-header-' + source.id"
     class="actor-header"
     @click="$store.lightbox.openProfileImg('header', 'actor-header-' + source.id, source.id)"
   >
     <img
-      alt="$t(actor.headerImage)"
+      :alt="$t('actor.headerImage')"
       :src="`data:${source.header.type}; base64,${source.header.content}`"
     />
   </button>
+</template>
+
+<template x-if="serverMode()">
+  <button
+    :id="'actor-header-' + source.id"
+    class="actor-header"
+    @click="$store.lightbox.openProfileImg(source.actor.image.url, 'actor-header-' + source.id, source.id)"
+  >
+    <img
+      :alt="$t('actor.headerImage')"
+      :src="source.archiveBasePath + source.actor.image.url"
+    />
+</button>
 </template>

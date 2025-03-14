@@ -13,6 +13,7 @@ appStrings["fr"] = {
   },
   misc: {
     loading: "Chargement",
+    criticalFailure: "Erreur fatale",
     closePanelBtn: "Fermer le panneau",
   },
   menu: {
@@ -140,6 +141,7 @@ appStrings["fr"] = {
     useDarkTheme: "Utiliser le thème sombre",
     useLightTheme: "Utiliser le thème clair",
     loadedFiles: "Fichiers chargés",
+    loadedRemotes: "Archives chargées",
     addAnother: "Ajouter une autre archive",
     addAnotherTip:
       "Astuce: Vous pouvez ouvrir plusieurs archives en même temps.<br>Vous pouvez aussi glisser-déposer vos fichiers d'archive n'importe où dans cette fenêtre.",

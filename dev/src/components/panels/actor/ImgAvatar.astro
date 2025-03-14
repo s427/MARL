@@ -3,14 +3,14 @@ import NoAvatar from '../../../img/no-avatar.png'
 import NoAvatarDark from '../../../img/no-avatar-dark.png'
 ---
 
-<template x-if="source.avatar.noImg">
+<template x-if="localMode() && source.avatar.noImg">
   <div class="actor-avatar no-avatar">
-    <img alt="$t(actor.noAvatarImage)" class="img-light" src={NoAvatar.src} />
-    <img alt="$t(actor.noAvatarImage)" class="img-dark" src={NoAvatarDark.src} />
+    <img :alt="$t('actor.noAvatarImage')" class="img-light" src={NoAvatar.src} />
+    <img :alt="$t('actor.noAvatarImage')" class="img-dark" src={NoAvatarDark.src} />
   </div>
 </template>
 
-<template x-if="! source.avatar.noImg">
+<template x-if="localMode() && ! source.avatar.noImg">
   <button
     :id="'actor-avatar-' + source.id"
     class="actor-avatar"
@@ -19,6 +19,19 @@ import NoAvatarDark from '../../../img/no-avatar-dark.png'
     <img
       :alt="a.name"
       :src="`data:${source.avatar.type}; base64,${source.avatar.content}`"
+    />
+  </button>
+</template>
+
+<template x-if="serverMode()">
+  <button
+    :id="'actor-avatar-' + source.id"
+    class="actor-avatar"
+    @click="$store.lightbox.openProfileImg(source.actor.icon.url, 'actor-avatar-' + source.id, source.id)"
+  >
+    <img
+      :alt="a.name"
+      :src="source.archiveBasePath + source.actor.icon.url"
     />
   </button>
 </template>

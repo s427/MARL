@@ -10,7 +10,7 @@ export default defineConfig({
   integrations: [
     relativeLinks(),
     compress({
-      Exclude: ["alpinejs-i18n.min.js", "alpinejs.min.js", "jszip.min.js"],
+      Exclude: ["alpinejs-i18n.min.js", "alpinejs.min.js", "jszip.min.js", "config.js"],
     }),
   ],
   outDir: "../dist",

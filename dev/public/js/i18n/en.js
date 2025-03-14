@@ -13,6 +13,7 @@ appStrings["en"] = {
   },
   misc: {
     loading: "Loading",
+    criticalFailure: "Critical failure",
     closePanelBtn: "Close panel",
   },
   menu: {
@@ -140,6 +141,7 @@ appStrings["en"] = {
     useDarkTheme: "Use dark theme",
     useLightTheme: "Use light theme",
     loadedFiles: "Loaded files",
+    loadedRemotes: "Loaded archives",
     addAnother: "Add another archive",
     addAnotherTip:
       "Tip: You can open multiple archives at once.<br>You can also drag and drop your archive files anywhere on this window.",

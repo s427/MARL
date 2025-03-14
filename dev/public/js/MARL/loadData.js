@@ -1,10 +1,215 @@
+function setMarlMode() {
+  let serverMode = false;
+  if (typeof servers !== "undefined" && Array.isArray(servers) && servers.length) {
+    if (location.protocol === "file:") {
+      marlConsole(`Server mode is incompatible with the <b>file:</b> protocol. Running in local mode.`, "error");
+    } else {
+      serverMode = true;
+      marlConsole(`🌍 Operating in server mode, ${servers.length} path${servers.length > 1 ? "s" : ""} defined.`);
+    }
+  } else {
+    marlConsole(`🏠 Operating in local mode.`);
+  }
+
+  Alpine.store("files").serverMode = serverMode;
+
+  if (serverMode) {
+    let remotes = [];
+
+    for (const res of servers) {
+      let remote = {
+        path: "",
+        actor: "waiting",
+        outbox: "waiting",
+        bookmarks: "waiting",
+        likes: "waiting",
+        // => "waiting", "error", [json]
+        failed: false,
+      };
+      let path = res;
+
+      if (!(res.indexOf("http") === 0)) {
+        path = marlBasePath() + res;
+      }
+
+      if (path.slice(-1) !== "/") {
+        path = path + "/";
+      }
+
+      remote.path = path;
+      remotes.push(remote);
+    }
+
+    Alpine.store("files").remotes = remotes;
+
+    loadRemoteArchives();
+  } else {
+    loadScript("jszip");
+    drag.init("app");
+  }
+}
+
+// SERVER MODE
+
+function loadRemoteArchives() {
+  Alpine.store("files").loading = true;
+
+  for (let i = 0; i < Alpine.store("files").remotes.length; i++) {
+    loadRemoteArchive(i);
+  }
+}
+
+function loadRemoteArchive(index) {
+  const remote = Alpine.store("files").remotes[index];
+  marlConsole(`Loading remote archive #${index}: <b>${remote.path}</b>`);
+
+  fetchRemoteFile(index, "actor");
+  fetchRemoteFile(index, "outbox");
+  fetchRemoteFile(index, "likes");
+  fetchRemoteFile(index, "bookmarks");
+}
+
+async function fetchRemoteFile(index, file) {
+  const remote = Alpine.store("files").remotes[index];
+  let fileName = file + ".json";
+
+  if (file === "outbox") {
+    fileName = "outbox-public.json";
+  }
+
+  let path = remote.path + fileName;
+
+  // ### traiter les erreurs possibles :
+  // 404
+  // fichier invalide
+  // console.log(Alpine.store("files").remotes[index]);
+
+  fetch(path)
+    .then((response) => {
+      if (!response.ok) {
+        Alpine.store("files").remotes[index][file] = "error";
+        throw new Error("Not 2xx response", { cause: response });
+      } else {
+        return response.json();
+      }
+    })
+    .then((json) => {
+      Alpine.store("files").remotes[index][file] = json;
+    })
+    .catch((error) => {
+      console.error(`Error fetching ${fileName}:`, error);
+      Alpine.store("files").remotes[index][file] = "error";
+
+      switch (file) {
+        case "bookmarks":
+        case "likes":
+          marlConsole(
+            `Failed to load <b>${fileName}</b> from <b>${remote.path}</b>. MARL can still operate without this file.`,
+            "warn"
+          );
+          break;
+        case "outbox":
+        case "actor":
+          marlConsole(
+            `Failed to load <b>${fileName}</b> from <b>${remote.path}</b>. MARL cannot parse the archive without this file.`,
+            "error"
+          );
+          break;
+      }
+    })
+    .finally(() => {
+      checkRemotesLoadingStatus();
+    });
+}
+
+function checkRemotesLoadingStatus() {
+  const remotes = Alpine.store("files").remotes;
+  let nbRemotesOk = 0;
+
+  for (let i = 0; i < remotes.length; i++) {
+    const remote = remotes[i];
+    if (
+      remote.actor === "waiting" ||
+      remote.outbox === "waiting" ||
+      remote.bookmarks === "waiting" ||
+      remote.likes === "waiting"
+    ) {
+      return false;
+    } else {
+      if (remote.actor !== "error" && remote.outbox !== "error") {
+        nbRemotesOk++;
+      } else {
+        if (!Alpine.store("files").remotes[i].failed) {
+          marlConsole(`⚠️ Failed to load the archive at <b>${remote.path}</b>.`, "error");
+          Alpine.store("files").remotes[i].failed = true;
+        }
+      }
+    }
+  }
+
+  if (nbRemotesOk > 0) {
+    loadRemotesData();
+  } else {
+    Alpine.store("files").loadingFailed = true;
+    if (remotes.length > 1) {
+      marlConsole(`All remote archives failed to load. 😭`, "error");
+    } else {
+      marlConsole(`Remote archive failed to load. 😭`, "error");
+    }
+  }
+}
+
+function loadRemotesData() {
+  const remotes = Alpine.store("files").remotes;
+  let sanitizedRemotes = [];
+  for (let i = 0; i < remotes.length; i++) {
+    const remote = remotes[i];
+    if (!remote.failed) {
+      sanitizedRemotes.push(remote);
+    }
+  }
+
+  for (let i = 0; i < sanitizedRemotes.length; i++) {
+    const remote = sanitizedRemotes[i];
+
+    Alpine.store("files").sources[i] = {
+      id: i,
+      archiveBasePath: remote.path,
+      nbToots: 0,
+      actor: {},
+      outbox: {},
+      likes: [],
+      bookmarks: [],
+    };
+
+    loadJsonData("actor", remote.actor, i);
+    loadJsonData("outbox", remote.outbox, i);
+
+    if (remote.likes === "error") {
+      remote.likes = { orderedItems: [] };
+    }
+    if (remote.bookmarks === "error") {
+      remote.bookmarks = { orderedItems: [] };
+    }
+
+    loadJsonData("likes", remote.likes, i);
+    loadJsonData("bookmarks", remote.bookmarks, i);
+  }
+
+  // remove temporary JSON data
+  Alpine.store("files").remotes = [];
+
+  Alpine.store("files").loading = false;
+}
+
+// LOCAL MODE (unzip)
+
 function loadZipFiles(files) {
-  if (Alpine.store("files").loading) {
+  if (serverMode() || Alpine.store("files").loading) {
     return;
   }
 
-  const firstLoad = Alpine.store("files").sources.length === 0;
-  if (firstLoad) {
+  if (Alpine.store("files").sources.length === 0) {
     resetStores();
   }
   Alpine.store("files").loading = true;
@@ -188,8 +393,10 @@ function unpackJsonFile(name, index) {
 function loadJsonData(name, data, index) {
   if (name === "actor") {
     Alpine.store("files").sources[index].actor = data;
-    loadActorImages(index);
-    Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].actor = true;
+    if (localMode()) {
+      loadActorImages(index);
+      Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].actor = true;
+    }
   } // actor.json
 
   if (name === "outbox") {
@@ -205,15 +412,21 @@ function loadJsonData(name, data, index) {
     Alpine.store("files").sources[index].nbToots = toots.length;
     delete data.orderedItems;
     Alpine.store("files").sources[index].outbox = data;
-    Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].outbox = true;
+    if (localMode()) {
+      Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId].outbox = true;
+    }
   } // outbox.json
 
   if (name === "likes" || name === "bookmarks") {
     Alpine.store("files").sources[index][name] = data.orderedItems;
-    Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId][name] = true;
+    if (localMode()) {
+      Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId][name] = true;
+    }
   } // likes.json || bookmarks.json
 
-  unzipEnd();
+  if (localMode()) {
+    unzipEnd();
+  }
 }
 
 function loadActorImages(index) {

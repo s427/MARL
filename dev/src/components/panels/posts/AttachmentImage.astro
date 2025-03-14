@@ -3,7 +3,7 @@ import AttachmentDescription from './AttachmentDescription.astro'
 ---
 
 <template
-  x-if="attachmentIsImage(att) && $store.files.sources[toot._marl.source][att.url]"
+  x-if="localMode() && attachmentIsImage(att) && $store.files.sources[toot._marl.source][att.url]"
 >
   <div class="att-wrapper">
     <button
@@ -15,6 +15,25 @@ import AttachmentDescription from './AttachmentDescription.astro'
       <img
         alt=""
         :src="`data:${att.mediaType}; base64,${$store.files.sources[toot._marl.source][att.url].content}`"
+        :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
+      />
+    </button>
+
+    <AttachmentDescription />
+
+  </div>
+</template>
+
+<template x-if="serverMode() && attachmentIsImage(att)">
+  <div class="att-wrapper">
+    <button
+      class="att-img-wrapper"
+      @click="$store.lightbox.open(toot, index, 'att-' + toot._marl.id + '-' + index)"
+      :id="'att-' + toot._marl.id + '-' + index"
+      >
+      <img
+        alt=""
+        :src="$store.files.sources[toot._marl.source].archiveBasePath + att.url"
         :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
       />
     </button>

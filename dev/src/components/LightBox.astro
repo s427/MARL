@@ -8,11 +8,20 @@
     @keyup.esc="$store.lightbox.close()"
   >
     <div class="overlay-content">
-      <img
-        :alt="$store.lightbox.data[$store.lightbox.index].name"
-        :src="`data:${$store.lightbox.data[$store.lightbox.index].mediaType}; base64,${$store.files.sources[$store.lightbox.source][$store.lightbox.data[$store.lightbox.index].url].content}`"
-        @click="$store.lightbox.showNext()"
-      />
+      <template x-if="localMode()">
+        <img
+          :alt="$store.lightbox.data[$store.lightbox.index].name"
+          :src="`data:${$store.lightbox.data[$store.lightbox.index].mediaType}; base64,${$store.files.sources[$store.lightbox.source][$store.lightbox.data[$store.lightbox.index].url].content}`"
+          @click="$store.lightbox.showNext()"
+        />
+      </template>
+      <template x-if="serverMode()">
+        <img
+          :alt="$store.lightbox.data[$store.lightbox.index].name"
+          :src="$store.files.sources[$store.lightbox.source].archiveBasePath + $store.lightbox.data[$store.lightbox.index].url"
+          @click="$store.lightbox.showNext()"
+          />
+      </template>
     </div>
     <div class="overlay-ui">
       <div class="backdrop" @click="$store.lightbox.close()"></div>

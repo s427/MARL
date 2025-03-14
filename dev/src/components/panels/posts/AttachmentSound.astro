@@ -3,7 +3,7 @@ import AttachmentDescription from './AttachmentDescription.astro'
 ---
 
 <template
-  x-if="attachmentIsSound(att) && $store.files.sources[toot._marl.source][att.url]"
+  x-if="localMode() && attachmentIsSound(att) && $store.files.sources[toot._marl.source][att.url]"
 >
   <div class="att-wrapper">
     <audio
@@ -12,6 +12,23 @@ import AttachmentDescription from './AttachmentDescription.astro'
 
 
       :src="`data:${att.mediaType}; base64,${$store.files.sources[toot._marl.source][att.url].content}`"
+      :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
+    ></audio>
+
+    <AttachmentDescription />
+
+  </div>
+</template>
+
+<template
+  x-if="serverMode() && attachmentIsSound(att)"
+>
+  <div class="att-wrapper">
+    <audio
+      controls
+
+
+      :src="$store.files.sources[toot._marl.source].archiveBasePath + att.url"
       :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
     ></audio>
 

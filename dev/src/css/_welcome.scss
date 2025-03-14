@@ -197,4 +197,11 @@
       opacity: 0.25;
     }
   }
+
+  & + .app-log-wrapper {
+    margin-top: 1.75rem;
+    h3 {
+      display: none;
+    }
+  }
 }

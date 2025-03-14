@@ -23,6 +23,31 @@ function zipFileAlreadyLoaded(file) {
   }
 }
 
+function serverMode() {
+  return Alpine.store("files").serverMode;
+}
+
+function localMode() {
+  return !Alpine.store("files").serverMode;
+}
+
+function marlBasePath() {
+  let r = Alpine.store("files").marlBasePath;
+
+  if (r === "") {
+    r = location.href;
+    if (r.indexOf("index.html") > -1) {
+      r = r.slice(0, r.indexOf("index.html"));
+    }
+    if (r.slice(-1) !== "/") {
+      r = r + "/";
+    }
+    Alpine.store("files").marlBasePath = r;
+  }
+
+  return r;
+}
+
 function preprocessToots(t, index) {
   // build the '_marl' prop for each toot
   let marl = {
@@ -81,6 +106,22 @@ function preprocessToots(t, index) {
 
     if (t.object.attachment && t.object.attachment.length) {
       marl.hasAttachments = true;
+
+      for (let i = 0; i < t.object.attachment.length; i++) {
+        let att = t.object.attachment[i];
+        let url = att.url;
+        // ?! some instances seem to add their own name in front of the path,
+        // resulting in an invalid path with relation to the archive
+        // structure (e.g. "/framapiaf/media_attachments/...", but in the
+        // archive there is only a folder "/media_attachments")
+        // => So we remove everything that comes before "media_attachments/",
+        // hoping it doesn't break something else... :/
+        const prefix = url.indexOf("media_attachments/");
+        if (prefix > 0) {
+          t.object.attachment[i].url0 = url;
+          t.object.attachment[i].url = url.slice(prefix);
+        }
+      }
     }
   } else if (t.object) {
     marl.textContent = t.object.toLowerCase();
@@ -203,6 +244,10 @@ function buildDynamicFilters() {
 }
 
 function cleanUpRaw() {
+  if (serverMode()) {
+    return;
+  }
+
   for (let i = 0; i < Alpine.store("files").sources.length; i++) {
     const content = Alpine.store("files").sources[i]._raw;
     if (content.cleanedUp) {
@@ -237,20 +282,13 @@ function setHueForSources() {
 }
 
 function loadAttachedMedia(att, index) {
+  if (serverMode()) {
+    return;
+  }
   if (attachmentIsImage(att) || attachmentIsVideo(att) || attachmentIsSound(att)) {
     const data = Alpine.store("files").sources[index]._raw;
     const root = Alpine.store("files").sources[index].fileInfos.archiveRoot;
     let url = att.url;
-    // ?! some instances seem to add their own name in front of the path,
-    // resulting in an invalid path with relation to the archive
-    // structure (e.g. "/framapiaf/media_attachments/...", but in the
-    // archive there is only a folder "/media_attachments")
-    // => So we remove everything that comes before "media_attachments/",
-    // hoping it doesn't break something else... :/
-    const prefix = url.indexOf("media_attachments/");
-    if (prefix > 0) {
-      url = url.slice(prefix);
-    }
     if (!data[root + url]) {
       // media not found in archive
       // we still want to show the metadata for the attachement
@@ -395,6 +433,9 @@ function formatDate(data) {
 }
 
 function formatNumber(nb) {
+  if (typeof nb === "undefined") {
+    return "";
+  }
   return nb.toLocaleString();
 }
 
@@ -513,6 +554,7 @@ function setTheme(theme) {
 }
 
 function marlConsole(msg, cls = "info") {
+  // classes: "info", "warn", "error"
   Alpine.store("ui").logMsg(msg, cls);
 }
 

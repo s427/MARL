@@ -68,6 +68,10 @@ const filesStore = {
     this.currentlyLoadingId = "";
     this.currentlyLoadingName = "";
 
+    this.serverMode = false;
+    this.remotes = [];
+    this.marlBasePath = "";
+
     this.sources = [];
     this.toots = [];
     this.toc = [];
@@ -78,6 +82,7 @@ const filesStore = {
     this.currentPage = 1;
 
     this.loading = false;
+    this.loadingFailed = false;
 
     this.languages = {};
     this.boostsAuthors = [];
@@ -659,19 +664,24 @@ const lightboxStore = {
     this.show = true;
     this.index = index;
     this.origin = origin;
+
     document.getElementById("main-section-inner").setAttribute("inert", true);
     setTimeout(() => {
       document.getElementById("lightbox").focus();
     }, 50);
   },
   openProfileImg(name, origin, source) {
+    let mediaType = "";
+    if (localMode()) {
+      mediaType = Alpine.store("files").sources[source][name].type;
+    }
     const data = {
       object: {
         attachment: [
           {
             name: name,
             url: name,
-            mediaType: Alpine.store("files").sources[source][name].type,
+            mediaType: mediaType,
           },
         ],
       },
@@ -681,6 +691,7 @@ const lightboxStore = {
     };
     this.open(data, 0, origin);
   },
+
   close() {
     const origin = this.origin;
     this.data = [];

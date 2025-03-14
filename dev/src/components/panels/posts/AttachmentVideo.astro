@@ -3,7 +3,7 @@ import AttachmentDescription from './AttachmentDescription.astro'
 ---
 
 <template
-  x-if="attachmentIsVideo(att) && $store.files.sources[toot._marl.source][att.url]"
+  x-if="localMode() && attachmentIsVideo(att) && $store.files.sources[toot._marl.source][att.url]"
 >
   <div class="att-wrapper">
     <video
@@ -12,6 +12,23 @@ import AttachmentDescription from './AttachmentDescription.astro'
       :width="att.width"
       :height="att.height"
       :src="`data:${att.mediaType}; base64,${$store.files.sources[toot._marl.source][att.url].content}`"
+      :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
+    ></video>
+
+    <AttachmentDescription />
+
+  </div>
+</template>
+
+<template
+  x-if="serverMode() && attachmentIsVideo(att)"
+>
+  <div class="att-wrapper">
+    <video
+      controls
+      :width="att.width"
+      :height="att.height"
+      :src="$store.files.sources[toot._marl.source].archiveBasePath + att.url"
       :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
     ></video>
 

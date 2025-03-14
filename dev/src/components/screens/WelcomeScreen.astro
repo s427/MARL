@@ -20,7 +20,7 @@ import About from '../panels/tools/About.astro';
       @change="loadZipFiles(Object.values($event.target.files))"
     />
 
-    <div class="app-log-wrapper" x-show="$store.ui.errorInLog">
+    <div class="app-log-wrapper" x-show="serverMode() || $store.ui.errorInLog">
       <AppLog />
     </div>
   </div>

@@ -1,29 +1,42 @@
-<div class="att-description">
-  <div
-    class="att-not-found"
-    x-show="$store.files.sources[toot._marl.source][att.url].content === null"
-  >
-    <span x-text="$t('post.attachmentNotFound')"></span>
-    (<span x-text="att.mediaType"></span>)
-  </div>
+<template x-if="localMode()">
+  <div class="att-description">
+    <div
+      class="att-not-found"
+      x-show="$store.files.sources[toot._marl.source][att.url].content === null"
+    >
+      <span x-text="$t('post.attachmentNotFound')"></span>
+      (<span x-text="att.mediaType"></span>)
+    </div>
 
-  <div
-    class="desc-body"
-    x-text="att.name ?? $t('post.attachmentNoAlt')"
-    x-show="$store.files.sources[toot._marl.source][att.url].content === null"
-  ></div>
-  <div
-    class="desc-body"
-    x-text="att.name ?? $t('post.attachmentNoAlt')"
-    aria-hidden="true"
-    :id="'att-' + toot._marl.id + '-' + index + '-desc'"
-    x-show="$store.files.sources[toot._marl.source][att.url].content"
-  ></div>
+    <div
+      class="desc-body"
+      x-text="att.name ?? $t('post.attachmentNoAlt')"
+      x-show="$store.files.sources[toot._marl.source][att.url].content === null"
+    ></div>
+    <div
+      class="desc-body"
+      x-text="att.name ?? $t('post.attachmentNoAlt')"
+      aria-hidden="true"
+      :id="'att-' + toot._marl.id + '-' + index + '-desc'"
+      x-show="$store.files.sources[toot._marl.source][att.url].content"
+    ></div>
 
-  <div class="desc-source">
-    <strong x-text="$t('post.attachmentInArchive')"></strong>
-    <span
-      x-text="$store.files.sources[toot._marl.source].fileInfos.archiveRoot + att.url"
-    ></span>
+    <div class="desc-source">
+      <strong x-text="$t('post.attachmentInArchive')"></strong>
+      <span
+        x-text="$store.files.sources[toot._marl.source].fileInfos.archiveRoot + att.url"
+      ></span>
+    </div>
   </div>
-</div>
+</template>
+
+<template x-if="serverMode()">
+  <div class="att-description">
+    <div
+      class="desc-body"
+      x-text="att.name ?? $t('post.attachmentNoAlt')"
+      aria-hidden="true"
+      :id="'att-' + toot._marl.id + '-' + index + '-desc'"
+    ></div>
+  </div>
+</template>

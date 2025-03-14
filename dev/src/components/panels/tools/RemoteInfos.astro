@@ -1,0 +1,20 @@
+<template x-if="serverMode()">
+  <div class="tools-section manage-files">
+    <div
+      class="loaded-files"
+      :class="$store.files.sources.length > 1 ? 'multiple-files' : 'single-file'"
+      x-show="$store.files.sources.length"
+    >
+      <h3 x-text="$t('tools.loadedRemotes')"></h3>
+      <ul class="loaded-files-list">
+        <template
+          x-for="s in $store.files.sources"
+        >
+          <li :style="'--actor-hue: '+ s.hue">
+            <span class="name" x-text="s.archiveBasePath"></span>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </div>
+</template>
