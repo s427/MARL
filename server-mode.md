@@ -49,7 +49,7 @@ By default, `outbox.json` also contains your __private posts__. As this is not s
 ⚠️ __Please understand that this operation is not automatic.__ It is your responsibility to execute the script in order to remove your private posts from your archive prior to publishing it. In order to avoid any faux-pas, MARL operating in server mode will not fetch the `outbox.json` under its original name; instead it will look for a file named `outbox-public.json`. This is to (hopefully) avoid people publishing their archive without realizing that it can make their private posts public.
 
 - If you use the `outbox-cleanup` script, it will automatically generate the file with the correct name. Do not forget to _delete the original `outbox.json` file_ from your archive folder when you put it online (MARL will not attempt to access it, but other people may try).
-- If you want all your posts (private included) to be published, simply rename your outbox file to `outbox-cleanup.json`. No need to use the script.
+- If you want all your posts (private included) to be published, simply rename your outbox file to `outbox-public.json`. No need to use the script.
 
 ## Enable server mode
 
