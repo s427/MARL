@@ -140,6 +140,8 @@ appStrings["fr"] = {
     selectLanguage: "Choisir la langue",
     useDarkTheme: "Utiliser le thème sombre",
     useLightTheme: "Utiliser le thème clair",
+    combinePanels: "Combiner les panneaux",
+    simplifyPostsDisplay: "Simplifier l'affichage des posts",
     loadedFiles: "Fichiers chargés",
     loadedRemotes: "Archives chargées",
     addAnother: "Ajouter une autre archive",

@@ -2,9 +2,11 @@
 
 $meta-visible: 100ch;
 
-.toot {
+.toots {
   background: var(--bg1);
+}
 
+.toot {
   @container (width >= #{$meta-visible}) {
     display: grid;
     grid-template-areas:
@@ -100,23 +102,23 @@ $meta-visible: 100ch;
   }
 }
 
-@media (forced-colors: none) {
-  .multiple-actors .toot-content {
-    position: relative;
-    padding-left: 1.6rem;
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0.35rem;
-      top: 0.35rem;
-      bottom: 0.35rem;
-      z-index: 1;
-      width: 0.25rem;
-      border-radius: 0.25rem;
-      background-color: var(--actor-accent-ok, transparent);
-    }
-  }
-}
+// @media (forced-colors: none) {
+//   .multiple-actors .toot-content {
+//     position: relative;
+//     padding-left: 1.6rem;
+//     &::before {
+//       content: "";
+//       position: absolute;
+//       left: 0.35rem;
+//       top: 0.35rem;
+//       bottom: 0.35rem;
+//       z-index: 1;
+//       width: 0.25rem;
+//       border-radius: 0.25rem;
+//       background-color: var(--actor-accent-ok, transparent);
+//     }
+//   }
+// }
 
 .toot-attachments {
   margin: 1rem 0 0;
@@ -376,6 +378,21 @@ $meta-visible: 100ch;
     }
   }
 
+  .multiple-actors & {
+    .author a {
+      display: inline-block;
+      margin-top: -0.1rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.3rem;
+      color: #fff;
+      text-decoration: none;
+      background-color: var(--actor-accent2-ok, transparent);
+      &:focus-visible {
+        outline-color: var(--actor-accent2-ok);
+      }
+    }
+  }
+
   .published,
   .visibility {
     margin-right: 1rem;
@@ -509,6 +526,60 @@ $meta-visible: 100ch;
   p {
     margin: 1em 0;
   }
+}
+
+/***************************/
+/* SIMPLIFIED POST DISPLAY */
+/***************************/
+
+.simplify-posts-display {
+  .toot-raw,
+  .toot-meta {
+    display: none;
+  }
+  .toot {
+    max-width: 70ch;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "pretty"
+      "infos";
+    margin: 2.5rem auto;
+  }
+  .toot-infos {
+    padding-top: 0;
+    box-shadow: none;
+    background-color: transparent;
+    opacity: 0.5;
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 0.2s ease-out;
+    }
+
+    &:hover,
+    &:focus-within {
+      opacity: 1;
+    }
+
+    .type,
+    .visibility,
+    .published,
+    .link a {
+      padding: 0;
+      background-image: none !important;
+    }
+    .visibility {
+      order: 2;
+      margin-left: 0.4em;
+      &::before {
+        content: "-";
+      }
+    }
+  }
+  // .multiple-actors {
+  //   .toot-infos {
+  //     padding-left: 1.5rem;
+  //   }
+  // }
 }
 
 /********************/

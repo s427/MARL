@@ -35,5 +35,29 @@
       ><span class="btn-label light" x-text="$t('tools.useLightTheme')"></span>
     </button>
   </div>
-</div>
 
+  <div class="toots-filter app-setting checkbox">
+    <label for="setting-combine-panels">
+      <input
+        id="setting-combine-panels"
+        type="checkbox"
+        x-model.debounce={"$store.ui.combinePanels"}
+        @change.debounce="$store.ui.setOption('combinePanels')"
+      />
+      <span x-text={`$t('tools.combinePanels')`}></span>
+    </label>
+  </div>
+
+  <div class="toots-filter app-setting checkbox">
+    <label for="setting-simplify-posts-display">
+      <input
+        id="setting-simplify-posts-display"
+        type="checkbox"
+        x-model.debounce={"$store.ui.simplifyPostsDisplay"}
+        @change.debounce="$store.ui.setOption('simplifyPostsDisplay')"
+      />
+      <span x-text={`$t('tools.simplifyPostsDisplay')`}></span>
+    </label>
+  </div>
+
+</div>

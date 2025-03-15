@@ -48,6 +48,13 @@ function marlBasePath() {
   return r;
 }
 
+function savePref(pref, value) {
+  Alpine.store("userPrefs").save(pref, value);
+}
+function loadPref(pref) {
+  Alpine.store("userPrefs").load(pref);
+}
+
 function preprocessToots(t, index) {
   // build the '_marl' prop for each toot
   let marl = {
@@ -537,7 +544,7 @@ function detectLangFromBrowser() {
 function setLang() {
   const lang = Alpine.store("ui").lang;
   AlpineI18n.locale = lang;
-  Alpine.store("userPrefs").save("lang", lang);
+  savePref("lang", lang);
   document.getElementsByTagName("html")[0].setAttribute("lang", lang);
 
   const msg = `App language set to <b>'${lang}' (${Alpine.store("ui").appLangs[lang]})</b>`;

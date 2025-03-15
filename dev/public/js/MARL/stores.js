@@ -2,6 +2,12 @@ const userPrefsStore = {
   prefix: "marl_",
 
   save(pref, value) {
+    if (value === true) {
+      value = 1;
+    }
+    if (value === false) {
+      value = 0;
+    }
     const msg = `Saving user preference <b>(${pref}: ${value})</b>`;
     marlConsole(msg, "info");
     localStorage.setItem(this.prefix + pref, value);
@@ -15,18 +21,38 @@ const userPrefsStore = {
     }
   },
   set(pref, value) {
+    let store = "";
+    switch (pref) {
+      case "lang":
+      case "theme":
+      case "combinePanels":
+      case "simplifyPostsDisplay":
+        store = "ui";
+        break;
+      case "pageSize":
+      case "sortAsc":
+        store = "files";
+        break;
+    }
+
+    if (!store) {
+      return;
+    }
+
     switch (pref) {
       case "sortAsc":
+      case "combinePanels":
+      case "simplifyPostsDisplay":
         value = +value === 1 ? true : false;
-        if (value !== Alpine.store("files").sortAsc) {
-          Alpine.store("files").sortAsc = value;
+        if (value !== Alpine.store(store)[pref]) {
+          Alpine.store(store)[pref] = value;
         }
         break;
 
       case "pageSize":
         value = +value;
-        if (typeof value == "number" && !isNaN(value) && value > 0 && value !== Alpine.store("files").pageSize) {
-          Alpine.store("files").pageSize = value;
+        if (typeof value == "number" && !isNaN(value) && value > 0 && value !== Alpine.store(store)[pref]) {
+          Alpine.store(store)[pref] = value;
         }
         break;
 
@@ -37,7 +63,7 @@ const userPrefsStore = {
             this.save("lang", value);
           }
         }
-        if (!value || !Alpine.store("ui").appLangs[value]) {
+        if (!value || !Alpine.store(store).appLangs[value]) {
           if (value) {
             const msg = `<b>Unrecognized language</b> in user preferences: ${value}`;
             console.warn(msg);
@@ -46,7 +72,7 @@ const userPrefsStore = {
           value = "en";
           this.save("lang", value);
         }
-        Alpine.store("ui").lang = value;
+        Alpine.store(store)[pref] = value;
         break;
 
       case "theme":
@@ -54,7 +80,7 @@ const userPrefsStore = {
           value = "light";
           this.save("theme", value);
         }
-        Alpine.store("ui").theme = value;
+        Alpine.store(store)[pref] = value;
         setTheme(value);
         break;
     }
@@ -133,8 +159,8 @@ const filesStore = {
       boostsAuthors: "",
     };
 
-    Alpine.store("userPrefs").load("sortAsc");
-    Alpine.store("userPrefs").load("pageSize");
+    loadPref("sortAsc");
+    loadPref("pageSize");
   },
 
   setFilter() {
@@ -606,7 +632,7 @@ const filesStore = {
   },
   toggleTootsOrder() {
     this.sortAsc = !this.sortAsc;
-    Alpine.store("userPrefs").save("sortAsc", this.sortAsc ? 1 : 0);
+    savePref("sortAsc", this.sortAsc);
     this.sortToots();
     scrollTootsToTop();
     pagingUpdated();
@@ -614,7 +640,7 @@ const filesStore = {
 
   setPostsPerPage() {
     this.checkPagingValue();
-    Alpine.store("userPrefs").save("pageSize", this.pageSize);
+    savePref("pageSize", this.pageSize);
   },
   checkPagingValue() {
     if (this.currentPage < 1) {
@@ -734,8 +760,13 @@ const uiStore = {
     this.errorInLog = false;
     this.log = this.log ?? [];
 
-    Alpine.store("userPrefs").load("lang");
-    Alpine.store("userPrefs").load("theme");
+    this.combinePanels = false;
+    this.simplifyPostsDisplay = false;
+
+    loadPref("lang");
+    loadPref("theme");
+    loadPref("combinePanels");
+    loadPref("simplifyPostsDisplay");
   },
 
   logMsg(msg, type) {
@@ -761,8 +792,12 @@ const uiStore = {
 
   toggleTheme() {
     this.theme = this.theme === "light" ? "dark" : "light";
-    Alpine.store("userPrefs").save("theme", this.theme);
+    savePref("theme", this.theme);
     setTheme(this.theme);
+  },
+
+  setOption(pref) {
+    savePref(pref, this[pref]);
   },
 
   togglePagingOptions() {
@@ -913,6 +948,14 @@ const uiStore = {
     } else {
       classes.push("menu-closed");
     }
+
+    if (this.combinePanels) {
+      classes.push("combine-panels");
+    }
+    if (this.simplifyPostsDisplay) {
+      classes.push("simplify-posts-display");
+    }
+
     return classes;
   },
 };
