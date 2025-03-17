@@ -40,19 +40,6 @@
 
   <div class="form-items-group settings-layout">
     <div class="app-setting form-item checkbox">
-      <label for="setting-collapse-panels">
-        <input
-          id="setting-collapse-panels"
-          type="checkbox"
-          x-model.debounce={"$store.ui.collapsePanels"}
-          @change.debounce="$store.ui.setOption('collapsePanels')"
-        />
-        <span class="form-item-label" x-text={`$t('tools.collapsePanels')`}></span>
-        <span class="form-item-description" x-text={`$t('tools.collapsePanelsDesc')`}></span>
-      </label>
-    </div>
-
-    <div class="app-setting form-item checkbox">
       <label for="setting-simplify-posts-display">
         <input
           id="setting-simplify-posts-display"
@@ -62,6 +49,19 @@
         />
         <span class="form-item-label" x-text={`$t('tools.simplifyPostsDisplay')`}></span>
         <span class="form-item-description" x-text={`$t('tools.simplifyPostsDisplayDesc')`}></span>
+      </label>
+    </div>
+
+    <div class="app-setting form-item checkbox">
+      <label for="setting-collapse-panels">
+        <input
+          id="setting-collapse-panels"
+          type="checkbox"
+          x-model.debounce={"$store.ui.collapsePanels"}
+          @change.debounce="$store.ui.setOption('collapsePanels')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.collapsePanels')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.collapsePanelsDesc')`}></span>
       </label>
     </div>
   </div>
