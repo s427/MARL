@@ -243,6 +243,12 @@ const filesStore = {
           });
         }
 
+        if (t._marl.summary) {
+          if (t._marl.summary.indexOf(filterValue) >= 0) {
+            show = true;
+          }
+        }
+
         if (!show) {
           return show;
         }
