@@ -1,63 +1,69 @@
 <div class="tools-section app-settings">
   <h3 x-text="$t('tools.appSettings')"></h3>
 
-  <div class="app-setting switch-lang">
-    <label for="switch-language">
-      <svg aria-hidden="true">
-        <use href="#langs" /></svg>
-      <span class="visually-hidden" x-text="$t('tools.selectLanguage')"></span>
-    </label>
-    <select
-      id="switch-language"
-      @change="setLang"
-      x-model="$store.ui.lang"
-    >
-      <template x-for="(lang, id) in $store.ui.appLangs">
-        <option
-          :value="id"
-          x-text="lang"
-          :selected="$store.ui.lang === id"
-        ></option>
-      </template>
-    </select>
+  <div class="form-items-group settings-layout-misc">
+    <div class="app-setting switch-lang">
+      <label for="switch-language">
+        <svg aria-hidden="true">
+          <use href="#langs" /></svg>
+        <span class="visually-hidden" x-text="$t('tools.selectLanguage')"></span>
+      </label>
+      <select
+        id="switch-language"
+        @change="setLang"
+        x-model="$store.ui.lang"
+      >
+        <template x-for="(lang, id) in $store.ui.appLangs">
+          <option
+            :value="id"
+            x-text="lang"
+            :selected="$store.ui.lang === id"
+          ></option>
+        </template>
+      </select>
+    </div>
+
+    <div class="app-setting switch-theme">
+      <button @click="$store.ui.toggleTheme()"
+        class="switch-theme"
+        :class="'theme-' + $store.ui.theme"
+      >
+        <svg class="btn-icon" aria-hidden="true">
+          <use
+            :href="'#' + ($store.ui.theme === 'dark' ? 'light' : 'dark')"
+          /></svg
+        ><span class="btn-label dark"  x-text="$t('tools.useDarkTheme')"></span
+        ><span class="btn-label light" x-text="$t('tools.useLightTheme')"></span>
+      </button>
+    </div>
   </div>
 
-  <div class="app-setting switch-theme">
-    <button @click="$store.ui.toggleTheme()"
-      class="switch-theme"
-      :class="'theme-' + $store.ui.theme"
-    >
-      <svg class="btn-icon" aria-hidden="true">
-        <use
-          :href="'#' + ($store.ui.theme === 'dark' ? 'light' : 'dark')"
-        /></svg
-      ><span class="btn-label dark"  x-text="$t('tools.useDarkTheme')"></span
-      ><span class="btn-label light" x-text="$t('tools.useLightTheme')"></span>
-    </button>
-  </div>
+  <div class="form-items-group settings-layout">
+    <div class="app-setting form-item checkbox">
+      <label for="setting-collapse-panels">
+        <input
+          id="setting-collapse-panels"
+          type="checkbox"
+          x-model.debounce={"$store.ui.collapsePanels"}
+          @change.debounce="$store.ui.setOption('collapsePanels')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.collapsePanels')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.collapsePanelsDesc')`}></span>
+      </label>
+    </div>
 
-  <div class="app-setting form-item checkbox">
-    <label for="setting-collapse-panels">
-      <input
-        id="setting-collapse-panels"
-        type="checkbox"
-        x-model.debounce={"$store.ui.collapsePanels"}
-        @change.debounce="$store.ui.setOption('collapsePanels')"
-      />
-      <span x-text={`$t('tools.collapsePanels')`}></span>
-    </label>
-  </div>
-
-  <div class="app-setting form-item checkbox">
-    <label for="setting-simplify-posts-display">
-      <input
-        id="setting-simplify-posts-display"
-        type="checkbox"
-        x-model.debounce={"$store.ui.simplifyPostsDisplay"}
-        @change.debounce="$store.ui.setOption('simplifyPostsDisplay')"
-      />
-      <span x-text={`$t('tools.simplifyPostsDisplay')`}></span>
-    </label>
+    <div class="app-setting form-item checkbox">
+      <label for="setting-simplify-posts-display">
+        <input
+          id="setting-simplify-posts-display"
+          type="checkbox"
+          x-model.debounce={"$store.ui.simplifyPostsDisplay"}
+          @change.debounce="$store.ui.setOption('simplifyPostsDisplay')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.simplifyPostsDisplay')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.simplifyPostsDisplayDesc')`}></span>
+      </label>
+    </div>
   </div>
 
 </div>

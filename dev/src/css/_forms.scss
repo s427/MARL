@@ -1,5 +1,31 @@
+.form-items-group {
+  margin: 0 0 1rem;
+}
+.form-items-group-title {
+  margin: 0 0 0.5rem;
+}
+
+.form-items-group:has(.text) {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: 0.35rem;
+  .form-item {
+    grid-column: span 2;
+    &.text {
+      display: grid;
+      grid-template-columns: subgrid;
+    }
+  }
+  @container (width < 260px) {
+    display: block;
+    .form-item.text label {
+      margin: 0.5rem 0 0.25rem;
+    }
+  }
+}
+
 .form-item {
-  margin-bottom: 2px;
+  margin-bottom: 0.2rem;
 
   label {
     display: block;
@@ -65,6 +91,13 @@
       outline: 1px solid Highlight;
     }
   }
+}
+
+.form-item-description {
+  display: block;
+  font-size: 0.95em;
+  margin-top: 0.3rem;
+  opacity: 0.7;
 }
 
 /********************/

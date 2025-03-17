@@ -65,19 +65,21 @@
 }
 
 .app-settings {
+  h3 {
+    user-select: none;
+  }
+  .form-item {
+    margin-bottom: 0.5rem;
+  }
+  .form-items-group {
+    margin: 2rem 0;
+  }
+}
+.settings-layout-misc {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  h3 {
-    margin: 0;
-    flex: 0 0 100%;
-    user-select: none;
-  }
-
-  .app-setting.checkbox {
-    flex: 0 0 100%;
-  }
 }
 
 .switch-lang {

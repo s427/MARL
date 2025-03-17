@@ -141,7 +141,10 @@ appStrings["fr"] = {
     useDarkTheme: "Utiliser le thème sombre",
     useLightTheme: "Utiliser le thème clair",
     collapsePanels: "Combiner les panneaux",
+    collapsePanelsDesc:
+      "(Sur les écrans larges) Cacher les panneaux et afficher une barre d'outil verticale à la place",
     simplifyPostsDisplay: "Simplifier l'affichage des posts",
+    simplifyPostsDisplayDesc: "Cacher certains éléments techniques ou non-essentiels",
     loadedFiles: "Fichiers chargés",
     loadedRemotes: "Archives chargées",
     addAnother: "Ajouter une autre archive",
