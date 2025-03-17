@@ -36,19 +36,19 @@
     </button>
   </div>
 
-  <div class="toots-filter app-setting checkbox">
-    <label for="setting-combine-panels">
+  <div class="app-setting form-item checkbox">
+    <label for="setting-collapse-panels">
       <input
-        id="setting-combine-panels"
+        id="setting-collapse-panels"
         type="checkbox"
-        x-model.debounce={"$store.ui.combinePanels"}
-        @change.debounce="$store.ui.setOption('combinePanels')"
+        x-model.debounce={"$store.ui.collapsePanels"}
+        @change.debounce="$store.ui.setOption('collapsePanels')"
       />
-      <span x-text={`$t('tools.combinePanels')`}></span>
+      <span x-text={`$t('tools.collapsePanels')`}></span>
     </label>
   </div>
 
-  <div class="toots-filter app-setting checkbox">
+  <div class="app-setting form-item checkbox">
     <label for="setting-simplify-posts-display">
       <input
         id="setting-simplify-posts-display"

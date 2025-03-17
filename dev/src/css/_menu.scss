@@ -117,7 +117,7 @@ $panel-width: 400px;
   z-index: 3;
   background-color: var(--menu-backdrop);
 
-  .main-page.menu-open & {
+  .main-section.menu-open & {
     display: block;
   }
 }
@@ -148,12 +148,11 @@ $panel-width: 400px;
   }
 }
 
-@media screen and (width < 1200px) {
+@mixin side-menu() {
   // toolbar becomes visible, positionned to the left side of the screen
-
   .toots-header {
     z-index: 2;
-    box-shadow: 0 -10px 10px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.35);
     .open-tools {
       display: none;
     }
@@ -208,13 +207,13 @@ $panel-width: 400px;
     z-index: 5;
   }
 
-  .main-page.menu-open {
+  .main-section.menu-open {
     &.menu-open-actor .actor,
     &.menu-open-filters .toots-filters,
     &.menu-open-tags .toots-tags,
     &.menu-open-tools .tools {
       left: $menu-width;
-      box-shadow: -1rem 0 1rem 1rem rgba(0, 0, 0, 0.5);
+      box-shadow: -0.5rem 0 0.5rem 0.5rem rgba(0, 0, 0, 0.5);
       @media (prefers-reduced-motion: no-preference) {
         transition-duration: 0.35s;
       }
@@ -228,6 +227,16 @@ $panel-width: 400px;
       background-color: rgba(255, 255, 255, 0.2);
     }
   }
+}
+
+@media screen and (width >= 1200px) {
+  .collapse-panels {
+    @include side-menu();
+  }
+}
+
+@media screen and (width < 1200px) {
+  @include side-menu();
 }
 
 @media screen and (width < 500px) {
@@ -266,11 +275,12 @@ $panel-width: 400px;
     left: -100dvw;
     box-shadow: none;
   }
-  .main-page.menu-open {
+  .main-section.menu-open {
     &.menu-open-actor .actor,
     &.menu-open-filters .toots-filters,
     &.menu-open-tags .toots-tags,
     &.menu-open-tools .tools {
+      right: auto;
       left: 0;
     }
   }

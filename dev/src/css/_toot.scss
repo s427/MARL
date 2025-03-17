@@ -7,6 +7,8 @@ $meta-visible: 100ch;
 }
 
 .toot {
+  max-width: 180ch;
+  margin: 0 auto;
   @container (width >= #{$meta-visible}) {
     display: grid;
     grid-template-areas:
@@ -538,13 +540,13 @@ $meta-visible: 100ch;
     display: none;
   }
   .toot {
-    max-width: 70ch;
+    max-width: 80ch;
+    margin: 2.5rem auto;
     grid-template-columns: 1fr;
     grid-template-areas:
       "header"
       "pretty"
       "infos";
-    margin: 2.5rem auto;
   }
   .toot-infos {
     padding-top: 0;
@@ -572,6 +574,7 @@ $meta-visible: 100ch;
       margin-left: 0.4em;
       &::before {
         content: "-";
+        margin-right: 0.15em;
       }
     }
   }

@@ -25,7 +25,7 @@ const userPrefsStore = {
     switch (pref) {
       case "lang":
       case "theme":
-      case "combinePanels":
+      case "collapsePanels":
       case "simplifyPostsDisplay":
         store = "ui";
         break;
@@ -41,7 +41,7 @@ const userPrefsStore = {
 
     switch (pref) {
       case "sortAsc":
-      case "combinePanels":
+      case "collapsePanels":
       case "simplifyPostsDisplay":
         value = +value === 1 ? true : false;
         if (value !== Alpine.store(store)[pref]) {
@@ -760,12 +760,12 @@ const uiStore = {
     this.errorInLog = false;
     this.log = this.log ?? [];
 
-    this.combinePanels = false;
+    this.collapsePanels = false;
     this.simplifyPostsDisplay = false;
 
     loadPref("lang");
     loadPref("theme");
-    loadPref("combinePanels");
+    loadPref("collapsePanels");
     loadPref("simplifyPostsDisplay");
   },
 
@@ -943,19 +943,28 @@ const uiStore = {
 
   get appClasses() {
     let classes = [];
-    if (this.openMenu) {
-      classes.push("menu-open menu-open-" + this.openMenu);
-    } else {
-      classes.push("menu-closed");
-    }
+    // if (this.openMenu) {
+    //   classes.push("menu-open menu-open-" + this.openMenu);
+    // } else {
+    //   classes.push("menu-closed");
+    // }
 
-    if (this.combinePanels) {
-      classes.push("combine-panels");
+    if (this.collapsePanels) {
+      classes.push("collapse-panels");
     }
     if (this.simplifyPostsDisplay) {
       classes.push("simplify-posts-display");
     }
 
+    return classes;
+  },
+  get appInsideClasses() {
+    let classes = [];
+    if (this.openMenu) {
+      classes.push("menu-open menu-open-" + this.openMenu);
+    } else {
+      classes.push("menu-closed");
+    }
     return classes;
   },
 };

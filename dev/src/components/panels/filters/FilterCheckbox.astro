@@ -2,7 +2,10 @@
 const { name } = Astro.props;
 ---
 
-<div class="toots-filter checkbox" :class={`isFilterActive('${name}') ? 'active' : ''`}>
+<div
+  class="toots-filter form-item checkbox"
+  :class={`isFilterActive('${name}') ? 'active' : ''`}
+>
   <label for={"filter-"+name}>
     <input
       id={"filter-"+name}

@@ -211,3 +211,37 @@ html {
     }
   } // ! @container
 }
+
+@media screen and (width >= 1400px) {
+  .collapse-panels {
+    .toots-header {
+      display: grid;
+      grid-template-columns: 1fr 90ch 1fr;
+      grid-template-areas: "area1 area2 area3";
+
+      h2 {
+        grid-area: area1;
+      }
+
+      .toggle-order {
+        margin-left: 1rem;
+      }
+      .paging {
+        grid-area: area2;
+        flex-basis: auto;
+        flex-grow: 1;
+        // justify-content: center;
+        .paging-options {
+          margin: 0 1rem;
+        }
+      }
+      .open-tools {
+        grid-area: area3;
+      }
+    }
+    .toots > .paging {
+      margin: 0 auto;
+      max-width: 90ch;
+    }
+  }
+}

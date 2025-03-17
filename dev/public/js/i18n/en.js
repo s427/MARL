@@ -140,7 +140,7 @@ appStrings["en"] = {
     selectLanguage: "Select language",
     useDarkTheme: "Use dark theme",
     useLightTheme: "Use light theme",
-    combinePanels: "Combine panels",
+    collapsePanels: "Collapse panels",
     simplifyPostsDisplay: "Simplify posts display",
     loadedFiles: "Loaded files",
     loadedRemotes: "Loaded archives",
