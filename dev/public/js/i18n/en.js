@@ -69,6 +69,7 @@ appStrings["en"] = {
     type: "Type",
     typeOriginal: "Original posts (incl. replies)",
     typeBoost: "Boosts",
+    startingAt: 'Starts with "@"',
     noStartingAt: 'Does not start with "@"',
     isSensitive: "Marked as sensitive",
 
@@ -143,7 +144,7 @@ appStrings["en"] = {
     collapsePanels: "Collapse panels",
     collapsePanelsDesc: "(Large screens only) Hide all panels and shows a vertical toolbar instead",
     simplifyPostsDisplay: "Simplify posts display",
-    simplifyPostsDisplayDesc: "Hides some technical or non-essential elements",
+    simplifyPostsDisplayDesc: "Hide some technical or non-essential elements",
     loadedFiles: "Loaded files",
     loadedRemotes: "Loaded archives",
     addAnother: "Add another archive",

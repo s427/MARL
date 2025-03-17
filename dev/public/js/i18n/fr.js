@@ -69,6 +69,7 @@ appStrings["fr"] = {
     type: "Type",
     typeOriginal: "Posts originaux (y.c. réponses)",
     typeBoost: "Partages",
+    startingAt: 'Commence par "@"',
     noStartingAt: 'Ne commence pas par "@"',
     isSensitive: "Marqué comme sensible",
 

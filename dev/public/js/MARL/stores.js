@@ -122,6 +122,7 @@ const filesStore = {
       summary: "",
       isEdited: false,
       isDuplicate: false,
+      startingAt: false,
       noStartingAt: false,
       hasExternalLink: false,
       hasHashtags: false,
@@ -163,7 +164,7 @@ const filesStore = {
     loadPref("pageSize");
   },
 
-  setFilter() {
+  setFilter(filterName) {
     this.checkPagingValue();
     scrollTootsToTop();
     pagingUpdated();
@@ -171,6 +172,16 @@ const filesStore = {
       this.filtersActive = false;
     } else {
       this.filtersActive = true;
+    }
+
+    // mutually exclusive filters
+    if (this.filters.startingAt && this.filters.noStartingAt) {
+      if (filterName === "startingAt") {
+        this.filters.noStartingAt = false;
+      }
+      if (filterName === "noStartingAt") {
+        this.filters.startingAt = false;
+      }
     }
 
     const self = this;
@@ -303,6 +314,12 @@ const filesStore = {
 
       if (f.isDuplicate) {
         if (!t._marl.duplicate) {
+          return false;
+        }
+      }
+
+      if (f.startingAt) {
+        if (!t._marl.textContent || t._marl.textContent.indexOf("@") !== 0) {
           return false;
         }
       }
