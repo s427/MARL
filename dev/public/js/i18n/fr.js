@@ -117,7 +117,7 @@ appStrings["fr"] = {
   post: {
     by: "par",
     lastUpdated: "Dernière modification",
-    linkToPost: "lien",
+    linkToPost: "Lien",
     attachmentNoAlt: "Aucune description fournie",
     attachmentInArchive: "Dans l'archive :",
     attachmentNotFound: "⚠️ Média introuvable à l'emplacement indiqué",

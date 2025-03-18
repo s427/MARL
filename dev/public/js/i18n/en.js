@@ -117,7 +117,7 @@ appStrings["en"] = {
   post: {
     by: "by",
     lastUpdated: "Last updated",
-    linkToPost: "link",
+    linkToPost: "Link",
     attachmentNoAlt: "No description provided",
     attachmentInArchive: "In archive:",
     attachmentNotFound: "⚠️ Content not found in archive",

@@ -34,8 +34,4 @@ You may specify as many archives as you want. You can store them wherever you wa
 
 */
 
-const servers = [
-  "http://devs/MARL/example-data/archive2",
-  "http://devs/MARL/example-data/archive1",
-  // "../example-data/archive3",
-];
+const servers = [];

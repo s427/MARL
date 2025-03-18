@@ -35,7 +35,8 @@ You may specify as many archives as you want. You can store them wherever you wa
 */
 
 const servers = [
-  "http://devs/MARL/example-data/archive2",
-  "http://devs/MARL/example-data/archive1",
+  // "http://devs/MARL/example-data/demo",
+  // "http://devs/MARL/example-data/archive1", // htagg
+  "http://devs/MARL/example-data/archive2", // s427
   // "../example-data/archive3",
 ];

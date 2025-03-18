@@ -130,6 +130,9 @@
     flex: 0 0 100%;
     color: var(--accent);
   }
+  .author {
+    margin: 0 1em;
+  }
 
   @media (forced-colors: none) {
     .multiple-files & li {

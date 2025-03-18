@@ -821,6 +821,10 @@ const uiStore = {
 
   setOption(pref) {
     savePref(pref, this[pref]);
+
+    if (pref === "collapsePanels") {
+      this.checkMenuState();
+    }
   },
 
   togglePagingOptions() {
