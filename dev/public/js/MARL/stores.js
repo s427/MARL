@@ -2,6 +2,12 @@ const userPrefsStore = {
   prefix: "marl_",
 
   save(pref, value) {
+    if (value === true) {
+      value = 1;
+    }
+    if (value === false) {
+      value = 0;
+    }
     const msg = `Saving user preference <b>(${pref}: ${value})</b>`;
     marlConsole(msg, "info");
     localStorage.setItem(this.prefix + pref, value);
@@ -15,18 +21,38 @@ const userPrefsStore = {
     }
   },
   set(pref, value) {
+    let store = "";
+    switch (pref) {
+      case "lang":
+      case "theme":
+      case "collapsePanels":
+      case "simplifyPostsDisplay":
+        store = "ui";
+        break;
+      case "pageSize":
+      case "sortAsc":
+        store = "files";
+        break;
+    }
+
+    if (!store) {
+      return;
+    }
+
     switch (pref) {
       case "sortAsc":
+      case "collapsePanels":
+      case "simplifyPostsDisplay":
         value = +value === 1 ? true : false;
-        if (value !== Alpine.store("files").sortAsc) {
-          Alpine.store("files").sortAsc = value;
+        if (value !== Alpine.store(store)[pref]) {
+          Alpine.store(store)[pref] = value;
         }
         break;
 
       case "pageSize":
         value = +value;
-        if (typeof value == "number" && !isNaN(value) && value > 0 && value !== Alpine.store("files").pageSize) {
-          Alpine.store("files").pageSize = value;
+        if (typeof value == "number" && !isNaN(value) && value > 0 && value !== Alpine.store(store)[pref]) {
+          Alpine.store(store)[pref] = value;
         }
         break;
 
@@ -37,7 +63,7 @@ const userPrefsStore = {
             this.save("lang", value);
           }
         }
-        if (!value || !Alpine.store("ui").appLangs[value]) {
+        if (!value || !Alpine.store(store).appLangs[value]) {
           if (value) {
             const msg = `<b>Unrecognized language</b> in user preferences: ${value}`;
             console.warn(msg);
@@ -46,7 +72,7 @@ const userPrefsStore = {
           value = "en";
           this.save("lang", value);
         }
-        Alpine.store("ui").lang = value;
+        Alpine.store(store)[pref] = value;
         break;
 
       case "theme":
@@ -54,7 +80,7 @@ const userPrefsStore = {
           value = "light";
           this.save("theme", value);
         }
-        Alpine.store("ui").theme = value;
+        Alpine.store(store)[pref] = value;
         setTheme(value);
         break;
     }
@@ -96,6 +122,7 @@ const filesStore = {
       summary: "",
       isEdited: false,
       isDuplicate: false,
+      startingAt: false,
       noStartingAt: false,
       hasExternalLink: false,
       hasHashtags: false,
@@ -133,11 +160,11 @@ const filesStore = {
       boostsAuthors: "",
     };
 
-    Alpine.store("userPrefs").load("sortAsc");
-    Alpine.store("userPrefs").load("pageSize");
+    loadPref("sortAsc");
+    loadPref("pageSize");
   },
 
-  setFilter() {
+  setFilter(filterName) {
     this.checkPagingValue();
     scrollTootsToTop();
     pagingUpdated();
@@ -145,6 +172,16 @@ const filesStore = {
       this.filtersActive = false;
     } else {
       this.filtersActive = true;
+    }
+
+    // mutually exclusive filters
+    if (this.filters.startingAt && this.filters.noStartingAt) {
+      if (filterName === "startingAt") {
+        this.filters.noStartingAt = false;
+      }
+      if (filterName === "noStartingAt") {
+        this.filters.startingAt = false;
+      }
     }
 
     const self = this;
@@ -217,6 +254,12 @@ const filesStore = {
           });
         }
 
+        if (t._marl.summary) {
+          if (t._marl.summary.indexOf(filterValue) >= 0) {
+            show = true;
+          }
+        }
+
         if (!show) {
           return show;
         }
@@ -271,6 +314,12 @@ const filesStore = {
 
       if (f.isDuplicate) {
         if (!t._marl.duplicate) {
+          return false;
+        }
+      }
+
+      if (f.startingAt) {
+        if (!t._marl.textContent || t._marl.textContent.indexOf("@") !== 0) {
           return false;
         }
       }
@@ -606,7 +655,7 @@ const filesStore = {
   },
   toggleTootsOrder() {
     this.sortAsc = !this.sortAsc;
-    Alpine.store("userPrefs").save("sortAsc", this.sortAsc ? 1 : 0);
+    savePref("sortAsc", this.sortAsc);
     this.sortToots();
     scrollTootsToTop();
     pagingUpdated();
@@ -614,7 +663,7 @@ const filesStore = {
 
   setPostsPerPage() {
     this.checkPagingValue();
-    Alpine.store("userPrefs").save("pageSize", this.pageSize);
+    savePref("pageSize", this.pageSize);
   },
   checkPagingValue() {
     if (this.currentPage < 1) {
@@ -734,8 +783,13 @@ const uiStore = {
     this.errorInLog = false;
     this.log = this.log ?? [];
 
-    Alpine.store("userPrefs").load("lang");
-    Alpine.store("userPrefs").load("theme");
+    this.collapsePanels = false;
+    this.simplifyPostsDisplay = false;
+
+    loadPref("lang");
+    loadPref("theme");
+    loadPref("collapsePanels");
+    loadPref("simplifyPostsDisplay");
   },
 
   logMsg(msg, type) {
@@ -761,8 +815,16 @@ const uiStore = {
 
   toggleTheme() {
     this.theme = this.theme === "light" ? "dark" : "light";
-    Alpine.store("userPrefs").save("theme", this.theme);
+    savePref("theme", this.theme);
     setTheme(this.theme);
+  },
+
+  setOption(pref) {
+    savePref(pref, this[pref]);
+
+    if (pref === "collapsePanels") {
+      this.checkMenuState();
+    }
   },
 
   togglePagingOptions() {
@@ -907,6 +969,23 @@ const uiStore = {
   },
 
   get appClasses() {
+    let classes = [];
+    // if (this.openMenu) {
+    //   classes.push("menu-open menu-open-" + this.openMenu);
+    // } else {
+    //   classes.push("menu-closed");
+    // }
+
+    if (this.collapsePanels) {
+      classes.push("collapse-panels");
+    }
+    if (this.simplifyPostsDisplay) {
+      classes.push("simplify-posts-display");
+    }
+
+    return classes;
+  },
+  get appInsideClasses() {
     let classes = [];
     if (this.openMenu) {
       classes.push("menu-open menu-open-" + this.openMenu);

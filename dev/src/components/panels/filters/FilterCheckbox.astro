@@ -2,13 +2,16 @@
 const { name } = Astro.props;
 ---
 
-<div class="toots-filter checkbox" :class={`isFilterActive('${name}') ? 'active' : ''`}>
+<div
+  class="toots-filter form-item checkbox"
+  :class={`isFilterActive('${name}') ? 'active' : ''`}
+>
   <label for={"filter-"+name}>
     <input
       id={"filter-"+name}
       type="checkbox"
       x-model.debounce={"$store.files.filters."+name}
-      @change.debounce="$store.files.setFilter()"
+      @change.debounce={"$store.files.setFilter('"+name+"')"}
     />
     <span x-text={`$t('filters.${name}')`}></span>
   </label>

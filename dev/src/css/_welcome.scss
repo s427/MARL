@@ -42,6 +42,14 @@
       display: none;
     }
   }
+  .app-settings {
+    .form-items-group {
+      display: none;
+    }
+    .settings-layout-misc {
+      display: flex;
+    }
+  }
   .about {
     margin-top: 2rem;
   }

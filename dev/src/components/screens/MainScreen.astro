@@ -12,6 +12,7 @@ import ToolsPanel from '../panels/ToolsPanel.astro';
 
 <main
   class="main-section"
+  :class="$store.ui.appInsideClasses"
   id="main-section"
   tabindex="-1"
   x-on:resize.window="$store.ui.checkMenuState()"

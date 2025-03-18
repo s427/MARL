@@ -69,6 +69,7 @@ appStrings["en"] = {
     type: "Type",
     typeOriginal: "Original posts (incl. replies)",
     typeBoost: "Boosts",
+    startingAt: 'Starts with "@"',
     noStartingAt: 'Does not start with "@"',
     isSensitive: "Marked as sensitive",
 
@@ -116,7 +117,7 @@ appStrings["en"] = {
   post: {
     by: "by",
     lastUpdated: "Last updated",
-    linkToPost: "link",
+    linkToPost: "Link",
     attachmentNoAlt: "No description provided",
     attachmentInArchive: "In archive:",
     attachmentNotFound: "⚠️ Content not found in archive",
@@ -140,6 +141,10 @@ appStrings["en"] = {
     selectLanguage: "Select language",
     useDarkTheme: "Use dark theme",
     useLightTheme: "Use light theme",
+    collapsePanels: "Collapse panels",
+    collapsePanelsDesc: "(Large screens only) Hide all panels and shows a vertical toolbar instead",
+    simplifyPostsDisplay: "Simplify posts display",
+    simplifyPostsDisplayDesc: "Hide some technical or non-essential elements",
     loadedFiles: "Loaded files",
     loadedRemotes: "Loaded archives",
     addAnother: "Add another archive",

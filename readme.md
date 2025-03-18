@@ -41,6 +41,10 @@ Alternatively, you can download this project from its [project page](https://git
 
 (*) see "Limitations" below.
 
+### No installation or dependencies
+
+No need to install anything. Just open `index.html` and you're good to go!
+
 ### Direct support for archive files
 
 No need to unpack your archive. Just drag'n'drop your file in the MARL window, and MARL will unpack it for you. This takes place in your browser's memory: no files are written on your disks. It's also strictly read-only: your archive file is not altered in any way.
@@ -81,6 +85,10 @@ MARL should work on pretty much any screen size, as low as 300 pixels wide (and 
 ### Persistent settings
 
 Paging-related settings (namely: number of posts per page, and sorting order) are stored in the browser and automatically restored when the app is initialized, so that you don't have to re-set them the way you like it every time. The same goes for the language and theme of the app.
+
+### Server mode
+
+You can use MARL to automatically fetch and load an archive from the server of your choice. This basically allows you to use MARL as an archive publishing tool. You will need to host MARL on a web server. Read [server-mode.md](server-mode.md) for more information.
 
 ## Limitations
 
@@ -128,6 +136,10 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.5
+  - [NEW] layout options
+    - Two new options found in the "Tools" panel allow to simplify the display of posts and declutter the UI by hiding the panels in a toolbar. Those changes will be most visible on larger displays.
+  - Misc minor tweaks or fixes
 - v. 2.4
   - [NEW] Server mode
     - You can now configure MARL to use it as publishing tool for your archive(s).
@@ -149,22 +161,22 @@ Mastodon: https://lou.lt/@s427
     - A new "Tools" button will open a new panel, where you can change various settings for the app (language, theme) as well as see information about your loaded files, messages from the app (app log), and the "about" section.
     - Those settings are saved locally in the browser (localStorage) and automatically applied every time the app is launched.
 - v. 2.0
-  - code refactoring: MARL now uses Astro to build its HTML code as well as optimize and bundle its assets (CSS, SVG, images).
-  - all assets used to build MARL are now stored in the `dev` folder.
-  - the compiled, ready-to-use app can be found in the `dist` folder.
-  - except for the fact that it's now minified and packaged differently, everything works exactly the same as in version 1.3 for the end user (no new features).
+  - Code refactoring: MARL now uses Astro to build its HTML code as well as optimize and bundle its assets (CSS, SVG, images).
+  - All assets used to build MARL are now stored in the `dev` folder.
+  - The compiled, ready-to-use app can be found in the `dist` folder.
+  - Except for the fact that it's now minified and packaged differently, everything works exactly the same as in version 1.3 for the end user (no new features).
 - v. 1.3
   - [NEW] dark theme
-    - will be set automatically based on your OS or browser preference (default to light if no preference is detected)
-    - support to manually choose the app theme will come in a later update
-  - misc minor tweaks or fixes
+    - Will be set automatically based on your OS or browser preference (default to light if no preference is detected)
+    - Support to manually choose the app theme will come in a later update
+  - Misc minor tweaks or fixes
 - v. 1.2
   - [NEW] support for multiple archive files. Notes:
-    - you can select multiple files from the open dialog;
-    - if one or several files are already loaded, you can drag and drop more files anywhere on the app window in order for MARL to load those new files and add them to the ones already loaded;
-    - for now the "Load new file" button still assumes you want to start over (blank slate); this will probably be changed in a future version.
+    - You can select multiple files from the open dialog;
+    - If one or several files are already loaded, you can drag and drop more files anywhere on the app window in order for MARL to load those new files and add them to the ones already loaded;
+    - For now the "Load new file" button still assumes you want to start over (blank slate); this will probably be changed in a future version.
 - v. 1.1
-  - [NEW] paging preferences (page size and posts order) are automatically saved to the browser and restored on app load if present
-  - various bug fixes and improvements
+  - [NEW] Paging preferences (page size and posts order) are automatically saved to the browser and restored on app load if present
+  - Various bug fixes and improvements
 - v. 1.0
-  - initial release
+  - Initial release

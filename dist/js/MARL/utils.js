@@ -1,1 +1,603 @@
-function resetStores(){Alpine.store("files").resetState(),Alpine.store("lightbox").resetState(),Alpine.store("ui").resetState()}function zipFileAlreadyLoaded(e){if(Alpine.store("files").sources.some((t=>t.fileInfos.name===e.name&&t.fileInfos.size===e.size&&t.fileInfos.lastModified===e.lastModified))){const t=`File already loaded: <b>${e.name}</b>`;return console.warn(t),marlConsole(t,"warn"),!0}return!1}function serverMode(){return Alpine.store("files").serverMode}function localMode(){return!Alpine.store("files").serverMode}function marlBasePath(){let e=Alpine.store("files").marlBasePath;return""===e&&(e=location.href,e.indexOf("index.html")>-1&&(e=e.slice(0,e.indexOf("index.html"))),"/"!==e.slice(-1)&&(e+="/"),Alpine.store("files").marlBasePath=e),e}function preprocessToots(e,t){let n={langs:[],source:t};if(Alpine.store("files").toc.includes(e.id)){const t=Alpine.store("files").toots.filter((t=>t.id===e.id));let o=!1;const s=JSON.stringify(e);if(t.forEach((e=>{let t=JSON.parse(JSON.stringify(e));delete t._marl;const i=JSON.stringify(t);s===i?o=!0:(e._marl.duplicate=!0,n.duplicate=!0,Alpine.store("files").duplicates=!0)})),o)return!1}else Alpine.store("files").toc.push(e.id);if("Create"===e.type)if("object"==typeof e.object&&null!==e.object&&e.object.contentMap){let t=[];for(let n in e.object.contentMap)t.push(n);n.langs=t}else n.langs=["undefined"];if("object"==typeof e.object&&null!==e.object){if(e.object.content){const t=e.object.content.toLowerCase();n.textContent=stripHTML(t),n.externalLinks=extractExternalLinks(t)}if(e.object.summary&&(n.summary=e.object.summary.toLowerCase()),e.object.attachment&&e.object.attachment.length){n.hasAttachments=!0;for(let t=0;t<e.object.attachment.length;t++){let n=e.object.attachment[t].url;const o=n.indexOf("media_attachments/");o>0&&(e.object.attachment[t].url0=n,e.object.attachment[t].url=n.slice(o))}}}else e.object&&(n.textContent=e.object.toLowerCase());n.visibility=tootVisibility(e);const o=e.id.split("/");return n.id=o[o.length-2],e._marl=n,e}function checkAppReady(e){e&&(buildTootsInfos(),buildDynamicFilters(),cleanUpRaw(),setHueForSources(),document.getElementById("main-section").focus(),Alpine.store("ui").checkMenuState(),Alpine.store("files").sortToots(),Alpine.store("files").loading=!1)}function buildTootsInfos(){let e={},t=[];if(Alpine.store("files").toots.length>0){let o=Alpine.store("files").toots.reduce(((e,t)=>{for(let n in t._marl.langs){const o=t._marl.langs[n];e.langs[o]?e.langs[o]++:e.langs[o]=1}if("Announce"===t.type)if("object"==typeof t.object&&null!==t.object);else if(t.object){const n=t.object.split("/");let o,s,i;n.length>2&&(i=n[2],"https:"===n[0]&&"users"===n[3]&&"statuses"===n[5]?(o=n[4],s=`https://${n[2]}/users/${n[4]}/`):(o=`? ${n[2]}`,s=`https://${n[2]}/`),e.boosts[o]?e.boosts[o].nb++:e.boosts[o]={nb:1,name:o,url:s,domain:i})}return e}),{langs:{},boosts:{}});for(var n in e=o.langs,t=[],o.boosts)t.push(o.boosts[n])}Alpine.store("files").languages=e,Alpine.store("files").boostsAuthors=t}function buildDynamicFilters(){for(const e in Alpine.store("files").languages)Alpine.store("files").filtersDefault["lang_"+e]=!0;for(const e of Alpine.store("files").sources)Alpine.store("files").filtersDefault["actor_"+e.id]=!0;Alpine.store("files").resetFilters(!1)}function cleanUpRaw(){if(!serverMode())for(let e=0;e<Alpine.store("files").sources.length;e++){const t=Alpine.store("files").sources[e]._raw;if(t.cleanedUp)continue;const n=Alpine.store("files").sources[e].actor;n.image&&n.image.url&&delete t[n.image.url],n.icon&&n.icon.url&&delete t[n.icon.url],delete t["actor.json"],delete t["outbox.json"],delete t["likes.json"],delete t["bookmarks.json"],t.cleanedUp=!0,Alpine.store("files").sources[e]._raw=t}}function setHueForSources(){const e=Alpine.store("files").sources.length,t=Math.round(360*Math.random()),n=Math.round(360/e);for(let o=0;o<e;o++)Alpine.store("files").sources[o].hue=t+n*o}function loadAttachedMedia(e,t){if(!serverMode()&&(attachmentIsImage(e)||attachmentIsVideo(e)||attachmentIsSound(e))){const n=Alpine.store("files").sources[t]._raw,o=Alpine.store("files").sources[t].fileInfos.archiveRoot;let s=e.url;if(!n[o+s])return void(Alpine.store("files").sources[t][e.url]={type:e.mediaType,content:null});n[o+s].async("base64").then((n=>{Alpine.store("files").sources[t][e.url]={type:e.mediaType,content:n}}))}}function pagingUpdated(){document.querySelectorAll("#toots details[open]").forEach((e=>{e.removeAttribute("open")}))}function scrollTootsToTop(e){setTimeout((()=>{document.getElementById("toots").scrollTop=0,e&&document.getElementById(e).focus()}),50)}function contentType(e){let t="";switch(e){case"Create":t="Post";break;case"Announce":t="Boost"}return t}function tootVisibility(e){return e.to.includes("https://www.w3.org/ns/activitystreams#Public")?["public",AlpineI18n.t("filters.visibilityPublic")]:e.to.some((e=>e.indexOf("/followers")>-1))&&!e.to.includes("https://www.w3.org/ns/activitystreams#Public")&&e.cc.includes("https://www.w3.org/ns/activitystreams#Public")?["unlisted",AlpineI18n.t("filters.visibilityUnlisted")]:!e.to.some((e=>e.indexOf("/followers")>-1))||e.to.includes("https://www.w3.org/ns/activitystreams#Public")||e.cc.includes("https://www.w3.org/ns/activitystreams#Public")?e.to.some((e=>e.indexOf("/followers")>-1))||e.to.includes("https://www.w3.org/ns/activitystreams#Public")||e.cc.includes("https://www.w3.org/ns/activitystreams#Public")?void 0:["mentioned",AlpineI18n.t("filters.visibilityMentioned")]:["followers",AlpineI18n.t("filters.visibilityFollowers")]}function tootHasTags(e){return"object"==typeof e.object&&null!==e.object&&e.object.tag&&e.object.tag.length}function formatJson(e){let t=e;return t._marl&&(t=JSON.parse(JSON.stringify(e)),delete t._marl),JSON.stringify(t,null,4)}function formatAuthor(e,t){return t?e.split("/").pop():`<a href="${e}" target="_blank">${e.split("/").pop()}</a>`}function formatDateTime(e){return new Date(e).toLocaleDateString(Alpine.store("ui").lang,{weekday:"long",year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit",second:"2-digit"})}function formatFileDateTime(e){return new Date(e).toLocaleDateString(Alpine.store("ui").lang,{year:"numeric",month:"2-digit",day:"2-digit",hour12:!1,hour:"2-digit",minute:"2-digit",second:"2-digit"})}function formatFileSize(e){var t=0==e?0:Math.floor(Math.log(e)/Math.log(1024));return 1*+(e/Math.pow(1024,t)).toFixed(2)+" "+["B","kB","MB","GB","TB"][t]}function formatDate(e){return new Date(e).toLocaleDateString(Alpine.store("ui").lang,{weekday:"long",year:"numeric",month:"long",day:"numeric"})}function formatNumber(e){return void 0===e?"":e.toLocaleString()}function formatLikesBookmarks(e){const t=e.split("/");t.splice(0,2);let n=`<span class="url-instance">${t[0]}</span>`;return"users"===t[1]&&"statuses"===t[3]?n+=`<span class="url-actor">${t[2]}</span><span class="url-post-id">${t[4]}</span>`:(t.splice(0,1),n+=`<span class="url-post-id">${t.join("/")}</span>`),n}function stripHTML(e){return(new DOMParser).parseFromString(e,"text/html").body.textContent||""}function extractExternalLinks(e){const t=(new DOMParser).parseFromString(e,"text/html").querySelectorAll("a[href]:not(.mention)");let n=[];return t.forEach((e=>{n.push({href:e.href,text:e.textContent})})),n}function attachmentIsImage(e){return"image/jpeg"===e.mediaType||"image/png"===e.mediaType}function attachmentIsVideo(e){return"video/mp4"===e.mediaType}function attachmentIsSound(e){return"audio/mpeg"===e.mediaType}function attachmentWrapperClass(e){let t=[];return attachmentIsImage(e)?t.push("att-img"):attachmentIsSound(e)?t.push("att-sound"):attachmentIsVideo(e)&&t.push("att-video"),e.name||t.push("no-alt-text"),t}function isFilterActive(e){return Alpine.store("files").filters[e]!==Alpine.store("files").filtersDefault[e]}function startOver(){const e=AlpineI18n.t("tools.startOverConfirm");confirm(e)&&location.reload()}function detectLangFromBrowser(){const e=navigator.languages;if(e&&e.length)for(let t=0;t<e.length;t++){let n=e[t].split("-")[0];if(Alpine.store("ui").appLangs[n]){return marlConsole(`Setting language based on browser preference: <b>'${n}' (${Alpine.store("ui").appLangs[n]})</b>`,"info"),n}}return!1}function setLang(){const e=Alpine.store("ui").lang;AlpineI18n.locale=e,Alpine.store("userPrefs").save("lang",e),document.getElementsByTagName("html")[0].setAttribute("lang",e);marlConsole(`App language set to <b>'${e}' (${Alpine.store("ui").appLangs[e]})</b>`)}function setTheme(e){document.getElementsByTagName("html")[0].setAttribute("class",e),"dark"===e?document.querySelector('meta[name="color-scheme"]').setAttribute("content","dark"):document.querySelector('meta[name="color-scheme"]').setAttribute("content","light")}function marlConsole(e,t="info"){Alpine.store("ui").logMsg(e,t)}const drag={el:null,init(e){this.dropArea=document.getElementById(e),["dragenter","dragover","dragleave","drop"].forEach((e=>{this.dropArea.addEventListener(e,(e=>this.preventDragDefaults(e)),!1)})),["dragenter","dragover"].forEach((e=>{this.dropArea.addEventListener(e,(()=>this.highlightDrag()),!1)})),["dragleave","drop"].forEach((e=>{this.dropArea.addEventListener(e,(()=>this.unhighlightDrag()),!1)})),this.dropArea.addEventListener("drop",(e=>this.handleDrop(e)),!1)},preventDragDefaults(e){e.preventDefault(),e.stopPropagation()},highlightDrag(){this.dropArea.classList.add("highlight-drag")},unhighlightDrag(){this.dropArea.classList.remove("highlight-drag")},handleDrop(e){const t=e.dataTransfer.files;loadZipFiles(t)}};
+function resetStores() {
+  Alpine.store("files").resetState();
+  Alpine.store("lightbox").resetState();
+  Alpine.store("ui").resetState();
+}
+
+function zipFileAlreadyLoaded(file) {
+  if (
+    Alpine.store("files").sources.some((source) => {
+      return (
+        source.fileInfos.name === file.name &&
+        source.fileInfos.size === file.size &&
+        source.fileInfos.lastModified === file.lastModified
+      );
+    })
+  ) {
+    const msg = `File already loaded: <b>${file.name}</b>`;
+    console.warn(msg);
+    marlConsole(msg, "warn");
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function serverMode() {
+  return Alpine.store("files").serverMode;
+}
+
+function localMode() {
+  return !Alpine.store("files").serverMode;
+}
+
+function marlBasePath() {
+  let r = Alpine.store("files").marlBasePath;
+
+  if (r === "") {
+    r = location.href;
+    if (r.indexOf("index.html") > -1) {
+      r = r.slice(0, r.indexOf("index.html"));
+    }
+    if (r.slice(-1) !== "/") {
+      r = r + "/";
+    }
+    Alpine.store("files").marlBasePath = r;
+  }
+
+  return r;
+}
+
+function savePref(pref, value) {
+  Alpine.store("userPrefs").save(pref, value);
+}
+function loadPref(pref) {
+  Alpine.store("userPrefs").load(pref);
+}
+
+function preprocessToots(t, index) {
+  // build the '_marl' prop for each toot
+  let marl = {
+    langs: [],
+    source: index,
+  };
+
+  // check for duplicates (in case of multiple archive files)
+  if (Alpine.store("files").toc.includes(t.id)) {
+    const alts = Alpine.store("files").toots.filter((t2) => t2.id === t.id);
+
+    let identical = false;
+    const flat1 = JSON.stringify(t);
+
+    alts.forEach((alt) => {
+      let alt2 = JSON.parse(JSON.stringify(alt));
+      delete alt2._marl;
+      const flat2 = JSON.stringify(alt2);
+
+      if (flat1 === flat2) {
+        identical = true;
+      } else {
+        alt._marl.duplicate = true;
+        marl.duplicate = true;
+        Alpine.store("files").duplicates = true;
+      }
+    });
+    if (identical) {
+      return false;
+    }
+  } else {
+    Alpine.store("files").toc.push(t.id);
+  }
+
+  if (t.type === "Create") {
+    if (typeof t.object === "object" && t.object !== null && t.object.contentMap) {
+      let langs = [];
+      for (let lang in t.object.contentMap) {
+        langs.push(lang);
+      }
+      marl.langs = langs;
+    } else {
+      marl.langs = ["undefined"];
+    }
+  }
+
+  if (typeof t.object === "object" && t.object !== null) {
+    if (t.object.content) {
+      const content = t.object.content.toLowerCase();
+      marl.textContent = stripHTML(content);
+      marl.externalLinks = extractExternalLinks(content);
+    }
+    if (t.object.summary) {
+      marl.summary = t.object.summary.toLowerCase();
+    }
+
+    if (t.object.attachment && t.object.attachment.length) {
+      marl.hasAttachments = true;
+
+      for (let i = 0; i < t.object.attachment.length; i++) {
+        let att = t.object.attachment[i];
+        let url = att.url;
+        // ?! some instances seem to add their own name in front of the path,
+        // resulting in an invalid path with relation to the archive
+        // structure (e.g. "/framapiaf/media_attachments/...", but in the
+        // archive there is only a folder "/media_attachments")
+        // => So we remove everything that comes before "media_attachments/",
+        // hoping it doesn't break something else... :/
+        const prefix = url.indexOf("media_attachments/");
+        if (prefix > 0) {
+          t.object.attachment[i].url0 = url;
+          t.object.attachment[i].url = url.slice(prefix);
+        }
+      }
+    }
+  } else if (t.object) {
+    marl.textContent = t.object.toLowerCase();
+  }
+
+  marl.visibility = tootVisibility(t);
+
+  const id = t.id.split("/");
+  marl.id = id[id.length - 2];
+
+  t._marl = marl;
+  return t;
+}
+
+function checkAppReady(ok) {
+  if (ok) {
+    buildTootsInfos();
+    buildDynamicFilters();
+    cleanUpRaw();
+    setHueForSources();
+    document.getElementById("main-section").focus();
+    Alpine.store("ui").checkMenuState();
+    Alpine.store("files").sortToots();
+    Alpine.store("files").loading = false;
+  }
+}
+
+function buildTootsInfos() {
+  let langs = {};
+  let boosts = [];
+
+  if (Alpine.store("files").toots.length > 0) {
+    let infos = Alpine.store("files").toots.reduce(
+      (accu, toot) => {
+        for (let lang in toot._marl.langs) {
+          const l = toot._marl.langs[lang];
+          if (!accu.langs[l]) {
+            accu.langs[l] = 1;
+          } else {
+            accu.langs[l]++;
+          }
+        }
+
+        if (toot.type === "Announce") {
+          // since Mastodon doesn't allow (yet?) cross-origin requests to
+          // retrieve post data (for boosts), we try to at least extract the
+          // user names for all the boosts contained in the archive
+
+          // [ISSUE] "object" value is a string most of the times, but
+          // sometimes it's a complex object similar to type "Create"
+          if (typeof toot.object === "object" && toot.object !== null) {
+            // let's ignore this case for now...
+            // [TODO], but not clear how it should be handled
+          } else if (toot.object) {
+            // if it's not an object and it has a value, then it's simply a
+            // url (string) pointing to the original (boosted) post.
+            // [ISSUE] URL format not always consistent... (esp. in the case
+            // of non-Mastodon instances) - e.g:
+            // https://craftopi.art/objects/[...]
+            // https://firefish.city/notes/[...]
+            // https://bsky.brid.gy/convert/ap/at://did:plc:[...]/app.bsky.feed.post/[...]
+            // -> the user name is not always present in URL
+            const url = toot.object.split("/");
+            let name;
+            let user;
+            let domain;
+            if (url.length > 2) {
+              domain = url[2];
+
+              if (url[0] === "https:" && url[3] === "users" && url[5] === "statuses") {
+                // Mastodon URL format -> user name
+                name = url[4];
+                user = `https://${url[2]}/users/${url[4]}/`;
+              } else {
+                // other URL format -> domain name
+                name = `? ${url[2]}`;
+                user = `https://${url[2]}/`;
+              }
+
+              if (!accu.boosts[name]) {
+                accu.boosts[name] = {
+                  nb: 1,
+                  name: name,
+                  url: user,
+                  domain: domain,
+                };
+              } else {
+                accu.boosts[name].nb++;
+              }
+            }
+          }
+        }
+        return accu;
+      },
+      { langs: {}, boosts: {} }
+    );
+
+    langs = infos.langs;
+
+    boosts = [];
+    for (var key in infos.boosts) {
+      boosts.push(infos.boosts[key]);
+    }
+  }
+
+  Alpine.store("files").languages = langs;
+  Alpine.store("files").boostsAuthors = boosts;
+}
+
+function buildDynamicFilters() {
+  for (const lang in Alpine.store("files").languages) {
+    Alpine.store("files").filtersDefault["lang_" + lang] = true;
+  }
+
+  for (const source of Alpine.store("files").sources) {
+    Alpine.store("files").filtersDefault["actor_" + source.id] = true;
+  }
+
+  Alpine.store("files").resetFilters(false);
+}
+
+function cleanUpRaw() {
+  if (serverMode()) {
+    return;
+  }
+
+  for (let i = 0; i < Alpine.store("files").sources.length; i++) {
+    const content = Alpine.store("files").sources[i]._raw;
+    if (content.cleanedUp) {
+      continue;
+    }
+
+    const actor = Alpine.store("files").sources[i].actor;
+    if (actor.image && actor.image.url) {
+      delete content[actor.image.url];
+    }
+    if (actor.icon && actor.icon.url) {
+      delete content[actor.icon.url];
+    }
+    delete content["actor.json"];
+    delete content["outbox.json"];
+    delete content["likes.json"];
+    delete content["bookmarks.json"];
+    content.cleanedUp = true;
+
+    Alpine.store("files").sources[i]._raw = content;
+  }
+}
+
+function setHueForSources() {
+  const nbSources = Alpine.store("files").sources.length;
+  const hueStart = Math.round(Math.random() * 360); // MARL accent: 59.17
+  const hueSpacing = Math.round(360 / nbSources);
+
+  for (let i = 0; i < nbSources; i++) {
+    Alpine.store("files").sources[i].hue = hueStart + hueSpacing * i;
+  }
+}
+
+function loadAttachedMedia(att, index) {
+  if (serverMode()) {
+    return;
+  }
+  if (attachmentIsImage(att) || attachmentIsVideo(att) || attachmentIsSound(att)) {
+    const data = Alpine.store("files").sources[index]._raw;
+    const root = Alpine.store("files").sources[index].fileInfos.archiveRoot;
+    let url = att.url;
+    if (!data[root + url]) {
+      // media not found in archive
+      // we still want to show the metadata for the attachement
+      Alpine.store("files").sources[index][att.url] = {
+        type: att.mediaType,
+        content: null,
+      };
+      return;
+    } else {
+      data[root + url].async("base64").then((content) => {
+        Alpine.store("files").sources[index][att.url] = {
+          type: att.mediaType,
+          content: content,
+        };
+      });
+    }
+  }
+}
+
+function pagingUpdated() {
+  document.querySelectorAll(`#toots details[open]`).forEach((e) => {
+    e.removeAttribute("open");
+  });
+}
+
+function scrollTootsToTop(setFocusTo) {
+  setTimeout(() => {
+    document.getElementById("toots").scrollTop = 0;
+    if (setFocusTo) {
+      // for keyboard users: we transfer the focus to the corresponding button
+      // in the upper paging module; or, in the cases where said button is
+      // disabled, we set the focus on the list of posts.
+      document.getElementById(setFocusTo).focus();
+    }
+  }, 50);
+}
+
+function contentType(data) {
+  let r = "";
+  switch (data) {
+    case "Create":
+      r = "Post";
+      break;
+    case "Announce":
+      r = "Boost";
+      break;
+  }
+  return r;
+}
+
+function tootVisibility(data) {
+  if (data.to.includes("https://www.w3.org/ns/activitystreams#Public")) {
+    return ["public", AlpineI18n.t("filters.visibilityPublic")];
+  }
+  if (
+    data.to.some((x) => x.indexOf("/followers") > -1) &&
+    !data.to.includes("https://www.w3.org/ns/activitystreams#Public") &&
+    data.cc.includes("https://www.w3.org/ns/activitystreams#Public")
+  ) {
+    return ["unlisted", AlpineI18n.t("filters.visibilityUnlisted")];
+  }
+  if (
+    data.to.some((x) => x.indexOf("/followers") > -1) &&
+    !data.to.includes("https://www.w3.org/ns/activitystreams#Public") &&
+    !data.cc.includes("https://www.w3.org/ns/activitystreams#Public")
+  ) {
+    return ["followers", AlpineI18n.t("filters.visibilityFollowers")];
+  }
+  if (
+    !data.to.some((x) => x.indexOf("/followers") > -1) &&
+    !data.to.includes("https://www.w3.org/ns/activitystreams#Public") &&
+    !data.cc.includes("https://www.w3.org/ns/activitystreams#Public")
+  ) {
+    return ["mentioned", AlpineI18n.t("filters.visibilityMentioned")];
+  }
+}
+
+function tootHasTags(toot) {
+  return typeof toot.object === "object" && toot.object !== null && toot.object.tag && toot.object.tag.length;
+}
+
+function formatJson(data) {
+  let r = data;
+  if (r._marl) {
+    // not a part of the source data; let's hide it to avoid confusion
+    r = JSON.parse(JSON.stringify(data));
+    delete r._marl;
+  }
+  return JSON.stringify(r, null, 4);
+}
+
+function formatAuthor(author, plainText) {
+  if (plainText) {
+    return author.split("/").pop();
+  } else {
+    return `<a href="${author}" target="_blank">${author.split("/").pop()}</a>`;
+  }
+}
+
+function formatDateTime(data) {
+  let date = new Date(data);
+  const dateOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+  };
+  return date.toLocaleDateString(Alpine.store("ui").lang, dateOptions);
+}
+
+function formatFileDateTime(data) {
+  let date = new Date(data);
+  const dateOptions = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  };
+  return date.toLocaleDateString(Alpine.store("ui").lang, dateOptions);
+}
+
+function formatFileSize(size) {
+  var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+  return +(size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["B", "kB", "MB", "GB", "TB"][i]; // ### i18n
+}
+
+function formatDate(data) {
+  let date = new Date(data);
+  const dateOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString(Alpine.store("ui").lang, dateOptions);
+}
+
+function formatNumber(nb) {
+  if (typeof nb === "undefined") {
+    return "";
+  }
+  return nb.toLocaleString();
+}
+
+function formatLikesBookmarks(url) {
+  const u = url.split("/");
+  u.splice(0, 2);
+
+  // 0 [domain]
+  // 1 "users"
+  // 2 [username]
+  // 3 "statuses"
+  // 4 [post id]
+
+  let text = `<span class="url-instance">${u[0]}</span>`;
+  if (u[1] === "users" && u[3] === "statuses") {
+    text += `<span class="url-actor">${u[2]}</span><span class="url-post-id">${u[4]}</span>`;
+  } else {
+    u.splice(0, 1);
+    text += `<span class="url-post-id">${u.join("/")}</span>`;
+  }
+  return text;
+}
+
+function stripHTML(str) {
+  let doc = new DOMParser().parseFromString(str, "text/html");
+  return doc.body.textContent || "";
+}
+
+function extractExternalLinks(str) {
+  const doc = new DOMParser().parseFromString(str, "text/html");
+  const nodes = doc.querySelectorAll("a[href]:not(.mention)");
+  let links = [];
+  nodes.forEach((link) => {
+    links.push({
+      href: link.href,
+      text: link.textContent,
+    });
+  });
+  return links;
+}
+
+function attachmentIsImage(att) {
+  return att.mediaType === "image/jpeg" || att.mediaType === "image/png";
+}
+
+function attachmentIsVideo(att) {
+  return att.mediaType === "video/mp4";
+}
+
+function attachmentIsSound(att) {
+  return att.mediaType === "audio/mpeg";
+}
+
+function attachmentWrapperClass(att) {
+  let r = [];
+  if (attachmentIsImage(att)) {
+    r.push("att-img");
+  } else if (attachmentIsSound(att)) {
+    r.push("att-sound");
+  } else if (attachmentIsVideo(att)) {
+    r.push("att-video");
+  }
+
+  if (!att.name) {
+    r.push("no-alt-text");
+  }
+
+  return r;
+}
+
+function isFilterActive(name) {
+  return Alpine.store("files").filters[name] !== Alpine.store("files").filtersDefault[name];
+}
+
+function startOver() {
+  const txt = AlpineI18n.t("tools.startOverConfirm");
+  if (confirm(txt)) {
+    location.reload();
+  }
+}
+
+function detectLangFromBrowser() {
+  const langs = navigator.languages;
+  if (langs && langs.length) {
+    for (let i = 0; i < langs.length; i++) {
+      let lang = langs[i].split("-")[0];
+      if (Alpine.store("ui").appLangs[lang]) {
+        const msg = `Setting language based on browser preference: <b>'${lang}' (${
+          Alpine.store("ui").appLangs[lang]
+        })</b>`;
+        marlConsole(msg, "info");
+        return lang;
+      }
+    }
+  }
+  return false;
+}
+
+function setLang() {
+  const lang = Alpine.store("ui").lang;
+  AlpineI18n.locale = lang;
+  savePref("lang", lang);
+  document.getElementsByTagName("html")[0].setAttribute("lang", lang);
+
+  const msg = `App language set to <b>'${lang}' (${Alpine.store("ui").appLangs[lang]})</b>`;
+  marlConsole(msg);
+}
+
+function setTheme(theme) {
+  document.getElementsByTagName("html")[0].setAttribute("class", theme);
+  if (theme === "dark") {
+    document.querySelector('meta[name="color-scheme"]').setAttribute("content", "dark");
+  } else {
+    document.querySelector('meta[name="color-scheme"]').setAttribute("content", "light");
+  }
+}
+
+function marlConsole(msg, cls = "info") {
+  // classes: "info", "warn", "error"
+  Alpine.store("ui").logMsg(msg, cls);
+}
+
+// drag'n'drop over entire page
+
+const drag = {
+  el: null,
+
+  init(el) {
+    this.dropArea = document.getElementById(el);
+
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+      this.dropArea.addEventListener(eventName, (e) => this.preventDragDefaults(e), false);
+    });
+    ["dragenter", "dragover"].forEach((eventName) => {
+      this.dropArea.addEventListener(eventName, () => this.highlightDrag(), false);
+    });
+    ["dragleave", "drop"].forEach((eventName) => {
+      this.dropArea.addEventListener(eventName, () => this.unhighlightDrag(), false);
+    });
+    this.dropArea.addEventListener("drop", (e) => this.handleDrop(e), false);
+  },
+
+  preventDragDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  },
+  highlightDrag() {
+    this.dropArea.classList.add("highlight-drag");
+  },
+  unhighlightDrag() {
+    this.dropArea.classList.remove("highlight-drag");
+  },
+  handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    loadZipFiles(files);
+  },
+};

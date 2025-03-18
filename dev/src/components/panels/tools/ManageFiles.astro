@@ -13,6 +13,7 @@
           <li :style="'--actor-hue: '+ s.hue">
             <span class="name" x-text="s.fileInfos.name"></span>
             <span class="date" x-text="formatFileDateTime(s.fileInfos.lastModified)"></span>
+            <span class="author" x-text="s.actor.name"></span>
             <span class="size" x-text="formatFileSize(s.fileInfos.size)"></span>
           </li>
         </template>

@@ -17,7 +17,7 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
 
   <p class="visually-hidden" x-text="$t('filters.panelNotice')"></p>
 
-  <div class="toots-filters-group">
+  <div class="form-items-group">
     <FilterText name="fullText" />
     <FilterText name="hashtagText" />
     <FilterText name="mentionText" />
@@ -25,15 +25,15 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterText name="summary" />
   </div>
 
-  <div class="toots-filters-group">
+  <div class="form-items-group">
     <FilterCheckbox name="isEdited" />
     <template x-if="$store.files.duplicates">
       <FilterCheckbox name="isDuplicate" />
     </template>
   </div>
 
-  <div class="toots-filters-group">
-    <h3 class="toots-filters-group-title" x-text="$t('filters.mustContain')"></h3>
+  <div class="form-items-group">
+    <h3 class="form-items-group-title" x-text="$t('filters.mustContain')"></h3>
 
     <FilterCheckbox name="hasHashtags" />
     <FilterCheckbox name="hasMentions" />
@@ -41,19 +41,20 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterCheckbox name="hasSummary" />
   </div>
 
-  <div class="toots-filters-group">
-    <h3 class="toots-filters-group-title" x-text="$t('filters.type')"></h3>
+  <div class="form-items-group">
+    <h3 class="form-items-group-title" x-text="$t('filters.type')"></h3>
 
     <FilterCheckbox name="typeOriginal" />
     <FilterCheckbox name="typeBoost" />
   </div>
-  <div class="toots-filters-group">
+  <div class="form-items-group">
+    <FilterCheckbox name="startingAt" />
     <FilterCheckbox name="noStartingAt" />
     <FilterCheckbox name="isSensitive" />
   </div>
 
-  <div class="toots-filters-group">
-    <h3 class="toots-filters-group-title" x-text="$t('filters.mustHaveAttachement')"></h3>
+  <div class="form-items-group">
+    <h3 class="form-items-group-title" x-text="$t('filters.mustHaveAttachement')"></h3>
 
     <FilterCheckbox name="attachmentAny" />
     <FilterCheckbox name="attachmentImage" />
@@ -61,13 +62,13 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterCheckbox name="attachmentSound" />
   </div>
 
-  <div class="toots-filters-group">
+  <div class="form-items-group">
     <FilterCheckbox name="attachmentNoAltText" />
     <FilterCheckbox name="attachmentWithAltText" />
   </div>
 
-  <div class="toots-filters-group">
-    <h3 class="toots-filters-group-title" x-text="$t('filters.visibility')"></h3>
+  <div class="form-items-group">
+    <h3 class="form-items-group-title" x-text="$t('filters.visibility')"></h3>
 
     <FilterCheckbox name="visibilityPublic" />
     <FilterCheckbox name="visibilityUnlisted" />
@@ -75,11 +76,11 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterCheckbox name="visibilityMentioned" />
   </div>
 
-  <div class="toots-filters-group" x-show="$store.files.toots.length">
-    <h3 class="toots-filters-group-title" x-text="$t('filters.language')"></h3>
+  <div class="form-items-group" x-show="$store.files.toots.length">
+    <h3 class="form-items-group-title" x-text="$t('filters.language')"></h3>
     <template x-for="lang in $store.files.sortedLanguages">
 
-      <div class="toots-filter checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
+      <div class="form-item checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
         <label :for="'filter-lang-' + lang[0]">
           <input
             :id="'filter-lang-' + lang[0]"
@@ -97,11 +98,11 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
   </div>
 
   <template x-if="$store.files.sources.length > 1">
-    <div class="toots-filters-group">
-      <h3 class="toots-filters-group-title" x-text="$t('filters.author')"></h3>
+    <div class="form-items-group">
+      <h3 class="form-items-group-title" x-text="$t('filters.author')"></h3>
       <template x-for="source in $store.files.sources">
 
-        <div class="toots-filter checkbox" :class="isFilterActive('actor_' + source.id) ? 'active' : ''">
+        <div class="form-item checkbox" :class="isFilterActive('actor_' + source.id) ? 'active' : ''">
           <label :for="'filter-actor-' + source.id">
             <input
               :id="'filter-actor-' + source.id"

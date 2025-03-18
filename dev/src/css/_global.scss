@@ -56,7 +56,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--fg1);
-  font-size: 16px;
+  font-size: 1rem;
   background: var(--bg2);
   font-family: sans-serif;
 }
@@ -259,7 +259,7 @@ details {
 // focusable elements
 *:focus-visible,
 .tags-group button:focus-visible div,
-.toots-filter:has([type="checkbox"]:focus-visible) {
+.form-item:has([type="checkbox"]:focus-visible) {
   text-decoration: none;
   outline: 2px solid var(--accent-light);
   outline-offset: 2px;
