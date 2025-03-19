@@ -101,7 +101,6 @@ const filesStore = {
     this.sources = [];
     this.toots = [];
     this.toc = [];
-    this.duplicates = false;
 
     this.sortAsc = true; // -> userPrefs
     this.pageSize = 10; // -> userPrefs
@@ -154,6 +153,34 @@ const filesStore = {
       // etc
     };
     this.filtersActive = false;
+    this.activeFilters = {
+      // which filters should be shown or not
+      // only explicit "false" values are taken into account
+      // in other word, an absent value is truthy
+
+      isEdited: false,
+      isDuplicate: false,
+      // startingAt: false,
+      // noStartingAt: false,
+      hasExternalLink: false,
+      // hasHashtags: false,
+      // hasMentions: false,
+      hasPoll: false,
+      hasSummary: false,
+      isSensitive: false,
+      visibilityPublic: false,
+      visibilityUnlisted: false,
+      visibilityFollowers: false,
+      visibilityMentioned: false,
+      // typeOriginal: true,
+      // typeBoost: true,
+      attachmentAny: false,
+      attachmentImage: false,
+      attachmentVideo: false,
+      attachmentSound: false,
+      attachmentNoAltText: false,
+      attachmentWithAltText: false,
+    };
 
     this.tagsFilters = {
       hashtags: "",

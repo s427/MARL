@@ -5,6 +5,9 @@
 
   <span class="author">
     <span x-text="$t('post.by')"></span>&nbsp;<span x-html="formatAuthor(toot.actor)"></span>
+    <template x-if="toot._marl.langs && toot._marl.langs.length">
+      <span x-text="`(${toot._marl.langs[0]})`"></span>
+    </template>
   </span>
 
   <span class="published">

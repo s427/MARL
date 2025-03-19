@@ -25,11 +25,12 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterText name="summary" />
   </div>
 
-  <div class="form-items-group">
+  <div
+    class="form-items-group"
+    x-show="$store.files.activeFilters.isEdited || $store.files.activeFilters.isDuplicate"
+  >
     <FilterCheckbox name="isEdited" />
-    <template x-if="$store.files.duplicates">
-      <FilterCheckbox name="isDuplicate" />
-    </template>
+    <FilterCheckbox name="isDuplicate" />
   </div>
 
   <div class="form-items-group">
@@ -54,7 +55,10 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterCheckbox name="isSensitive" />
   </div>
 
-  <div class="form-items-group">
+  <div
+    class="form-items-group"
+    x-show="$store.files.activeFilters.attachmentImage || $store.files.activeFilters.attachmentVideo || $store.files.activeFilters.attachmentSound"
+  >
     <h3 class="form-items-group-title" x-text="$t('filters.mustHaveAttachement')"></h3>
 
     <FilterCheckbox name="attachmentAny" />
@@ -63,12 +67,18 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterCheckbox name="attachmentSound" />
   </div>
 
-  <div class="form-items-group">
+  <div
+    class="form-items-group"
+    x-show="$store.files.activeFilters.attachmentImage || $store.files.activeFilters.attachmentVideo || $store.files.activeFilters.attachmentSound"
+  >
     <FilterCheckbox name="attachmentNoAltText" />
     <FilterCheckbox name="attachmentWithAltText" />
   </div>
 
-  <div class="form-items-group">
+  <div
+    class="form-items-group"
+    x-show="[$store.files.activeFilters.visibilityPublic, $store.files.activeFilters.visibilityUnlisted, $store.files.activeFilters.visibilityFollowers, $store.files.activeFilters.visibilityMentioned].filter(Boolean).length > 1"
+  >
     <h3 class="form-items-group-title" x-text="$t('filters.visibility')"></h3>
 
     <FilterCheckbox name="visibilityPublic" />
@@ -77,26 +87,28 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
     <FilterCheckbox name="visibilityMentioned" />
   </div>
 
-  <div class="form-items-group" x-show="$store.files.toots.length">
-    <h3 class="form-items-group-title" x-text="$t('filters.language')"></h3>
-    <template x-for="lang in $store.files.sortedLanguages">
+  <template x-if="$store.files.sortedLanguages.length > 1">
+    <div class="form-items-group" x-show="$store.files.toots.length">
+      <h3 class="form-items-group-title" x-text="$t('filters.language')"></h3>
+      <template x-for="lang in $store.files.sortedLanguages">
 
-      <div class="form-item checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
-        <label :for="'filter-lang-' + lang[0]">
-          <input
-            :id="'filter-lang-' + lang[0]"
-            type="checkbox"
-            x-model="$store.files.filters['lang_' + lang[0]]"
-            @change="$store.files.setFilter()"
-          />
-          <span>
-            <span x-text="lang[0]"></span>
-            (<span x-text="lang[1]"></span>)
-          </span>
-        </label>
-      </div>
-    </template>
-  </div>
+        <div class="form-item checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
+          <label :for="'filter-lang-' + lang[0]">
+            <input
+              :id="'filter-lang-' + lang[0]"
+              type="checkbox"
+              x-model="$store.files.filters['lang_' + lang[0]]"
+              @change="$store.files.setFilter()"
+            />
+            <span>
+              <span x-text="lang[0]"></span>
+              (<span x-text="lang[1]"></span>)
+            </span>
+          </label>
+        </div>
+      </template>
+    </div>
+  </template>
 
   <template x-if="$store.files.sources.length > 1">
     <div class="form-items-group">

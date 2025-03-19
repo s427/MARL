@@ -5,6 +5,7 @@ const { name } = Astro.props;
 <div
   class="toots-filter form-item checkbox"
   :class={`isFilterActive('${name}') ? 'active' : ''`}
+  x-show={`$store.files.activeFilters['${name}'] !== false`}
 >
   <label for={"filter-"+name}>
     <input

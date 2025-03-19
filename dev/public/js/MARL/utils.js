@@ -80,7 +80,7 @@ function preprocessToots(t, index) {
       } else {
         alt._marl.duplicate = true;
         marl.duplicate = true;
-        Alpine.store("files").duplicates = true;
+        Alpine.store("files").activeFilters.isDuplicate = true;
       }
     });
     if (identical) {
@@ -107,13 +107,28 @@ function preprocessToots(t, index) {
       const content = t.object.content.toLowerCase();
       marl.textContent = stripHTML(content);
       marl.externalLinks = extractExternalLinks(content);
+
+      if (marl.externalLinks.length) {
+        Alpine.store("files").activeFilters.hasExternalLink = true;
+      }
     }
+
+    if (t.object.sensitive) {
+      Alpine.store("files").activeFilters.isSensitive = true;
+    }
+    if (t.object.updated) {
+      Alpine.store("files").activeFilters.isEdited = true;
+    }
+
     if (t.object.summary) {
       marl.summary = t.object.summary.toLowerCase();
+      Alpine.store("files").activeFilters.hasSummary = true;
     }
 
     if (t.object.attachment && t.object.attachment.length) {
       marl.hasAttachments = true;
+      Alpine.store("files").activeFilters.attachmentNoAltText = true;
+      Alpine.store("files").activeFilters.attachmentWithAltText = true;
 
       for (let i = 0; i < t.object.attachment.length; i++) {
         let att = t.object.attachment[i];
@@ -129,10 +144,21 @@ function preprocessToots(t, index) {
           t.object.attachment[i].url0 = url;
           t.object.attachment[i].url = url.slice(prefix);
         }
+
+        if (attachmentIsImage(att)) {
+          Alpine.store("files").activeFilters.attachmentImage = true;
+        }
+        if (attachmentIsVideo(att)) {
+          Alpine.store("files").activeFilters.attachmentVideo = true;
+        }
+        if (attachmentIsSound(att)) {
+          Alpine.store("files").activeFilters.attachmentSound = true;
+        }
       }
     }
 
     if (t.object.type === "Question") {
+      Alpine.store("files").activeFilters.hasPoll = true;
       if (t.object.oneOf) {
         marl.pollType = "oneOf";
       } else if (t.object.anyOf) {
@@ -149,6 +175,20 @@ function preprocessToots(t, index) {
   }
 
   marl.visibility = tootVisibility(t);
+  switch (marl.visibility[0]) {
+    case "public":
+      Alpine.store("files").activeFilters.visibilityPublic = true;
+      break;
+    case "unlisted":
+      Alpine.store("files").activeFilters.visibilityUnlisted = true;
+      break;
+    case "followers":
+      Alpine.store("files").activeFilters.visibilityFollowers = true;
+      break;
+    case "mentioned":
+      Alpine.store("files").activeFilters.visibilityMentioned = true;
+      break;
+  }
 
   const id = t.id.split("/");
   marl.id = id[id.length - 2];
@@ -259,6 +299,16 @@ function buildDynamicFilters() {
 
   for (const source of Alpine.store("files").sources) {
     Alpine.store("files").filtersDefault["actor_" + source.id] = true;
+  }
+
+  if (
+    [
+      Alpine.store("files").activeFilters.attachmentImage,
+      Alpine.store("files").activeFilters.attachmentVideo,
+      Alpine.store("files").activeFilters.attachmentSound,
+    ].filter(Boolean).length > 1
+  ) {
+    Alpine.store("files").activeFilters.attachmentAny = true;
   }
 
   Alpine.store("files").resetFilters(false);
