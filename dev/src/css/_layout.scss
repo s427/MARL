@@ -230,7 +230,6 @@ html {
         grid-area: area2;
         flex-basis: auto;
         flex-grow: 1;
-        // justify-content: center;
         .paging-options {
           margin: 0 1rem;
         }
@@ -239,8 +238,10 @@ html {
         grid-area: area3;
       }
     }
-    .toots > .paging {
+
+    .main-section-inner .toots > .paging {
       margin: 0 auto;
+      padding: 2rem 1rem 4rem;
       max-width: 90ch;
     }
   }
