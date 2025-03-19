@@ -1,8 +1,9 @@
 ---
-import AttachmentImage from "./AttachmentImage.astro";
-import AttachmentSound from "./AttachmentSound.astro";
-import AttachmentVideo from "./AttachmentVideo.astro";
-import Poll from "./Poll.astro";
+import PostCreate from "./PostCreate.astro";
+import PostAnnounce from "./PostAnnounce.astro";
+import PostInfos from "./PostInfos.astro";
+import PostTags from "./PostTags.astro";
+import PostRaw from "./PostRaw.astro";
 ---
 
 <div
@@ -16,149 +17,10 @@ import Poll from "./Poll.astro";
     <span x-text="formatDateTime(toot.published)"></span>
   </h3>
 
-  <template x-if="toot.type === 'Create'">
-    <div class="toot-pretty">
-      <div class="toot-summary" x-show="toot.object.summary">
-        <span x-text="toot.object.summary"></span>
-      </div>
+  <PostCreate />
+  <PostAnnounce />
 
-      <div class="toot-content" x-html="toot.object.content"></div>
-
-      <div class="toot-poll" x-show="toot._marl.pollType">
-        <Poll />
-      </div>
-
-      <div class="toot-attachments" x-show="toot.object.attachment && toot.object.attachment.length">
-        <ul>
-          <template x-for="(att, index) in toot.object.attachment">
-            <li
-              :class="attachmentWrapperClass(att)"
-              :data-trigger="loadAttachedMedia(att, toot._marl.source)"
-            >
-              <AttachmentImage />
-              <AttachmentSound />
-              <AttachmentVideo />
-            </li>
-          </template>
-        </ul>
-      </div>
-    </div>
-  </template>
-
-  <template x-if="toot.type === 'Announce' && toot.object && toot.object.content">
-    <div class="toot-pretty">
-      <div class="toot-content">
-        <div class="toot-content-inner" x-html="toot.object.content"></div>
-      </div>
-    </div>
-  </template>
-
-  <template x-if="toot.type === 'Announce' && toot.object && !toot.object.content">
-    <div class="toot-pretty">
-      <div class="toot-content">
-        <div class="toot-content-inner">
-          <a :href="toot.object" x-text="toot.object"></a>
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <div class="toot-infos">
-    <span class="type">
-      <span x-text="contentType(toot.type)"></span>&nbsp;
-    </span>
-
-    <span class="author">
-      <span x-text="$t('post.by')"></span>&nbsp;<span x-html="formatAuthor(toot.actor)"></span>
-    </span>
-
-    <span class="published">
-      <span x-text="formatDateTime(toot.published)"></span>
-      <span x-show="toot.object && toot.object.updated" class="updated">
-        <span x-text="$t('post.lastUpdated')"></span>
-        <span x-text="formatDateTime(toot.object.updated)"></span>
-      </span>
-    </span>
-
-    <span class="visibility">
-      <span x-text="toot._marl.visibility[1]"></span>
-    </span>
-
-    <span class="link">
-      <a
-        x-show="toot.object.id"
-        :href="toot.object.id"
-        x-text="$t('post.linkToPost')"
-      ></a>
-    </span>
-  </div>
-
-  <template
-    x-if="(toot.object.tag && toot.object.tag.length) || (toot._marl.externalLinks && toot._marl.externalLinks.length)"
-  >
-    <div class="toot-meta">
-      <template x-if="toot.object.tag && toot.object.tag.filter(x => x.type === 'Mention').length">
-        <div class="toot-people">
-          <h4 x-text="$t('post.people')"></h4>
-          <ul>
-            <template x-for="tag in toot.object.tag">
-              <li x-show="tag.type === 'Mention'">
-                <a :href="tag.href" x-text="tag.name"></a>
-              </li>
-            </template>
-          </ul>
-        </div>
-      </template>
-
-      <template x-if="toot.object.tag && toot.object.tag.filter(x => x.type === 'Hashtag').length">
-        <div class="toot-hashtags">
-          <h4 x-text="$t('post.hashtags')"></h4>
-          <ul>
-            <template x-for="tag in toot.object.tag">
-              <li x-show="tag.type === 'Hashtag'">
-                <a :href="tag.href" x-text="tag.name"></a>
-              </li>
-            </template>
-          </ul>
-        </div>
-      </template>
-
-      <template x-if="toot._marl.externalLinks.length">
-        <div class="toot-links">
-          <h4 x-text="$t('post.extLinks')"></h4>
-          <ul>
-            <template x-for="link in toot._marl.externalLinks">
-              <li>
-                <a :href="link.href" x-text="link.text"></a>
-              </li>
-            </template>
-          </ul>
-        </div>
-      </template>
-    </div>
-  </template>
-
-  <div class="toot-raw">
-    <details>
-      <summary>
-        <span class="summary-icon">
-          <svg aria-hidden="true">
-            <use href="#json" />
-          </svg>
-        </span>
-        <span
-          class="summary-label"
-          :id="'raw-' + toot._marl.id"
-          x-text="$t('post.rawData')"
-        ></span>
-      </summary>
-      <div class="details-content">
-        <textarea
-          x-text="formatJson(toot)"
-          :aria-labelledby="'raw-' + toot._marl.id"
-          readonly
-        ></textarea>
-      </div>
-    </details>
-  </div>
+  <PostInfos />
+  <PostTags />
+  <PostRaw />
 </div>

@@ -1,0 +1,35 @@
+---
+import AttachmentImage from "./AttachmentImage.astro";
+import AttachmentSound from "./AttachmentSound.astro";
+import AttachmentVideo from "./AttachmentVideo.astro";
+import Poll from "./Poll.astro";
+---
+
+<template x-if="toot.type === 'Create'">
+  <div class="toot-pretty">
+    <div class="toot-summary" x-show="toot.object.summary">
+      <span x-text="toot.object.summary"></span>
+    </div>
+
+    <div class="toot-content" x-html="toot.object.content"></div>
+
+    <div class="toot-poll" x-show="toot._marl.pollType">
+      <Poll />
+    </div>
+
+    <div class="toot-attachments" x-show="toot.object.attachment && toot.object.attachment.length">
+      <ul>
+        <template x-for="(att, index) in toot.object.attachment">
+          <li
+            :class="attachmentWrapperClass(att)"
+            :data-trigger="loadAttachedMedia(att, toot._marl.source)"
+          >
+            <AttachmentImage />
+            <AttachmentSound />
+            <AttachmentVideo />
+          </li>
+        </template>
+      </ul>
+    </div>
+  </div>
+</template>

@@ -248,8 +248,8 @@ $meta-visible: 100ch;
   }
 
   .att-img-wrapper {
-    width: clamp(75px, 7.5dvw, 150px);
-    flex: 0 0 clamp(75px, 7.5dvw, 150px);
+    width: clamp(75px, 25dvw, 150px);
+    flex: 0 0 clamp(75px, 25dvw, 150px);
     padding: 0;
     background: transparent;
     border-radius: 0.5rem;
@@ -441,9 +441,29 @@ $meta-visible: 100ch;
     margin-bottom: 0.25rem;
   }
 
+  .type {
+    order: 1;
+  }
+  .author {
+    order: 2;
+  }
+  .published {
+    order: 4;
+  }
+  .visibility {
+    order: 5;
+  }
+  .link {
+    order: 3;
+  }
+  .activities {
+    order: 6;
+  }
+
   .type,
   .visibility,
   .published,
+  .activity,
   .link a {
     padding-left: 1.6em;
     background: transparent none no-repeat 0 0 / 1rem auto scroll;
@@ -487,22 +507,6 @@ $meta-visible: 100ch;
     margin-left: auto;
   }
 
-  .type {
-    order: 1;
-  }
-  .author {
-    order: 2;
-  }
-  .published {
-    order: 4;
-  }
-  .visibility {
-    order: 5;
-  }
-  .link {
-    order: 3;
-  }
-
   .published {
     flex: 0 0 100%;
     margin-right: 0;
@@ -519,8 +523,27 @@ $meta-visible: 100ch;
       display: block;
     }
   }
+
+  .activities {
+    flex: 0 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.75rem 0 0;
+  }
+  .activity {
+    margin-top: 0.25rem;
+    margin-right: 1rem;
+    background-size: 1.1rem auto;
+    background-position: 0 50%;
+  }
 }
 
+.toot-infos .activity.likes {
+  background-image: url("../svg/dark/activity-like.svg");
+}
+.toot-infos .activity.shares {
+  background-image: url("../svg/dark/activity-share.svg");
+}
 .toot-type-post .toot-infos .type {
   background-image: url("../svg/dark/type-post.svg");
 }
@@ -689,9 +712,10 @@ $meta-visible: 100ch;
         margin: 0;
         padding-top: 1rem;
         grid-template-areas:
-          "type author visibility"
-          "pub  pub    pub"
-          "link link   link";
+          "type   author visibility"
+          "pub    pub    pub"
+          "acti   acti   acti"
+          "link   link   link";
         grid-template-columns: max-content max-content 1fr;
 
         .type {
@@ -702,11 +726,14 @@ $meta-visible: 100ch;
         }
         .published {
           grid-area: pub;
-          // margin: 0 0 0.25rem;
+        }
+        .activities {
+          grid-area: acti;
         }
         .link {
           grid-area: link;
           margin-left: 0;
+          margin-top: 1rem;
         }
       }
     }
@@ -731,6 +758,12 @@ $meta-visible: 100ch;
   }
   .toot-infos .published {
     background-image: url("../svg/dark/calendar.svg");
+  }
+  .toot-infos .activity.likes {
+    background-image: url("../svg/dark/activity-like.svg");
+  }
+  .toot-infos .activity.shares {
+    background-image: url("../svg/dark/activity-share.svg");
   }
   .toot-type-post .toot-infos .type {
     background-image: url("../svg/dark/type-post.svg");
@@ -766,6 +799,12 @@ html.light {
   }
   .toot-infos .published {
     background-image: url("../svg/dark/calendar.svg");
+  }
+  .toot-infos .activity.likes {
+    background-image: url("../svg/dark/activity-like.svg");
+  }
+  .toot-infos .activity.shares {
+    background-image: url("../svg/dark/activity-share.svg");
   }
   .toot-type-post .toot-infos .type {
     background-image: url("../svg/dark/type-post.svg");
@@ -808,6 +847,12 @@ html.light {
   .toot-infos .published {
     background-image: url("../svg/light/calendar.svg");
   }
+  .toot-infos .activity.likes {
+    background-image: url("../svg/light/activity-like.svg");
+  }
+  .toot-infos .activity.shares {
+    background-image: url("../svg/light/activity-share.svg");
+  }
   .toot-type-post .toot-infos .type {
     background-image: url("../svg/light/type-post.svg");
   }
@@ -845,6 +890,12 @@ html.dark {
   }
   .toot-infos .published {
     background-image: url("../svg/light/calendar.svg");
+  }
+  .toot-infos .activity.likes {
+    background-image: url("../svg/light/activity-like.svg");
+  }
+  .toot-infos .activity.shares {
+    background-image: url("../svg/light/activity-share.svg");
   }
   .toot-type-post .toot-infos .type {
     background-image: url("../svg/light/type-post.svg");

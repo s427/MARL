@@ -1,0 +1,23 @@
+<div class="toot-raw">
+  <details>
+    <summary>
+      <span class="summary-icon">
+        <svg aria-hidden="true">
+          <use href="#json" />
+        </svg>
+      </span>
+      <span
+        class="summary-label"
+        :id="'raw-' + toot._marl.id"
+        x-text="$t('post.rawData')"
+      ></span>
+    </summary>
+    <div class="details-content">
+      <textarea
+        x-text="formatJson(toot)"
+        :aria-labelledby="'raw-' + toot._marl.id"
+        readonly
+      ></textarea>
+    </div>
+  </details>
+</div>

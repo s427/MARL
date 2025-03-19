@@ -1,0 +1,44 @@
+<template
+  x-if="(toot.object.tag && toot.object.tag.length) || (toot._marl.externalLinks && toot._marl.externalLinks.length)"
+>
+  <div class="toot-meta">
+    <template x-if="toot.object.tag && toot.object.tag.filter(x => x.type === 'Mention').length">
+      <div class="toot-people">
+        <h4 x-text="$t('post.people')"></h4>
+        <ul>
+          <template x-for="tag in toot.object.tag">
+            <li x-show="tag.type === 'Mention'">
+              <a :href="tag.href" x-text="tag.name"></a>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </template>
+
+    <template x-if="toot.object.tag && toot.object.tag.filter(x => x.type === 'Hashtag').length">
+      <div class="toot-hashtags">
+        <h4 x-text="$t('post.hashtags')"></h4>
+        <ul>
+          <template x-for="tag in toot.object.tag">
+            <li x-show="tag.type === 'Hashtag'">
+              <a :href="tag.href" x-text="tag.name"></a>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </template>
+
+    <template x-if="toot._marl.externalLinks.length">
+      <div class="toot-links">
+        <h4 x-text="$t('post.extLinks')"></h4>
+        <ul>
+          <template x-for="link in toot._marl.externalLinks">
+            <li>
+              <a :href="link.href" x-text="link.text"></a>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </template>
+  </div>
+</template>

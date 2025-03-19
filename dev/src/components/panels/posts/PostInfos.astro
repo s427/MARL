@@ -1,0 +1,63 @@
+<div class="toot-infos">
+  <span class="type">
+    <span x-text="contentType(toot.type)"></span>&nbsp;
+  </span>
+
+  <span class="author">
+    <span x-text="$t('post.by')"></span>&nbsp;<span x-html="formatAuthor(toot.actor)"></span>
+  </span>
+
+  <span class="published">
+    <span x-text="formatDateTime(toot.published)"></span>
+    <span x-show="toot.object && toot.object.updated" class="updated">
+      <span x-text="$t('post.lastUpdated')"></span>
+      <span x-text="formatDateTime(toot.object.updated)"></span>
+    </span>
+  </span>
+
+  <span class="visibility">
+    <span x-text="toot._marl.visibility[1]"></span>
+  </span>
+
+  <template x-if="(toot.object.likes && toot.object.likes.totalItems) || (toot.object.shares && toot.object.shares.totalItems)">
+    <span class="activities">
+      <template x-if="toot.object.likes && toot.object.likes.totalItems">
+        <span class="activity likes">
+          <span
+            class="label"
+            x-show="toot.object.likes.totalItems == 1"
+            x-text="$t('post.like1', {'nb': toot.object.likes.totalItems})"
+          ></span>
+          <span
+            class="label"
+            x-show="toot.object.likes.totalItems > 1"
+            x-text="$t('post.like2', {'nb': toot.object.likes.totalItems})"
+          ></span>
+        </span>
+      </template>
+
+      <template x-if="toot.object.shares && toot.object.shares.totalItems">
+        <span class="activity shares">
+          <span
+            class="label"
+            x-show="toot.object.shares.totalItems == 1"
+            x-text="$t('post.share1', {'nb': toot.object.shares.totalItems})"
+          ></span>
+          <span
+            class="label"
+            x-show="toot.object.shares.totalItems > 1"
+            x-text="$t('post.share2', {'nb': toot.object.shares.totalItems})"
+          ></span>
+        </span>
+      </template>
+      </span>
+  </template>
+
+  <span class="link">
+    <a
+      x-show="toot.object.id"
+      :href="toot.object.id"
+      x-text="$t('post.linkToPost')"
+    ></a>
+  </span>
+</div>
