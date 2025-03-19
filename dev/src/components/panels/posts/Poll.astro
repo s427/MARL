@@ -1,0 +1,39 @@
+<div class="poll-wrapper">
+  <ul class="poll-questions">
+    <template x-for="(question, index) in toot.object[toot._marl.pollType]">
+      <li class="poll-question">
+        <span class="name" x-text="question.name"></span>
+        <span class="votes">
+          <span x-text="Math.round(pollQuestionPc(toot, index)) + '%'"></span>
+        </span>
+        <span class="pc" :style="{width: pollQuestionPc(toot, index).toFixed(2) + '%'}"></span>
+      </li>
+    </template>
+  </ul>
+
+  <div class="poll-meta">
+    <dl class="poll-total">
+      <dt x-text="$t('post.pollVotersCount')"></dt>
+      <dd x-text="toot.object.votersCount"></dd>
+    </dl>
+    <dl class="poll-type">
+      <dt x-text="$t('post.pollType')"></dt>
+      <dd x-text="$t('post.pollTypeOne')" x-show="toot._marl.pollType === 'oneOf'"></dd>
+      <dd x-text="$t('post.pollTypeAny')" x-show="toot._marl.pollType === 'anyOf'"></dd>
+    </dl>
+    <dl class="poll-end">
+      <dt x-text="$t('post.pollEndTime')"></dt>
+      <dd x-text="formatDateTime(toot.object.endTime)"></dd>
+    </dl>
+    <dl class="poll-status">
+      <dt x-text="$t('post.pollStatus')"></dt>
+      <dd x-show="toot.object.closed === toot.object.endTime" x-text="$t('post.pollStatusClosed')"></dd>
+      <dd x-show="toot.object.closed !== toot.object.endTime" x-text="$t('post.pollStatusRunning')"></dd>
+    </dl>
+  </div>
+  <div class="poll-meta-simplified">
+    <span x-text="$t('post.pollVotersCountAlt', {'nb': toot.object.votersCount})"></span> - 
+    <span x-text="$t('post.pollTypeOne')" x-show="toot._marl.pollType === 'oneOf'"></span>
+    <span x-text="$t('post.pollTypeAny')" x-show="toot._marl.pollType === 'anyOf'"></span>
+  </div>
+</div>

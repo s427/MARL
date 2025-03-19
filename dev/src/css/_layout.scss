@@ -216,7 +216,7 @@ html {
   .collapse-panels {
     .toots-header {
       display: grid;
-      grid-template-columns: 1fr 90ch 1fr;
+      grid-template-columns: 1fr 100ch 1fr;
       grid-template-areas: "area1 area2 area3";
 
       h2 {

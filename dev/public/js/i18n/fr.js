@@ -2,7 +2,7 @@ appStrings["fr"] = {
   welcome: {
     title: "Bienvenue dans {appName}",
     p1: `MARL vous permet d'explorer le contenu de votre archive Mastodon dans une
-        interface simple d'utilisation. Tout se passe dans votre navigateur : votre archive
+        interface simple d'utilisation. Tout se passe dans votre navigateur : votre archive
         reste sur votre appareil; aucune donnée n'est envoyée à aucun serveur.`,
     p2: `Vous pouvez demander votre archive Mastodon en vous identifiant avec votre compte
         sur le web, puis en visitant "Préférences >Import et export >Demandez vos archives".<br />
@@ -63,6 +63,7 @@ appStrings["fr"] = {
     mustContain: "Doit contenir",
     hasHashtags: "Hashtag(s)",
     hasMentions: "Mention(s)",
+    hasPoll: "Sondage",
     hasExternalLink: "Lien(s) externe(s)",
     hasSummary: "Avertissement de contenu",
 
@@ -118,6 +119,15 @@ appStrings["fr"] = {
     by: "par",
     lastUpdated: "Dernière modification",
     linkToPost: "Lien",
+    pollType: "Type de sondage :",
+    pollTypeOne: "Choix unique",
+    pollTypeAny: "Choix multiples",
+    pollVotersCount: "Nombre de votants :",
+    pollVotersCountAlt: "{nb} votants",
+    pollEndTime: "Date de fin :",
+    pollStatus: "État :",
+    pollStatusClosed: "Terminé",
+    pollStatusRunning: "En cours",
     attachmentNoAlt: "Aucune description fournie",
     attachmentInArchive: "Dans l'archive :",
     attachmentNotFound: "⚠️ Média introuvable à l'emplacement indiqué",

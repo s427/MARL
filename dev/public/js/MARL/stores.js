@@ -127,6 +127,7 @@ const filesStore = {
       hasExternalLink: false,
       hasHashtags: false,
       hasMentions: false,
+      hasPoll: false,
       hasSummary: false,
       isSensitive: false,
       visibilityPublic: true,
@@ -357,6 +358,16 @@ const filesStore = {
               return t.type === "Mention";
             })
           ) {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      if (f.hasPoll) {
+        if (typeof t.object === "object" && t.object !== null && t.object.type) {
+          if (t.object.type !== "Question") {
             return false;
           }
         } else {

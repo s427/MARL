@@ -51,6 +51,7 @@ function marlBasePath() {
 function savePref(pref, value) {
   Alpine.store("userPrefs").save(pref, value);
 }
+
 function loadPref(pref) {
   Alpine.store("userPrefs").load(pref);
 }
@@ -128,6 +129,15 @@ function preprocessToots(t, index) {
           t.object.attachment[i].url0 = url;
           t.object.attachment[i].url = url.slice(prefix);
         }
+      }
+    }
+
+    if (t.object.type === "Question") {
+      marl.hasPoll = true;
+      if (t.object.oneOf) {
+        marl.pollType = "oneOf";
+      } else if (t.object.anyOf) {
+        marl.pollType = "anyOf";
       }
     }
   } else if (t.object) {
@@ -511,6 +521,26 @@ function attachmentWrapperClass(att) {
   }
 
   return r;
+}
+
+function pollQuestionPc(toot, i) {
+  const pollType = toot._marl.pollType;
+  const pollData = toot.object[pollType];
+
+  let pc = 0;
+  let totalVotes = 0;
+  const thisVotes = pollData[i].replies.totalItems;
+
+  if (pollType === "oneOf") {
+    for (const item of pollData) {
+      totalVotes += item.replies.totalItems;
+    }
+    pc = (thisVotes / totalVotes) * 100;
+  } else {
+    pc = (thisVotes / toot.object.votersCount) * 100;
+  }
+
+  return pc;
 }
 
 function isFilterActive(name) {

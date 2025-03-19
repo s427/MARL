@@ -162,6 +162,18 @@ $dark-button-svg-active:   $dark-button-svg-hover;
 $dark-fg-button-focus:     $dark-accent;
 $dark-fg-button-active:    $dark-accent;
 
+/*********/
+/* polls */
+/*********/
+
+$poll-bg:                     rgba($bg0, 85%);
+$poll-pc-bg:                  hsl($hue, 50%, 88%);
+$poll-pc-bg2:                 $bg1; // border around the percentage
+
+$dark-poll-bg:                rgba($dark-bg0, 65%);
+$dark-poll-pc-bg:             hsl($hue, 30%, 25%, .5);
+$dark-poll-pc-bg2:            $dark-bg1;
+
 /********/
 /* misc */
 /********/

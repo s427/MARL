@@ -2,6 +2,7 @@
 import AttachmentImage from "./AttachmentImage.astro";
 import AttachmentSound from "./AttachmentSound.astro";
 import AttachmentVideo from "./AttachmentVideo.astro";
+import Poll from "./Poll.astro";
 ---
 
 <div
@@ -22,6 +23,10 @@ import AttachmentVideo from "./AttachmentVideo.astro";
       </div>
 
       <div class="toot-content" x-html="toot.object.content"></div>
+
+      <div class="toot-poll" x-show="toot._marl.hasPoll">
+        <Poll />
+      </div>
 
       <div class="toot-attachments" x-show="toot.object.attachment && toot.object.attachment.length">
         <ul>
