@@ -4,6 +4,10 @@
 node_modules
 example-data
 
+# config file
+dev/public/js/config.js
+dist/js/config.js
+
 # unused Astro generated files
 dist/content-assets.mjs
 dist/content-modules.mjs

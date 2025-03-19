@@ -62,7 +62,7 @@ To use MARL in server mode, you need to:
 
 3. __Upload your unpacked archive on a web server__
 4. __Configure MARL to tell it where it can find your unpacked archive__  
-  The configuration takes place in the `js/config.js` file of the `dist` folder (or whatever folder MARL is located in). It contains more information about how to use it.
+  The configuration takes place in the `js/config.js` file of the `dist` folder (or whatever folder MARL is located in). It contains more information about how to use it. If this file is not present, please copy and rename it from `js/config.default.js`.
 5. __Upload MARL on a web server__
 
 That's it! When it loads the configuration (step 4), MARL will automatically switch to server mode.
