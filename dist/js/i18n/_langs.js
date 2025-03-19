@@ -1,6 +1,1 @@
-const appLangs = {
-  en: "English",
-  fr: "Français",
-};
-
-let appStrings = {};
+const appLangs={en:"English",fr:"Français"};let appStrings={};

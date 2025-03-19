@@ -1,3 +1,3 @@
-const appVersion = "2.5.1";
+const appVersion = "2.6.1";
 
 export default appVersion;

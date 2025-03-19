@@ -3,6 +3,8 @@
 This file is used to determine whether MARL operates in LOCAL or SERVER mode.
 For more information, please read the "server-mode.md" documentation file.
 
+Important : please rename this file "config.js" if you want to use it.
+
 1. local mode
 =============
 

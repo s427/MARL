@@ -33,7 +33,7 @@ Alternatively, you can download this project from its [project page](https://git
 - full profile JSON data
 - favorites (*)
 - bookmarks (*)
-- posts, including attachments (images, sounds, videos)
+- posts, including attachments (images, sounds, videos) and polls
 - boosts (*)
 - full JSON data for each post or boost
 - an overview of all the hashtags or mentions in your posts (will update dynamically depending on the active filters)
@@ -136,6 +136,9 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.6
+  - [NEW] support for polls
+    - Polls are now correctly displayed and a new filter allows to show only posts that contain a poll
 - v. 2.5
   - [NEW] layout options
     - Two new options found in the "Tools" panel allow to simplify the display of posts and declutter the UI by hiding the panels in a toolbar. Those changes will be most visible on larger displays.
