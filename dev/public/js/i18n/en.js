@@ -123,6 +123,7 @@ appStrings["en"] = {
     pollTypeOne: "One choice only",
     pollTypeAny: "Multiple choices",
     pollVotersCount: "Total voters:",
+    pollVotersCountVotes: "({nb} votes)",
     pollVotersCountAlt: "{nb} voters",
     pollEndTime: "End time:",
     pollStatus: "Status:",

@@ -24,7 +24,7 @@ import Poll from "./Poll.astro";
 
       <div class="toot-content" x-html="toot.object.content"></div>
 
-      <div class="toot-poll" x-show="toot._marl.hasPoll">
+      <div class="toot-poll" x-show="toot._marl.pollType">
         <Poll />
       </div>
 

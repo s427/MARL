@@ -118,7 +118,7 @@
 .loaded-files-list {
   @include mixins.box-shadow-inner();
 
-  li {
+  li:has(.date) {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -131,7 +131,20 @@
     color: var(--accent);
   }
   .author {
+    margin-left: 0.5em;
+    &::before {
+      content: "(";
+    }
+    &::after {
+      content: ")";
+    }
+  }
+  .date + .author {
     margin: 0 1em;
+    &::before,
+    &::after {
+      content: none;
+    }
   }
 
   @media (forced-colors: none) {

@@ -133,11 +133,15 @@ function preprocessToots(t, index) {
     }
 
     if (t.object.type === "Question") {
-      marl.hasPoll = true;
       if (t.object.oneOf) {
         marl.pollType = "oneOf";
       } else if (t.object.anyOf) {
         marl.pollType = "anyOf";
+      }
+
+      marl.totalVotes = 0;
+      for (const item of t.object[marl.pollType]) {
+        marl.totalVotes += item.replies.totalItems;
       }
     }
   } else if (t.object) {
@@ -524,23 +528,9 @@ function attachmentWrapperClass(att) {
 }
 
 function pollQuestionPc(toot, i) {
-  const pollType = toot._marl.pollType;
-  const pollData = toot.object[pollType];
-
-  let pc = 0;
-  let totalVotes = 0;
-  const thisVotes = pollData[i].replies.totalItems;
-
-  if (pollType === "oneOf") {
-    for (const item of pollData) {
-      totalVotes += item.replies.totalItems;
-    }
-    pc = (thisVotes / totalVotes) * 100;
-  } else {
-    pc = (thisVotes / toot.object.votersCount) * 100;
-  }
-
-  return pc;
+  const pollData = toot.object[toot._marl.pollType];
+  pc = (pollData[i].replies.totalItems / toot.object.votersCount) * 100;
+  return pc ? pc : 0;
 }
 
 function isFilterActive(name) {
