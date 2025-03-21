@@ -116,8 +116,6 @@
 }
 
 .loaded-files-list {
-  @include mixins.box-shadow-inner();
-
   li:has(.date) {
     display: flex;
     flex-wrap: wrap;
@@ -188,7 +186,6 @@
   ul {
     height: 20dvh;
     overflow-y: auto;
-    @include mixins.box-shadow-inner();
   }
 
   @media (forced-colors: none) {

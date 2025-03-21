@@ -239,10 +239,44 @@ html {
       }
     }
 
-    .main-section-inner .toots > .paging {
-      margin: 0 auto;
-      padding: 2rem 1rem 4rem;
-      max-width: 90ch;
-    }
+    // .main-section-inner .toots > .paging {
+    //   margin: 0 auto;
+    //   margin-top: 5rem;
+    //   padding: 2.5rem 1rem 2.5rem;
+    //   max-width: 90ch;
+    //   justify-content: center;
+
+    //   background: var(--bg1);
+    //   position: relative;
+    //   z-index: 1;
+    //   &::before {
+    //     content: "";
+    //     position: absolute;
+    //     left: 30%;
+    //     right: 30%;
+    //     top: 1rem;
+    //     bottom: 0;
+    //     border-radius: 100rem;
+    //     border: 1px solid #fff;
+    //     z-index: -1;
+    //     box-shadow: 0 0 3rem 0 rgba(0, 0, 0, 0.65);
+    //   }
+    //   &::after {
+    //     content: "";
+    //     position: absolute;
+    //     left: 0;
+    //     right: 0;
+    //     top: 0;
+    //     bottom: 0;
+    //     z-index: 1;
+    //     background: var(--bg1);
+    //   }
+
+    //   & > div {
+    //     position: relative;
+    //     z-index: 2;
+    //     margin: 0 2rem;
+    //   }
+    // }
   }
 }

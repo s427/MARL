@@ -158,7 +158,7 @@ appStrings["fr"] = {
     useLightTheme: "Utiliser le thème clair",
     collapsePanels: "Combiner les panneaux",
     collapsePanelsDesc:
-      "(Sur les écrans larges) Cacher les panneaux et afficher une barre d'outil verticale à la place",
+      "(Sur les écrans larges) Combiner les différents panneaux en une seule barre latérale avec onglets verticaux",
     simplifyPostsDisplay: "Simplifier l'affichage des posts",
     simplifyPostsDisplayDesc: "Cacher certains éléments techniques ou non-essentiels",
     loadedFiles: "Fichiers chargés",

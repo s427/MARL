@@ -47,6 +47,10 @@ const userPrefsStore = {
         if (value !== Alpine.store(store)[pref]) {
           Alpine.store(store)[pref] = value;
         }
+
+        if (pref === "collapsePanels" && value) {
+          Alpine.store("ui").openMenu = Alpine.store("ui").defaultPanel;
+        }
         break;
 
       case "pageSize":
@@ -823,6 +827,7 @@ const uiStore = {
 
     this.collapsePanels = false;
     this.simplifyPostsDisplay = false;
+    this.defaultPanel = "filters";
 
     loadPref("lang");
     loadPref("theme");
@@ -861,6 +866,9 @@ const uiStore = {
     savePref(pref, this[pref]);
 
     if (pref === "collapsePanels") {
+      if (this[pref]) {
+        this.openMenu = this.defaultPanel;
+      }
       this.checkMenuState();
     }
   },
@@ -903,6 +911,10 @@ const uiStore = {
   },
 
   menuClose() {
+    if (this.collapsePanels) {
+      return;
+    }
+
     const name = this.openMenu;
     this.openMenu = "";
     this.setInert();
@@ -930,7 +942,9 @@ const uiStore = {
       case "tags":
       case "tools":
         if (this.openMenu === name) {
-          this.menuClose();
+          if (!this.collapsePanels) {
+            this.menuClose();
+          }
         } else {
           this.menuOpen(name);
         }
@@ -973,9 +987,12 @@ const uiStore = {
       });
   },
   setInertPanels() {
-    document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags, #panel-tools").forEach((e) => {
-      e.setAttribute("inert", true);
-    });
+    if (this.collapsePanels) {
+    } else {
+      document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags, #panel-tools").forEach((e) => {
+        e.setAttribute("inert", true);
+      });
+    }
   },
   setInertTools() {
     document.querySelectorAll("#panel-tools").forEach((e) => {
@@ -991,29 +1008,27 @@ const uiStore = {
       e.removeAttribute("inert");
     });
 
-    if (this.menuIsActive) {
-      if (this.openMenu) {
-        this.setInertMain();
-      } else {
-        this.setInertPanels();
-      }
+    if (this.collapsePanels) {
+      this.setInertPanels();
     } else {
-      if (this.openMenu === "tools") {
-        this.setInertMain();
+      if (this.menuIsActive) {
+        if (this.openMenu) {
+          this.setInertMain();
+        } else {
+          this.setInertPanels();
+        }
       } else {
-        this.setInertTools();
+        if (this.openMenu === "tools") {
+          this.setInertMain();
+        } else {
+          this.setInertTools();
+        }
       }
     }
   },
 
   get appClasses() {
     let classes = [];
-    // if (this.openMenu) {
-    //   classes.push("menu-open menu-open-" + this.openMenu);
-    // } else {
-    //   classes.push("menu-closed");
-    // }
-
     if (this.collapsePanels) {
       classes.push("collapse-panels");
     }

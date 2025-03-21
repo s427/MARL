@@ -239,6 +239,54 @@ html {
   .collapse-panels {
     --panel-width: 500px;
     @include side-menu();
+
+    .main-section-inner {
+      grid-template-areas:
+        "menu toots"
+        "menu header";
+      grid-template-rows: 1fr min-content;
+    }
+
+    .toots-header {
+      box-shadow: none;
+      background: var(--bg4);
+    }
+    .toots-header,
+    .toots {
+      padding-left: min(var(--panel-width), 100dvw - var(--toolbar-width));
+    }
+
+    .toots {
+      .paging {
+        display: none;
+      }
+    }
+
+    .mobile-menu-panel {
+      box-shadow: none !important;
+    }
+    .panel-backdrop {
+      display: none !important;
+    }
+    .panel-tools .tools-section {
+      padding-bottom: 1.5rem;
+      &.about {
+        opacity: 0.5;
+        &:hover,
+        &:focus-within {
+          opacity: 1;
+        }
+      }
+    }
+    .panel-close {
+      display: none !important;
+    }
+  }
+
+  .collapse-panels:not(.simplify-posts-display) {
+    .toots {
+      padding-top: 2.5rem;
+    }
   }
 }
 

@@ -98,6 +98,7 @@ Everything is based on the data contained in the Mastodon archive file. As far a
 - a list of your blocked or muted accounts
 - your lists
 - your pinned posts
+- posts edit history
 
 Some data may not be shown in MARL, by choice or oversight. This is why the full JSON data for the account is also displayed, as well as the full JSON data for each of your post (below each post).
 

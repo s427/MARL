@@ -157,7 +157,7 @@ appStrings["en"] = {
     useDarkTheme: "Use dark theme",
     useLightTheme: "Use light theme",
     collapsePanels: "Collapse panels",
-    collapsePanelsDesc: "(Large screens only) Hide all panels and shows a vertical toolbar instead",
+    collapsePanelsDesc: "(Large screens only) Combine all panels into a single sidebar with vertical tabs",
     simplifyPostsDisplay: "Simplify posts display",
     simplifyPostsDisplayDesc: "Hide some technical or non-essential elements",
     loadedFiles: "Loaded files",
