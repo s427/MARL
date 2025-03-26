@@ -536,6 +536,9 @@ $meta-visible: 100ch;
     background-size: 1.1rem auto;
     background-position: 0 50%;
   }
+  .toot-lang {
+    margin-left: 0.4em;
+  }
 }
 
 .toot-infos .activity.likes {
@@ -681,7 +684,7 @@ $meta-visible: 100ch;
       margin-left: 0.4em;
       &::before {
         content: "-";
-        margin-right: 0.15em;
+        margin-right: 0.4em;
       }
     }
   }
