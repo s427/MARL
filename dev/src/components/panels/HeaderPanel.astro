@@ -11,12 +11,6 @@ import PagingTop from '../PagingTop.astro';
     <span class="order">
       -
       <span x-text="$store.files.sortAsc ? $t('header.oldestFirst') : $t('header.latestFirst')"></span>
-      <button @click="$store.files.toggleTootsOrder()" class="toggle-order">
-        <svg class="btn-icon" aria-hidden="true">
-          <use href="#toggle-order" />
-        </svg
-        ><span class="btn-label" x-text="$t('header.reverse')"></span>
-      </button>
     </span>
   </h2>
 

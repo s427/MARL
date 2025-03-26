@@ -72,7 +72,11 @@
     margin-bottom: 0.5rem;
   }
   .form-items-group {
-    margin: 2rem 0;
+    margin: 0 0 2rem;
+  }
+  .form-items-group-title,
+  .checkbox {
+    flex: 0 0 100%;
   }
 }
 .settings-layout-misc {

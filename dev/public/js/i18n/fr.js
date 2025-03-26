@@ -97,8 +97,6 @@ appStrings["fr"] = {
     countLabel: "posts",
     oldestFirst: "les plus anciens d'abord",
     latestFirst: "les plus récents d'abord",
-    reverse: "Inverser",
-    loadNewFile: "Charger un nouveau fichier",
   },
   paging: {
     first: "Première",
@@ -159,6 +157,10 @@ appStrings["fr"] = {
     collapsePanels: "Combiner les panneaux",
     collapsePanelsDesc:
       "(Sur les écrans larges) Combiner les différents panneaux en une seule barre latérale avec onglets verticaux",
+    postsSettings: "Réglages des posts",
+    chronologicalOrder: "Ordre chronologique",
+    chronologicalOrderDesc:
+      "Décocher pour trier les posts dans l'ordre chronologique inverse (les plus récents en premier)",
     simplifyPostsDisplay: "Simplifier l'affichage des posts",
     simplifyPostsDisplayDesc: "Cacher certains éléments techniques ou non-essentiels",
     loadedFiles: "Fichiers chargés",

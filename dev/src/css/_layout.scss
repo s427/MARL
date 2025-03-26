@@ -58,9 +58,6 @@ html {
   .nb {
     color: var(--posts-count);
   }
-  .toggle-order {
-    margin-bottom: 5px;
-  }
   .open-tools {
     padding: 1rem 1rem 0;
   }
@@ -140,22 +137,12 @@ html {
       order: 3;
     }
   }
-  .paging-options-reverse {
-    display: none;
-  }
 
   @container (width < 675px) {
     // hide the paging options and show "options" button
 
-    .toggle-order {
-      display: none;
-    }
     .paging-options-toggle {
       display: block;
-    }
-    .paging-options-reverse {
-      display: block;
-      padding: 0 1rem 1rem;
     }
 
     .paging .paging-options {
@@ -223,9 +210,6 @@ html {
         grid-area: area1;
       }
 
-      .toggle-order {
-        margin-left: 1rem;
-      }
       .paging {
         grid-area: area2;
         flex-basis: auto;
@@ -238,45 +222,5 @@ html {
         grid-area: area3;
       }
     }
-
-    // .main-section-inner .toots > .paging {
-    //   margin: 0 auto;
-    //   margin-top: 5rem;
-    //   padding: 2.5rem 1rem 2.5rem;
-    //   max-width: 90ch;
-    //   justify-content: center;
-
-    //   background: var(--bg1);
-    //   position: relative;
-    //   z-index: 1;
-    //   &::before {
-    //     content: "";
-    //     position: absolute;
-    //     left: 30%;
-    //     right: 30%;
-    //     top: 1rem;
-    //     bottom: 0;
-    //     border-radius: 100rem;
-    //     border: 1px solid #fff;
-    //     z-index: -1;
-    //     box-shadow: 0 0 3rem 0 rgba(0, 0, 0, 0.65);
-    //   }
-    //   &::after {
-    //     content: "";
-    //     position: absolute;
-    //     left: 0;
-    //     right: 0;
-    //     top: 0;
-    //     bottom: 0;
-    //     z-index: 1;
-    //     background: var(--bg1);
-    //   }
-
-    //   & > div {
-    //     position: relative;
-    //     z-index: 2;
-    //     margin: 0 2rem;
-    //   }
-    // }
   }
 }

@@ -97,8 +97,6 @@ appStrings["en"] = {
     countLabel: "posts",
     oldestFirst: "oldest first",
     latestFirst: "latest first",
-    reverse: "Reverse",
-    loadNewFile: "Load new file",
   },
   paging: {
     first: "First",
@@ -158,6 +156,9 @@ appStrings["en"] = {
     useLightTheme: "Use light theme",
     collapsePanels: "Collapse panels",
     collapsePanelsDesc: "(Large screens only) Combine all panels into a single sidebar with vertical tabs",
+    postsSettings: "Posts settings",
+    chronologicalOrder: "Chronological order",
+    chronologicalOrderDesc: "Uncheck to order posts in reverse chronological order (most recent first)",
     simplifyPostsDisplay: "Simplify posts display",
     simplifyPostsDisplayDesc: "Hide some technical or non-essential elements",
     loadedFiles: "Loaded files",

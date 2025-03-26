@@ -1,7 +1,7 @@
 <div class="tools-section app-settings">
-  <h3 x-text="$t('tools.appSettings')"></h3>
-
   <div class="form-items-group settings-layout-misc">
+    <h3 class="form-items-group-title" x-text="$t('tools.appSettings')"></h3>
+
     <div class="app-setting switch-lang">
       <label for="switch-language">
         <svg aria-hidden="true">
@@ -36,21 +36,6 @@
         ><span class="btn-label light" x-text="$t('tools.useLightTheme')"></span>
       </button>
     </div>
-  </div>
-
-  <div class="form-items-group settings-layout">
-    <div class="app-setting form-item checkbox">
-      <label for="setting-simplify-posts-display">
-        <input
-          id="setting-simplify-posts-display"
-          type="checkbox"
-          x-model.debounce={"$store.ui.simplifyPostsDisplay"}
-          @change.debounce="$store.ui.setOption('simplifyPostsDisplay')"
-        />
-        <span class="form-item-label" x-text={`$t('tools.simplifyPostsDisplay')`}></span>
-        <span class="form-item-description" x-text={`$t('tools.simplifyPostsDisplayDesc')`}></span>
-      </label>
-    </div>
 
     <div class="app-setting form-item checkbox">
       <label for="setting-collapse-panels">
@@ -62,6 +47,36 @@
         />
         <span class="form-item-label" x-text={`$t('tools.collapsePanels')`}></span>
         <span class="form-item-description" x-text={`$t('tools.collapsePanelsDesc')`}></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-items-group settings-layout">
+    <h3 class="form-items-group-title" x-text="$t('tools.postsSettings')"></h3>
+
+    <div class="app-setting form-item checkbox">
+      <label for="setting-posts-order">
+        <input
+          id="setting-posts-order"
+          type="checkbox"
+          x-model.debounce={"$store.ui.sortAsc"}
+          @change.debounce="$store.ui.setOption('sortAsc')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.chronologicalOrder')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.chronologicalOrderDesc')`}></span>
+      </label>
+    </div>
+
+    <div class="app-setting form-item checkbox">
+      <label for="setting-simplify-posts-display">
+        <input
+          id="setting-simplify-posts-display"
+          type="checkbox"
+          x-model.debounce={"$store.ui.simplifyPostsDisplay"}
+          @change.debounce="$store.ui.setOption('simplifyPostsDisplay')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.simplifyPostsDisplay')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.simplifyPostsDisplayDesc')`}></span>
       </label>
     </div>
   </div>

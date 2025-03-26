@@ -25,12 +25,12 @@ const userPrefsStore = {
     switch (pref) {
       case "lang":
       case "theme":
+      case "sortAsc":
       case "collapsePanels":
       case "simplifyPostsDisplay":
         store = "ui";
         break;
       case "pageSize":
-      case "sortAsc":
         store = "files";
         break;
     }
@@ -106,7 +106,6 @@ const filesStore = {
     this.toots = [];
     this.toc = [];
 
-    this.sortAsc = true; // -> userPrefs
     this.pageSize = 10; // -> userPrefs
     this.currentPage = 1;
 
@@ -192,7 +191,6 @@ const filesStore = {
       boostsAuthors: "",
     };
 
-    loadPref("sortAsc");
     loadPref("pageSize");
   },
 
@@ -687,18 +685,14 @@ const filesStore = {
   },
 
   sortToots() {
+    const sortAsc = Alpine.store("ui").sortAsc;
     this.toots.sort((a, b) => {
-      if (this.sortAsc) {
+      if (sortAsc) {
         return a.published.localeCompare(b.published);
       } else {
         return b.published.localeCompare(a.published);
       }
     });
-  },
-  toggleTootsOrder() {
-    this.sortAsc = !this.sortAsc;
-    savePref("sortAsc", this.sortAsc);
-    this.sortToots();
     scrollTootsToTop();
     pagingUpdated();
   },
@@ -818,6 +812,7 @@ const uiStore = {
     this.pagingOptionsVisible = false;
     this.openMenu = "";
     this.actorPanel = 0;
+    this.sortAsc = true;
     this.menuIsActive = false;
     this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
@@ -827,10 +822,11 @@ const uiStore = {
 
     this.collapsePanels = false;
     this.simplifyPostsDisplay = false;
-    this.defaultPanel = "filters";
+    this.defaultPanel = "tools";
 
     loadPref("lang");
     loadPref("theme");
+    loadPref("sortAsc");
     loadPref("collapsePanels");
     loadPref("simplifyPostsDisplay");
   },
@@ -870,6 +866,9 @@ const uiStore = {
         this.openMenu = this.defaultPanel;
       }
       this.checkMenuState();
+    }
+    if (pref === "sortAsc") {
+      Alpine.store("files").sortToots();
     }
   },
 
