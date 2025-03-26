@@ -105,8 +105,6 @@ appStrings["fr"] = {
     last: "Dernière",
     pagingOptions: "Options de pagination",
     page: "Page",
-    postsPerPage: "posts par page",
-    reverseOrder: "Inverser l'ordre",
   },
   posts: {
     panelTitle: "Posts",
@@ -158,6 +156,7 @@ appStrings["fr"] = {
     collapsePanelsDesc:
       "(Sur les écrans larges) Combiner les différents panneaux en une seule barre latérale avec onglets verticaux",
     postsSettings: "Réglages des posts",
+    postsPerPage: "Nombre de posts page page :",
     chronologicalOrder: "Ordre chronologique",
     chronologicalOrderDesc:
       "Décocher pour trier les posts dans l'ordre chronologique inverse (les plus récents en premier)",

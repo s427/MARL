@@ -26,12 +26,10 @@ const userPrefsStore = {
       case "lang":
       case "theme":
       case "sortAsc":
+      case "pageSize":
       case "collapsePanels":
       case "simplifyPostsDisplay":
         store = "ui";
-        break;
-      case "pageSize":
-        store = "files";
         break;
     }
 
@@ -106,7 +104,6 @@ const filesStore = {
     this.toots = [];
     this.toc = [];
 
-    this.pageSize = 10; // -> userPrefs
     this.currentPage = 1;
 
     this.loading = false;
@@ -190,8 +187,6 @@ const filesStore = {
       mentions: "",
       boostsAuthors: "",
     };
-
-    loadPref("pageSize");
   },
 
   setFilter(filterName) {
@@ -670,13 +665,14 @@ const filesStore = {
   },
 
   get totalPages() {
-    return Math.ceil(this.filteredToots.length / this.pageSize);
+    return Math.ceil(this.filteredToots.length / Alpine.store("ui").pageSize);
   },
   get pagedToots() {
+    const pageSize = Alpine.store("ui").pageSize;
     if (this.filteredToots) {
       return this.filteredToots.filter((_, index) => {
-        let start = (this.currentPage - 1) * this.pageSize;
-        let end = this.currentPage * this.pageSize;
+        let start = (this.currentPage - 1) * pageSize;
+        let end = this.currentPage * pageSize;
         if (index >= start && index < end) return true;
       });
     } else {
@@ -697,10 +693,6 @@ const filesStore = {
     pagingUpdated();
   },
 
-  setPostsPerPage() {
-    this.checkPagingValue();
-    savePref("pageSize", this.pageSize);
-  },
   checkPagingValue() {
     if (this.currentPage < 1) {
       this.currentPage = 1;
@@ -709,7 +701,7 @@ const filesStore = {
     }
   },
   nextPage(setFocusTo) {
-    if (this.currentPage * this.pageSize < this.filteredToots.length) {
+    if (this.currentPage * Alpine.store("ui").pageSize < this.filteredToots.length) {
       this.currentPage++;
       scrollTootsToTop(setFocusTo);
       pagingUpdated();
@@ -813,6 +805,7 @@ const uiStore = {
     this.openMenu = "";
     this.actorPanel = 0;
     this.sortAsc = true;
+    this.pageSize = 10;
     this.menuIsActive = false;
     this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
@@ -822,11 +815,12 @@ const uiStore = {
 
     this.collapsePanels = false;
     this.simplifyPostsDisplay = false;
-    this.defaultPanel = "tools";
+    this.defaultPanel = "filters";
 
     loadPref("lang");
     loadPref("theme");
     loadPref("sortAsc");
+    loadPref("pageSize");
     loadPref("collapsePanels");
     loadPref("simplifyPostsDisplay");
   },
@@ -869,6 +863,9 @@ const uiStore = {
     }
     if (pref === "sortAsc") {
       Alpine.store("files").sortToots();
+    }
+    if (pref === "pageSize") {
+      Alpine.store("files").checkPagingValue();
     }
   },
 

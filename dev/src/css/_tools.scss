@@ -75,7 +75,8 @@
     margin: 0 0 2rem;
   }
   .form-items-group-title,
-  .checkbox {
+  .form-item.number,
+  .form-item.checkbox {
     flex: 0 0 100%;
   }
 }
@@ -116,6 +117,12 @@
     .btn-label.light {
       display: none;
     }
+  }
+}
+
+.settings-posts {
+  .number label {
+    padding-left: 1.7rem;
   }
 }
 

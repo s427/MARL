@@ -13,16 +13,5 @@
       />
       /
     <span class="total-pages" x-text="formatNumber($store.files.totalPages)"></span>
-    (
-    <input
-      class="page-size"
-      id="paging-page-size"
-      type="number"
-      min="1"
-      x-model="$store.files.pageSize"
-      @change="$store.files.setPostsPerPage()"
-      onclick="this.select()"
-      />
-    <label for="paging-page-size" x-text="$t('paging.postsPerPage')"></label>)
   </div>
 </div>

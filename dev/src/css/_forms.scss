@@ -46,6 +46,20 @@
       width: 100%;
     }
   }
+
+  &.number {
+    display: flex;
+    label {
+      flex-grow: 1;
+      margin-right: 0.35rem;
+    }
+    input {
+      display: block;
+      width: 5ch;
+      text-align: left;
+    }
+  }
+
   &.checkbox {
     label {
       position: relative;

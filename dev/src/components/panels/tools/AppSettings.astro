@@ -51,8 +51,25 @@
     </div>
   </div>
 
-  <div class="form-items-group settings-layout">
+  <div class="form-items-group settings-posts">
     <h3 class="form-items-group-title" x-text="$t('tools.postsSettings')"></h3>
+
+    <div class="toots-filter form-item number">
+      <label
+        for="paging-page-size"
+        x-text={`$t('tools.postsPerPage')`}
+      ></label>
+      <div class="input-wrapper">
+        <input
+          id="paging-page-size"
+          type="number"
+          min="1"
+          x-model="$store.ui.pageSize"
+          @change.debounce="$store.ui.setOption('pageSize')"
+          onclick="this.select()"
+        />
+      </div>
+    </div>
 
     <div class="app-setting form-item checkbox">
       <label for="setting-posts-order">

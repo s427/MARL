@@ -120,6 +120,10 @@ html {
 
   input {
     font-size: inherit;
+    text-align: right;
+    field-sizing: content;
+    min-width: 3ch;
+    max-width: 10ch;
   }
 
   .paging {
