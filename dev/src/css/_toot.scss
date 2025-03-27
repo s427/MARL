@@ -700,7 +700,7 @@ $meta-visible: 100ch;
     }
   }
 
-  &.collapse-panels {
+  &.combine-panels {
     @media screen and (width >= 1400px) {
       .toot {
         max-width: 1100px;

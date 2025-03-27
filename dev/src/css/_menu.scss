@@ -1,12 +1,8 @@
 html {
   --toolbar-width: 75px;
   --icon-width: 35px;
-  --panel-width: 400px;
+  --panel-width: min(40vw, 400px);
 }
-
-// $menu-width: 75px;
-// $icon-width: 35px;
-// $panel-width: 400px;
 
 .mobile-menu {
   display: none;
@@ -236,7 +232,7 @@ html {
 }
 
 @media screen and (width >= 1200px) {
-  .collapse-panels {
+  .combine-panels {
     --panel-width: 500px;
     @include side-menu();
 
@@ -283,7 +279,7 @@ html {
     }
   }
 
-  .collapse-panels:not(.simplify-posts-display) {
+  .combine-panels:not(.simplify-posts-display) {
     .toots {
       padding-top: 2.5rem;
     }

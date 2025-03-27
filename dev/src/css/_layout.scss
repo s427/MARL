@@ -52,6 +52,9 @@ html {
     padding: 1rem 1rem 0;
     .order {
       font-weight: normal;
+      &::before {
+        content: "-";
+      }
     }
   }
 
@@ -204,10 +207,10 @@ html {
 }
 
 @media screen and (width >= 1400px) {
-  .collapse-panels {
+  .combine-panels {
     .toots-header {
       display: grid;
-      grid-template-columns: 1fr 100ch 1fr;
+      grid-template-columns: 1fr auto 1fr;
       grid-template-areas: "area1 area2 area3";
 
       h2 {
@@ -221,9 +224,6 @@ html {
         .paging-options {
           margin: 0 1rem;
         }
-      }
-      .open-tools {
-        grid-area: area3;
       }
     }
   }
