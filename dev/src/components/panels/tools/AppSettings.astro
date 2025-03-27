@@ -38,15 +38,15 @@
     </div>
 
     <div class="app-setting form-item checkbox">
-      <label for="setting-collapse-panels">
+      <label for="setting-combine-panels">
         <input
-          id="setting-collapse-panels"
+          id="setting-combine-panels"
           type="checkbox"
-          x-model.debounce={"$store.ui.collapsePanels"}
-          @change.debounce="$store.ui.setOption('collapsePanels')"
+          x-model.debounce={"$store.ui.combinePanels"}
+          @change.debounce="$store.ui.setOption('combinePanels')"
         />
-        <span class="form-item-label" x-text={`$t('tools.collapsePanels')`}></span>
-        <span class="form-item-description" x-text={`$t('tools.collapsePanelsDesc')`}></span>
+        <span class="form-item-label" x-text={`$t('tools.combinePanels')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.combinePanelsDesc')`}></span>
       </label>
     </div>
   </div>

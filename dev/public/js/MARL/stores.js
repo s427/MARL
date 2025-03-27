@@ -27,7 +27,7 @@ const userPrefsStore = {
       case "theme":
       case "sortAsc":
       case "pageSize":
-      case "collapsePanels":
+      case "combinePanels":
       case "simplifyPostsDisplay":
         store = "ui";
         break;
@@ -39,14 +39,14 @@ const userPrefsStore = {
 
     switch (pref) {
       case "sortAsc":
-      case "collapsePanels":
+      case "combinePanels":
       case "simplifyPostsDisplay":
         value = +value === 1 ? true : false;
         if (value !== Alpine.store(store)[pref]) {
           Alpine.store(store)[pref] = value;
         }
 
-        if (pref === "collapsePanels" && value) {
+        if (pref === "combinePanels" && value) {
           Alpine.store("ui").openMenu = Alpine.store("ui").defaultPanel;
         }
         break;
@@ -813,7 +813,7 @@ const uiStore = {
     this.errorInLog = false;
     this.log = this.log ?? [];
 
-    this.collapsePanels = false;
+    this.combinePanels = false;
     this.simplifyPostsDisplay = false;
     this.defaultPanel = "filters";
 
@@ -821,7 +821,7 @@ const uiStore = {
     loadPref("theme");
     loadPref("sortAsc");
     loadPref("pageSize");
-    loadPref("collapsePanels");
+    loadPref("combinePanels");
     loadPref("simplifyPostsDisplay");
   },
 
@@ -855,7 +855,7 @@ const uiStore = {
   setOption(pref) {
     savePref(pref, this[pref]);
 
-    if (pref === "collapsePanels") {
+    if (pref === "combinePanels") {
       if (this[pref]) {
         this.openMenu = this.defaultPanel;
       }
@@ -907,7 +907,7 @@ const uiStore = {
   },
 
   menuClose() {
-    if (this.collapsePanels) {
+    if (this.combinePanels) {
       return;
     }
 
@@ -938,7 +938,7 @@ const uiStore = {
       case "tags":
       case "tools":
         if (this.openMenu === name) {
-          if (!this.collapsePanels) {
+          if (!this.combinePanels) {
             this.menuClose();
           }
         } else {
@@ -983,7 +983,7 @@ const uiStore = {
       });
   },
   setInertPanels() {
-    if (this.collapsePanels) {
+    if (this.combinePanels) {
     } else {
       document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags, #panel-tools").forEach((e) => {
         e.setAttribute("inert", true);
@@ -1004,7 +1004,7 @@ const uiStore = {
       e.removeAttribute("inert");
     });
 
-    if (this.collapsePanels) {
+    if (this.combinePanels) {
       this.setInertPanels();
     } else {
       if (this.menuIsActive) {
@@ -1025,8 +1025,8 @@ const uiStore = {
 
   get appClasses() {
     let classes = [];
-    if (this.collapsePanels) {
-      classes.push("collapse-panels");
+    if (this.combinePanels) {
+      classes.push("combine-panels");
     }
     if (this.simplifyPostsDisplay) {
       classes.push("simplify-posts-display");

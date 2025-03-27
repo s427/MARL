@@ -152,8 +152,8 @@ appStrings["fr"] = {
     selectLanguage: "Choisir la langue",
     useDarkTheme: "Utiliser le thème sombre",
     useLightTheme: "Utiliser le thème clair",
-    collapsePanels: "Combiner les panneaux",
-    collapsePanelsDesc:
+    combinePanels: "Combiner les panneaux",
+    combinePanelsDesc:
       "(Sur les écrans larges) Combiner les différents panneaux en une seule barre latérale avec onglets verticaux",
     postsSettings: "Réglages des posts",
     postsPerPage: "Nombre de posts page page :",
