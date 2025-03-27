@@ -44,15 +44,18 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
   </div>
 
   <div class="form-items-group">
-    <h3 class="form-items-group-title" x-text="$t('filters.type')"></h3>
-
-    <FilterCheckbox name="typeOriginal" />
-    <FilterCheckbox name="typeBoost" />
-  </div>
-  <div class="form-items-group">
     <FilterCheckbox name="startingAt" />
     <FilterCheckbox name="noStartingAt" />
     <FilterCheckbox name="isSensitive" />
+  </div>
+
+  <div
+    class="form-items-group"
+    x-show="$store.files.activeFilters.typeBoost"
+  >
+    <h3 class="form-items-group-title" x-text="$t('filters.type')"></h3>
+    <FilterCheckbox name="typeOriginal" />
+    <FilterCheckbox name="typeBoost" />
   </div>
 
   <div

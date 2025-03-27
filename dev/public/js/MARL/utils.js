@@ -90,6 +90,10 @@ function preprocessToots(t, index) {
     Alpine.store("files").toc.push(t.id);
   }
 
+  if (t.type === "Announce") {
+    Alpine.store("files").activeFilters.typeBoost = true;
+  }
+
   if (t.type === "Create") {
     if (typeof t.object === "object" && t.object !== null && t.object.contentMap) {
       let langs = [];

@@ -173,7 +173,7 @@ const filesStore = {
       visibilityFollowers: false,
       visibilityMentioned: false,
       // typeOriginal: true,
-      // typeBoost: true,
+      typeBoost: false,
       attachmentAny: false,
       attachmentImage: false,
       attachmentVideo: false,
