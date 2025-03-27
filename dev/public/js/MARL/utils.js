@@ -95,6 +95,7 @@ function preprocessToots(t, index) {
   }
 
   if (t.type === "Create") {
+    Alpine.store("files").activeFilters.typeOriginal = true;
     if (typeof t.object === "object" && t.object !== null && t.object.contentMap) {
       let langs = [];
       for (let lang in t.object.contentMap) {

@@ -51,7 +51,7 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
 
   <div
     class="form-items-group"
-    x-show="$store.files.activeFilters.typeBoost"
+    x-show="$store.files.activeFilters.typeOriginal && $store.files.activeFilters.typeBoost"
   >
     <h3 class="form-items-group-title" x-text="$t('filters.type')"></h3>
     <FilterCheckbox name="typeOriginal" />
