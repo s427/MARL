@@ -2,32 +2,34 @@
 const { type } = Astro.props;
 ---
 
-<div class={`actor-${type}`}>
-  <details>
-    <summary>
-      <span class="summary-icon">
-        <svg aria-hidden="true">
-          <use href={`#${type}`} />
-        </svg>
-      </span>
-      <h2 class="summary-label">
-        <span x-text={`$t('actor.${type}')`}></span>
-        (<span class="count" x-text={`source.${type}.length`}></span>)
-      </h2>
-    </summary>
-    <div class="details-content">
-      <template x-if={`source.${type}.length`}>
-        <ul>
-          <template x-for={`url in source.${type}`}>
-            <li>
-              <a :href="url" x-html="formatLikesBookmarks(url)"></a>
-            </li>
-          </template>
-        </ul>
-      </template>
-      <template x-if={`! source.${type}.length`}>
-        <p class="no-content">…&nbsp;<span x-text={`$t('actor.${type}Empty')`}></span>&nbsp;…</p>
-      </template>
-    </div>
-  </details>
-</div>
+<template x-if={`localMode() || source.${type}.length`}>
+  <div class={`actor-${type}`}>
+    <details>
+      <summary>
+        <span class="summary-icon">
+          <svg aria-hidden="true">
+            <use href={`#${type}`} />
+          </svg>
+        </span>
+        <h2 class="summary-label">
+          <span x-text={`$t('actor.${type}')`}></span>
+          (<span class="count" x-text={`source.${type}.length`}></span>)
+        </h2>
+      </summary>
+      <div class="details-content">
+        <template x-if={`source.${type}.length`}>
+          <ul>
+            <template x-for={`url in source.${type}`}>
+              <li>
+                <a :href="url" x-html="formatLikesBookmarks(url)"></a>
+              </li>
+            </template>
+          </ul>
+        </template>
+        <template x-if={`! source.${type}.length`}>
+          <p class="no-content">…&nbsp;<span x-text={`$t('actor.${type}Empty')`}></span>&nbsp;…</p>
+        </template>
+      </div>
+    </details>
+  </div>
+</template>
