@@ -29,11 +29,12 @@ $display-wide: 340px;
     list-style: none;
     margin: 0.3rem 4px;
   }
-  button {
+  ul button {
     all: unset;
     display: block;
     width: 100%;
-
+  }
+  button {
     div {
       display: flex;
       align-items: center;
@@ -108,13 +109,31 @@ $display-wide: 340px;
 }
 .tags-group-filter {
   flex-grow: 1;
+  position: relative;
   input {
     display: block;
     width: 100%;
     margin-top: 0.25rem;
+    padding-right: 2rem;
     @container (width >= #{$display-wide}) {
       margin-top: 0;
     }
+  }
+}
+.tags-group-filter-reset {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 0;
+  aspect-ratio: 1;
+  box-shadow: none;
+  background-color: transparent;
+  svg {
+    width: 100%;
+    aspect-ratio: 1;
+    fill: currentColor;
   }
 }
 

@@ -145,6 +145,7 @@ appStrings["en"] = {
     hashtagsFilter: "Filter hashtags",
     mentionsFilter: "Filter mentions",
     boostsFilter: "Filter boosted users",
+    resetFilter: "reset filter",
   },
   tools: {
     panelTitle: "Tools",

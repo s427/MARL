@@ -145,6 +145,7 @@ appStrings["fr"] = {
     hashtagsFilter: "Filtrer les hashtags",
     mentionsFilter: "Filtrer les mentions",
     boostsFilter: "Filter utilisateurs partagés",
+    resetFilter: "réinitialiser le filtre",
   },
   tools: {
     panelTitle: "Outils",

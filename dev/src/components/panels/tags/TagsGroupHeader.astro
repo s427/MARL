@@ -37,5 +37,19 @@ switch (type) {
       onclick="this.select()"
       x-model.debounce={`$store.files.tagsFilters.${filterId}`}
     />
+    <button
+      type="button"
+      class="tags-group-filter-reset"
+      x-show={`$store.files.tagsFilters.${filterId}`}
+      @click={`$store.files.tagsFilters.${filterId} = ''`}
+    >
+      <svg aria-hidden="true">
+        <use href="#close" />
+      </svg>
+      <span
+        class="visually-hidden"
+        x-text="$t('tags.resetFilter')"
+      ></span>
+    </button>
   </div>
 </div>
