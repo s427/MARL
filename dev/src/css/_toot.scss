@@ -8,7 +8,7 @@ $meta-visible: 100ch;
 
 .toot {
   max-width: 180ch;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
   @container (width >= #{$meta-visible}) {
     display: grid;
     grid-template-areas:
@@ -580,7 +580,7 @@ $meta-visible: 100ch;
 .toot-raw {
   grid-area: raw;
   margin-top: 0.5rem;
-  padding: 0 1rem 2rem;
+  padding: 0 1rem;
   details {
     border-radius: 0.5rem;
   }

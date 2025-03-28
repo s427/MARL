@@ -106,31 +106,33 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
           </div>
         </div>
 
-        <div class="actor-raw">
-          <div class="actor-raw-inner">
-            <details>
-              <summary>
-                <span class="summary-icon">
-                  <svg aria-hidden="true">
-                    <use href="#json" />
-                  </svg>
-                </span>
-                <span
-                  class="summary-label"
-                  x-html="$t('actor.rawData', {fileName: `<em>(actor.json)</em>`})"
-                  :id="source + 'raw-data-label'"
-                ></span>
-              </summary>
-              <div class="details-content">
-                <textarea
-                  x-text="formatJson(a)"
-                  :aria-labelledby="source + 'raw-data-label'"
-                  readonly
-                ></textarea>
-              </div>
-            </details>
+        <template x-if="localMode()">
+          <div class="actor-raw">
+            <div class="actor-raw-inner">
+              <details>
+                <summary>
+                  <span class="summary-icon">
+                    <svg aria-hidden="true">
+                      <use href="#json" />
+                    </svg>
+                  </span>
+                  <span
+                    class="summary-label"
+                    x-html="$t('actor.rawData', {fileName: `<em>(actor.json)</em>`})"
+                    :id="source + 'raw-data-label'"
+                  ></span>
+                </summary>
+                <div class="details-content">
+                  <textarea
+                    x-text="formatJson(a)"
+                    :aria-labelledby="source + 'raw-data-label'"
+                    readonly
+                  ></textarea>
+                </div>
+              </details>
+            </div>
           </div>
-        </div>
+        </template>
 
         <div class="actor-likes-bookmarks">
           <LikesBookmarks type="likes" />
