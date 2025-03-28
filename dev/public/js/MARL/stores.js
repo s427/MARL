@@ -21,29 +21,14 @@ const userPrefsStore = {
     }
   },
   set(pref, value) {
-    let store = "";
     switch (pref) {
-      case "lang":
-      case "theme":
-      case "sortAsc":
-      case "pageSize":
-      case "combinePanels":
-      case "simplifyPostsDisplay":
-        store = "ui";
-        break;
-    }
-
-    if (!store) {
-      return;
-    }
-
-    switch (pref) {
+      // boolean values
       case "sortAsc":
       case "combinePanels":
       case "simplifyPostsDisplay":
         value = +value === 1 ? true : false;
-        if (value !== Alpine.store(store)[pref]) {
-          Alpine.store(store)[pref] = value;
+        if (value !== Alpine.store("ui")[pref]) {
+          Alpine.store("ui")[pref] = value;
         }
 
         if (pref === "combinePanels" && value) {
@@ -51,10 +36,18 @@ const userPrefsStore = {
         }
         break;
 
+      // numerical values
       case "pageSize":
         value = +value;
-        if (typeof value == "number" && !isNaN(value) && value > 0 && value !== Alpine.store(store)[pref]) {
-          Alpine.store(store)[pref] = value;
+        if (typeof value == "number" && !isNaN(value) && value > 0 && value !== Alpine.store("ui")[pref]) {
+          Alpine.store("ui")[pref] = value;
+        }
+        break;
+
+      case "defaultPanel":
+        if (value) {
+          Alpine.store("ui")[pref] = value;
+          Alpine.store("ui").menuOpen(value, false);
         }
         break;
 
@@ -65,7 +58,7 @@ const userPrefsStore = {
             this.save("lang", value);
           }
         }
-        if (!value || !Alpine.store(store).appLangs[value]) {
+        if (!value || !Alpine.store("ui").appLangs[value]) {
           if (value) {
             const msg = `<b>Unrecognized language</b> in user preferences: ${value}`;
             console.warn(msg);
@@ -74,7 +67,7 @@ const userPrefsStore = {
           value = "en";
           this.save("lang", value);
         }
-        Alpine.store(store)[pref] = value;
+        Alpine.store("ui")[pref] = value;
         break;
 
       case "theme":
@@ -82,7 +75,7 @@ const userPrefsStore = {
           value = "light";
           this.save("theme", value);
         }
-        Alpine.store(store)[pref] = value;
+        Alpine.store("ui")[pref] = value;
         setTheme(value);
         break;
     }
@@ -814,14 +807,15 @@ const uiStore = {
     this.log = this.log ?? [];
 
     this.combinePanels = false;
+    this.defaultPanel = "actor";
     this.simplifyPostsDisplay = false;
-    this.defaultPanel = "filters";
 
     loadPref("lang");
     loadPref("theme");
     loadPref("sortAsc");
     loadPref("pageSize");
     loadPref("combinePanels");
+    loadPref("defaultPanel");
     loadPref("simplifyPostsDisplay");
   },
 
@@ -922,14 +916,16 @@ const uiStore = {
       document.querySelector("#main-section-inner .mobile-menu .menu-" + name).focus();
     }
   },
-  menuOpen(name) {
+  menuOpen(name, setFocus) {
     this.openMenu = name;
     this.resetPanels();
     this.setInert();
 
-    setTimeout(() => {
-      document.getElementById("panel-" + name).focus();
-    }, 100);
+    if (setFocus) {
+      setTimeout(() => {
+        document.getElementById("panel-" + name).focus();
+      }, 100);
+    }
   },
   menuToggle(name) {
     switch (name) {
@@ -942,7 +938,7 @@ const uiStore = {
             this.menuClose();
           }
         } else {
-          this.menuOpen(name);
+          this.menuOpen(name, true);
         }
         break;
     }

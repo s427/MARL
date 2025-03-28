@@ -19,9 +19,9 @@ appStrings["fr"] = {
   menu: {
     profile: "Profil",
     filters: "Filtres",
-    filtersActive: "certains filtres sont actifs",
     tags: "Tags",
     tools: "Outils",
+    filtersActive: "certains filtres sont actifs",
   },
   lightbox: {
     next: "Image suivante",
@@ -155,6 +155,8 @@ appStrings["fr"] = {
     combinePanels: "Combiner les panneaux",
     combinePanelsDesc:
       "(Sur les écrans larges) Combiner les différents panneaux en une seule barre latérale avec onglets verticaux",
+    defaultPanel: "Panneau par défaut",
+    defaultPanelDesc: "Quel panneau est affiché par défaut au chargement de l'app (si les panneaux sont combinés)",
     postsSettings: "Réglages des posts",
     postsPerPage: "Nombre de posts page page :",
     chronologicalOrder: "Ordre chronologique",

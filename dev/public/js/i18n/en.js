@@ -19,9 +19,9 @@ appStrings["en"] = {
   menu: {
     profile: "Profile",
     filters: "Filters",
-    filtersActive: "some filters are active",
     tags: "Tags",
     tools: "Tools",
+    filtersActive: "some filters are active",
   },
   lightbox: {
     next: "Next image",
@@ -154,6 +154,8 @@ appStrings["en"] = {
     useLightTheme: "Use light theme",
     combinePanels: "Combine panels",
     combinePanelsDesc: "(Large screens only) Combine all panels into a single sidebar with vertical tabs",
+    defaultPanel: "Default panel",
+    defaultPanelDesc: "Which panel is shown by default when opening the app (if the panels are combined)",
     postsSettings: "Posts settings",
     postsPerPage: "Number of posts per page:",
     chronologicalOrder: "Chronological order",

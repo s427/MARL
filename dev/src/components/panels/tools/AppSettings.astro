@@ -1,6 +1,6 @@
 <div class="tools-section app-settings">
-  <div class="form-items-group settings-layout-misc">
-    <h3 class="form-items-group-title" x-text="$t('tools.appSettings')"></h3>
+  <div class="form-items-section settings-layout-misc">
+    <h3 class="form-items-section-title" x-text="$t('tools.appSettings')"></h3>
 
     <div class="app-setting switch-lang">
       <label for="switch-language">
@@ -49,12 +49,31 @@
         <span class="form-item-description" x-text={`$t('tools.combinePanelsDesc')`}></span>
       </label>
     </div>
+
+    <div class="app-setting form-item select">
+      <label for="setting-default-panel">
+        <span class="form-item-label" x-text={`$t('tools.defaultPanel')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.defaultPanelDesc')`}></span>
+      </label>
+      <div class="input-wrapper">
+        <select
+          id="setting-default-panel"
+          x-model="$store.ui.defaultPanel"
+          @change.debounce="$store.ui.setOption('defaultPanel')"
+        >
+          <option value="actor" x-text={`$t('menu.profile')`}></option>
+          <option value="filters" x-text={`$t('menu.filters')`}></option>
+          <option value="tags" x-text={`$t('menu.tags')`}></option>
+          <option value="tools" x-text={`$t('menu.tools')`}></option>
+        </select>
+      </div>
+    </div>
   </div>
 
-  <div class="form-items-group settings-posts">
-    <h3 class="form-items-group-title" x-text="$t('tools.postsSettings')"></h3>
+  <div class="form-items-section settings-posts">
+    <h3 class="form-items-section-title" x-text="$t('tools.postsSettings')"></h3>
 
-    <div class="toots-filter form-item number">
+    <div class="form-item number">
       <label
         for="paging-page-size"
         x-text={`$t('tools.postsPerPage')`}
