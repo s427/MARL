@@ -17,7 +17,7 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
 
   <p class="visually-hidden" x-text="$t('filters.panelNotice')"></p>
 
-  <div class="form-items-group">
+  <div class="form-items-section">
     <FilterText name="fullText" />
     <FilterText name="hashtagText" />
     <FilterText name="mentionText" />
@@ -26,63 +26,67 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
   </div>
 
   <div
-    class="form-items-group"
-    x-show="$store.files.activeFilters.isEdited || $store.files.activeFilters.isDuplicate"
+    class="form-items-section"
+    x-show="$store.files.activeFilters.isDuplicate"
   >
-    <FilterCheckbox name="isEdited" />
     <FilterCheckbox name="isDuplicate" />
   </div>
 
-  <div class="form-items-group">
-    <h3 class="form-items-group-title" x-text="$t('filters.mustContain')"></h3>
+  <div class="form-items-section">
+    <h3 class="form-items-section-title" x-text="$t('filters.mustContain')"></h3>
 
-    <FilterCheckbox name="hasHashtags" />
-    <FilterCheckbox name="hasMentions" />
-    <FilterCheckbox name="hasPoll" />
-    <FilterCheckbox name="hasExternalLink" />
-    <FilterCheckbox name="hasSummary" />
-  </div>
+    <div class="form-items-group">
+      <FilterCheckbox name="hasHashtags" />
+      <FilterCheckbox name="hasMentions" />
+      <FilterCheckbox name="hasPoll" />
+      <FilterCheckbox name="hasExternalLink" />
+      <FilterCheckbox name="hasSummary" />
+    </div>
 
-  <div class="form-items-group">
-    <FilterCheckbox name="startingAt" />
-    <FilterCheckbox name="noStartingAt" />
-    <FilterCheckbox name="isSensitive" />
+    <div class="form-items-group">
+      <FilterCheckbox name="startingAt" />
+      <FilterCheckbox name="noStartingAt" />
+      <FilterCheckbox name="isSensitive" />
+      <FilterCheckbox name="isEdited" />
+    </div>
   </div>
 
   <div
-    class="form-items-group"
+    class="form-items-section"
     x-show="$store.files.activeFilters.typeOriginal && $store.files.activeFilters.typeBoost"
   >
-    <h3 class="form-items-group-title" x-text="$t('filters.type')"></h3>
+    <h3 class="form-items-section-title" x-text="$t('filters.type')"></h3>
     <FilterCheckbox name="typeOriginal" />
     <FilterCheckbox name="typeBoost" />
   </div>
 
   <div
-    class="form-items-group"
+    class="form-items-section"
     x-show="$store.files.activeFilters.attachmentImage || $store.files.activeFilters.attachmentVideo || $store.files.activeFilters.attachmentSound"
   >
-    <h3 class="form-items-group-title" x-text="$t('filters.mustHaveAttachement')"></h3>
+    <h3 class="form-items-section-title" x-text="$t('filters.mustHaveAttachement')"></h3>
 
-    <FilterCheckbox name="attachmentAny" />
-    <FilterCheckbox name="attachmentImage" />
-    <FilterCheckbox name="attachmentVideo" />
-    <FilterCheckbox name="attachmentSound" />
+    <div class="form-items-group">
+      <FilterCheckbox name="attachmentAny" />
+      <FilterCheckbox name="attachmentImage" />
+      <FilterCheckbox name="attachmentVideo" />
+      <FilterCheckbox name="attachmentSound" />
+    </div>
+
+    <div
+      class="form-items-group"
+      x-show="$store.files.activeFilters.attachmentImage || $store.files.activeFilters.attachmentVideo || $store.files.activeFilters.attachmentSound"
+    >
+      <FilterCheckbox name="attachmentNoAltText" />
+      <FilterCheckbox name="attachmentWithAltText" />
+    </div>
   </div>
 
   <div
-    class="form-items-group"
-    x-show="$store.files.activeFilters.attachmentImage || $store.files.activeFilters.attachmentVideo || $store.files.activeFilters.attachmentSound"
-  >
-    <FilterCheckbox name="attachmentNoAltText" />
-    <FilterCheckbox name="attachmentWithAltText" />
-  </div>
-
-  <div
-    class="form-items-group"
+    class="form-items-section"
     x-show="[$store.files.activeFilters.visibilityPublic, $store.files.activeFilters.visibilityUnlisted, $store.files.activeFilters.visibilityFollowers, $store.files.activeFilters.visibilityMentioned].filter(Boolean).length > 1"
   >
-    <h3 class="form-items-group-title" x-text="$t('filters.visibility')"></h3>
+    <h3 class="form-items-section-title" x-text="$t('filters.visibility')"></h3>
 
     <FilterCheckbox name="visibilityPublic" />
     <FilterCheckbox name="visibilityUnlisted" />
@@ -91,47 +95,49 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
   </div>
 
   <template x-if="$store.files.sortedLanguages.length > 1">
-    <div class="form-items-group" x-show="$store.files.toots.length">
-      <h3 class="form-items-group-title" x-text="$t('filters.language')"></h3>
-      <template x-for="lang in $store.files.sortedLanguages">
-
-        <div class="form-item checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
-          <label :for="'filter-lang-' + lang[0]">
-            <input
-              :id="'filter-lang-' + lang[0]"
-              type="checkbox"
-              x-model="$store.files.filters['lang_' + lang[0]]"
-              @change="$store.files.setFilter()"
-            />
-            <span>
-              <span x-text="lang[0]"></span>
-              (<span x-text="lang[1]"></span>)
-            </span>
-          </label>
-        </div>
-      </template>
+    <div class="form-items-section section-langs" x-show="$store.files.toots.length">
+      <h3 class="form-items-section-title" x-text="$t('filters.language')"></h3>
+      <div class="form-items-group">
+        <template x-for="lang in $store.files.sortedLanguages">
+          <div class="form-item checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
+            <label :for="'filter-lang-' + lang[0]">
+              <input
+                :id="'filter-lang-' + lang[0]"
+                type="checkbox"
+                x-model="$store.files.filters['lang_' + lang[0]]"
+                @change="$store.files.setFilter()"
+              />
+              <span>
+                <span x-text="lang[0]"></span>
+                (<span x-text="lang[1]"></span>)
+              </span>
+            </label>
+          </div>
+        </template>
+      </div>
     </div>
   </template>
 
   <template x-if="$store.files.sources.length > 1">
-    <div class="form-items-group">
-      <h3 class="form-items-group-title" x-text="$t('filters.author')"></h3>
-      <template x-for="source in $store.files.sources">
-
-        <div class="form-item checkbox" :class="isFilterActive('actor_' + source.id) ? 'active' : ''">
-          <label :for="'filter-actor-' + source.id">
-            <input
-              :id="'filter-actor-' + source.id"
-              type="checkbox"
-              x-model="$store.files.filters['actor_' + source.id]"
-              @change="$store.files.setFilter()"
-            />
-            <span>
-              <span x-text="source.actor.name"></span>
-            </span>
-          </label>
-        </div>
-      </template>
+    <div class="form-items-section">
+      <h3 class="form-items-section-title" x-text="$t('filters.author')"></h3>
+      <div class="form-items-group">
+        <template x-for="source in $store.files.sources">
+          <div class="form-item checkbox" :class="isFilterActive('actor_' + source.id) ? 'active' : ''">
+            <label :for="'filter-actor-' + source.id">
+              <input
+                :id="'filter-actor-' + source.id"
+                type="checkbox"
+                x-model="$store.files.filters['actor_' + source.id]"
+                @change="$store.files.setFilter()"
+              />
+              <span>
+                <span x-text="source.actor.name"></span>
+              </span>
+            </label>
+          </div>
+        </template>
+      </div>
     </div>
   </template>
 

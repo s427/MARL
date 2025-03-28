@@ -143,6 +143,7 @@ $button-svg:               $fg1;
 $button-svg-hover:         hsl($hue, 75%, 50%);
 $button-svg-focus:         $button-svg-hover;
 $button-svg-active:        $button-svg-hover;
+$input-separator:          rgba(0, 0, 0, 0.2);
 
 $fg-button-focus:          $accent;
 $fg-button-active:         $accent;
@@ -157,6 +158,7 @@ $dark-button-svg:          $dark-fg1;
 $dark-button-svg-hover:    hsl($hue, 65%, 65%);
 $dark-button-svg-focus:    $dark-button-svg-hover;
 $dark-button-svg-active:   $dark-button-svg-hover;
+$dark-input-separator:     rgba(255, 255, 255, 0.15);
 $dark-fg-button-focus:     $dark-accent;
 $dark-fg-button-active:    $dark-accent;
 

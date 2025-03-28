@@ -7,7 +7,7 @@
   ul {
     list-style: none;
     font-size: 0.85em;
-    margin: 1rem 0;
+    margin: 1rem 0 0;
     padding: 0.5rem 1rem;
     background-color: var(--bg5);
     border-radius: 0.5rem;
@@ -41,7 +41,8 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  container-type: inline-size;
 
   @media (prefers-reduced-motion: no-preference) {
     transition: right 0.2s ease-out;
@@ -71,10 +72,10 @@
   .form-item {
     margin-bottom: 0.5rem;
   }
-  .form-items-group {
+  .form-items-section {
     margin: 0 0 2rem;
   }
-  .form-items-group-title,
+  .form-items-section-title,
   .form-item.number,
   .form-item.checkbox {
     flex: 0 0 100%;
@@ -173,6 +174,10 @@
       }
     }
   }
+}
+
+.manage-files {
+  margin-top: auto;
 }
 
 .manage-files-actions {

@@ -267,6 +267,7 @@ html {
     .panel-tools .tools-section {
       padding-bottom: 1.5rem;
       &.about {
+        padding-top: 0;
         opacity: 0.5;
         &:hover,
         &:focus-within {

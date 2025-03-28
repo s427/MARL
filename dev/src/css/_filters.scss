@@ -10,6 +10,53 @@
   h2 {
     margin: 0 0 2rem;
   }
+
+  .form-items-section:has(.form-items-group + .form-items-group) {
+    @container (width >= 350px) {
+      display: flex;
+      flex-wrap: wrap;
+
+      .form-items-section-title {
+        flex: 0 0 100%;
+      }
+      .form-items-group {
+        margin-bottom: 0;
+        flex: 0 0 50%;
+
+        // this is to keep the vertical alignement with the
+        // language group (below) in case it uses 2 columns
+        padding-right: 2rem;
+        position: relative;
+        &::before {
+          content: "";
+          position: absolute;
+          right: 1rem;
+          top: 0;
+          bottom: 0;
+          width: 0;
+          border-left: 1px solid var(--input-separator);
+        }
+        & + .form-items-group {
+          padding-right: 0;
+          &::before {
+            content: none;
+          }
+        }
+      }
+    }
+  }
+
+  .section-langs {
+    .form-items-group:has(.form-item:nth-child(5)) {
+      // 5 means 4 "form-item" + 1 template element (hidden), so 4 languages
+      columns: 2;
+      column-gap: 0;
+
+      .form-item {
+        margin-right: 1rem;
+      }
+    }
+  }
 }
 
 .toots-filters-reset {

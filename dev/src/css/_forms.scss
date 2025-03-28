@@ -1,11 +1,14 @@
-.form-items-group {
-  margin: 0 0 1rem;
+.form-items-section {
+  margin: 0 0 1.5rem;
 }
-.form-items-group-title {
+.form-items-section-title {
   margin: 0 0 0.5rem;
 }
+.form-items-group {
+  margin: 0 0 1.5rem;
+}
 
-.form-items-group:has(.text) {
+.form-items-section:has(.text) {
   display: grid;
   grid-template-columns: min-content 1fr;
   gap: 0.35rem;
