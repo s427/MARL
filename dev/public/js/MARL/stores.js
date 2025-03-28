@@ -278,6 +278,13 @@ const filesStore = {
           }
         }
 
+        if (t._marl.pollType) {
+          const pollData = t.object[t._marl.pollType];
+          if (pollData.filter((option) => option.name.toLowerCase().indexOf(filterValue) >= 0).length) {
+            show = true;
+          }
+        }
+
         if (!show) {
           return show;
         }
