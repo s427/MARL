@@ -58,8 +58,20 @@
     }
     input {
       display: block;
-      width: 5ch;
+      width: 7ch;
       text-align: left;
+    }
+  }
+
+  &.select {
+    display: flex;
+    label {
+      flex-grow: 1;
+      margin-right: 0.35rem;
+    }
+    select {
+      display: block;
+      width: 20ch;
     }
   }
 

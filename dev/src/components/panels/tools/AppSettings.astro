@@ -36,39 +36,6 @@
         ><span class="btn-label light" x-text="$t('tools.useLightTheme')"></span>
       </button>
     </div>
-
-    <div class="app-setting form-item checkbox">
-      <label for="setting-combine-panels">
-        <input
-          id="setting-combine-panels"
-          type="checkbox"
-          x-model.debounce={"$store.ui.combinePanels"}
-          @change.debounce="$store.ui.setOption('combinePanels')"
-        />
-        <span class="form-item-label" x-text={`$t('tools.combinePanels')`}></span>
-        <span class="form-item-description" x-text={`$t('tools.combinePanelsDesc')`}></span>
-      </label>
-    </div>
-
-    <div class="app-setting form-item select">
-      <label for="setting-default-panel">
-        <span class="form-item-label" x-text={`$t('tools.defaultPanel')`}></span>
-        <span class="form-item-description" x-text={`$t('tools.defaultPanelDesc')`}></span>
-      </label>
-      <div class="input-wrapper">
-        <select
-          id="setting-default-panel"
-          x-model="$store.ui.defaultPanel"
-          @change.debounce="$store.ui.setOption('defaultPanel')"
-        >
-          <option value="actor" x-text={`$t('menu.profile')`}></option>
-          <option value="filters" x-text={`$t('menu.filters')`}></option>
-          <option value="tags" x-text={`$t('menu.tags')`}></option>
-          <option value="tools" x-text={`$t('menu.tools')`}></option>
-          <option value="auto" x-text={`$t('tools.lastPanel')`}></option>
-        </select>
-      </div>
-    </div>
   </div>
 
   <div class="form-items-section settings-posts">
@@ -115,6 +82,43 @@
         <span class="form-item-label" x-text={`$t('tools.simplifyPostsDisplay')`}></span>
         <span class="form-item-description" x-text={`$t('tools.simplifyPostsDisplayDesc')`}></span>
       </label>
+    </div>
+  </div>
+
+  <div class="form-items-section settings-panels">
+    <h3 class="form-items-section-title" x-text="$t('tools.panelsSettings')"></h3>
+
+    <div class="app-setting form-item checkbox app-settings-combine-panels">
+      <label for="setting-combine-panels">
+        <input
+          id="setting-combine-panels"
+          type="checkbox"
+          x-model.debounce={"$store.ui.combinePanels"}
+          @change.debounce="$store.ui.setOption('combinePanels')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.combinePanels')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.combinePanelsDesc')`}></span>
+      </label>
+    </div>
+
+    <div class="app-setting form-item select app-settings-default-panel">
+      <label for="setting-default-panel">
+        <span class="form-item-label" x-text={`$t('tools.defaultPanel')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.defaultPanelDesc')`}></span>
+      </label>
+      <div class="input-wrapper">
+        <select
+          id="setting-default-panel"
+          x-model="$store.ui.defaultPanel"
+          @change.debounce="$store.ui.setOption('defaultPanel')"
+        >
+          <option value="actor" x-text={`$t('menu.profile')`}></option>
+          <option value="filters" x-text={`$t('menu.filters')`}></option>
+          <option value="tags" x-text={`$t('menu.tags')`}></option>
+          <option value="tools" x-text={`$t('menu.tools')`}></option>
+          <option value="auto" x-text={`$t('tools.lastPanel')`}></option>
+        </select>
+      </div>
     </div>
   </div>
 

@@ -266,11 +266,10 @@ details {
   border-radius: 2px;
   position: relative;
   z-index: 1;
-
-  &.mobile-menu-panel {
-    outline-offset: -4px;
-    border-radius: 6px;
-  }
+}
+*:focus-visible .mobile-menu-panel {
+  outline-offset: -4px;
+  border-radius: 6px;
 }
 
 .visually-hidden:not(:focus):not(:active) {
