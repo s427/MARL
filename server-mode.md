@@ -51,6 +51,10 @@ By default, `outbox.json` also contains your __private posts__. As this is not s
 - If you use the `outbox-cleanup` script, it will automatically generate the file with the correct name. Do not forget to _delete the original `outbox.json` file_ from your archive folder when you put it online (MARL will not attempt to access it, but other people may try).
 - If you want all your posts (private included) to be published, simply rename your outbox file to `outbox-public.json`. No need to use the script.
 
+### What about bookmarks and likes?
+
+If you do not want to publish your bookmarks and/or liked posts, simply remove the corresponding files from your archive (`bookmarks.json` or `likes.json`). MARL will still work without those files.
+
 ## Enable server mode
 
 To use MARL in server mode, you need to:

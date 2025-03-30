@@ -21,9 +21,14 @@ Alternatively, you can download this project from its [project page](https://git
 
 ## Screenshots
 
-<img src="screenshot-multiple-archives.png" alt="app screenshot with multiple files loaded">
+Default layout, dark theme, one archive loaded:  
+<img src="screenshots/screenshot-dark-theme.png" alt="app screenshot with dark theme">
 
-<img src="screenshot-dark-theme.png" alt="app screenshot with dark theme">
+Default layout, light theme, two archives loaded:  
+<img src="screenshots/screenshot-multiple-archives.png" alt="app screenshot with multiple files loaded">
+
+Simplified layout, dark theme, one archive loaded:  
+<img src="screenshots/screenshot-simpler-layout.png" alt="app screenshot with simplified layout">
 
 ## Features
 
@@ -84,7 +89,7 @@ MARL should work on pretty much any screen size, as low as 300 pixels wide (and 
 
 ### Persistent settings
 
-Paging-related settings (namely: number of posts per page, and sorting order) are stored in the browser and automatically restored when the app is initialized, so that you don't have to re-set them the way you like it every time. The same goes for the language and theme of the app.
+All options in the "Tools" panel are stored in the browser and automatically restored when the app is initialized, so that you don't have to re-set them the way you like it every time.
 
 ### Server mode
 
@@ -137,6 +142,22 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.7
+  - Posts:
+    - The number of likes and shares on posts is now displayed, if available in the archive.  
+      (As far as I can tell, this information wasn't present in previous versions of exported data.)
+    - Added: language indication for each post
+  - Filters:
+    - Leaner filters: filters which do not match any post in the archive are automatically hidden. For instance if your archive doesn't contain any video, the "Attachments > Video(s)" filter will be hidden. If the archive contains only public posts (no other types of visibility), the whole "Visibility" filter group is hidden. Etc.
+  - Layout:
+    - When using the "combine panels" option, the sidebar now remains always visible
+    - The paging options (order of posts, number of posts per page) have been moved to the "tools" panel
+  - Tools panel:
+    - New option: "Default panel". Choose which panel is shown by default when loading the app if the "combine panels" option is active; an option to simply remember the last active panel is available
+  - Server mode:
+    - JSON data for posts and profile are now hidden
+    - If no likes or bookmarks are found, the corresponding panels are hidden
+  - Misc minor fixes, layout tweaks and adjustments
 - v. 2.6
   - [NEW] support for polls
     - Polls are now correctly displayed and a new filter allows to show only posts that contain a poll
