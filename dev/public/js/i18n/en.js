@@ -157,6 +157,7 @@ appStrings["en"] = {
     combinePanelsDesc: "(Large screens only) Combine all panels into a single sidebar with vertical tabs",
     defaultPanel: "Default panel",
     defaultPanelDesc: "Which panel is shown by default when opening the app (if the panels are combined)",
+    lastPanel: "Last panel used",
     postsSettings: "Posts settings",
     postsPerPage: "Number of posts per page:",
     chronologicalOrder: "Chronological order",

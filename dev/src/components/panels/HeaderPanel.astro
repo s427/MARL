@@ -14,7 +14,7 @@ import PagingTop from '../PagingTop.astro';
   </h2>
 
   <div class="open-tools">
-    <button class="" id="header-open-tools" @click="$store.ui.menuToggle('tools')">
+    <button class="" id="header-open-tools" @click="$store.ui.panelToggle('tools')">
       <svg class="btn-icon" aria-hidden="true">
         <use href="#tools" /></svg
       ><span class="btn-label" x-text="$t('menu.tools')"></span>

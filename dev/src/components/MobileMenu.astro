@@ -2,7 +2,7 @@
   <nav>
     <ul>
       <li>
-        <button class="menu-actor" @click="$store.ui.menuToggle('actor')">
+        <button class="menu-actor" @click="$store.ui.panelToggle('actor')">
           <svg aria-hidden="true"><use href="#menu-actor" /></svg>
           <span x-text="$t('menu.profile')"></span>
         </button>
@@ -11,7 +11,7 @@
         <button
           class="menu-filters"
           :class="$store.files.filtersActive ? 'filters-active' : ''"
-          @click="$store.ui.menuToggle('filters')"
+          @click="$store.ui.panelToggle('filters')"
         >
           <svg aria-hidden="true"><use href="#menu-filters" /></svg>
           <span x-text="$t('menu.filters')"></span>
@@ -23,13 +23,13 @@
         </button>
       </li>
       <li>
-        <button class="menu-tags" @click="$store.ui.menuToggle('tags')">
+        <button class="menu-tags" @click="$store.ui.panelToggle('tags')">
           <svg aria-hidden="true"><use href="#menu-tags" /></svg>
           <span x-text="$t('menu.tags')"></span>
         </button>
       </li>
       <li>
-        <button class="menu-tools" @click="$store.ui.menuToggle('tools')">
+        <button class="menu-tools" @click="$store.ui.panelToggle('tools')">
           <svg aria-hidden="true"><use href="#tools" /></svg>
           <span x-text="$t('menu.tools')"></span>
         </button>
@@ -41,6 +41,6 @@
 <div
   class="panel-backdrop"
   aria-hidden="true"
-  @click="$store.ui.menuClose()"
-  @keyup.esc="$store.ui.menuClose()"
+  @click="$store.ui.panelClose()"
+  @keyup.esc="$store.ui.panelClose()"
 />

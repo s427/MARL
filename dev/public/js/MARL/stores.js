@@ -32,7 +32,7 @@ const userPrefsStore = {
         }
 
         if (pref === "combinePanels" && value) {
-          Alpine.store("ui").openMenu = Alpine.store("ui").defaultPanel;
+          Alpine.store("ui").activePanel = Alpine.store("ui").defaultPanel;
         }
         break;
 
@@ -44,10 +44,18 @@ const userPrefsStore = {
         }
         break;
 
+      case "activePanel":
+        if (value) {
+          Alpine.store("ui")[pref] = value;
+        }
+        break;
+
       case "defaultPanel":
         if (value) {
           Alpine.store("ui")[pref] = value;
-          Alpine.store("ui").menuOpen(value, false);
+          if (value !== "auto") {
+            Alpine.store("ui").panelOpen(value, false);
+          }
         }
         break;
 
@@ -802,11 +810,11 @@ const uiStore = {
   log: [],
   resetState() {
     this.pagingOptionsVisible = false;
-    this.openMenu = "";
+    this.activePanel = "";
     this.actorPanel = 0;
     this.sortAsc = true;
     this.pageSize = 10;
-    this.menuIsActive = false;
+    this.panelIsActive = false;
     this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
     this.theme = "light";
@@ -814,7 +822,7 @@ const uiStore = {
     this.log = this.log ?? [];
 
     this.combinePanels = false;
-    this.defaultPanel = "actor";
+    this.defaultPanel = "auto";
     this.simplifyPostsDisplay = false;
 
     loadPref("lang");
@@ -822,7 +830,8 @@ const uiStore = {
     loadPref("sortAsc");
     loadPref("pageSize");
     loadPref("combinePanels");
-    loadPref("defaultPanel");
+    loadPref("activePanel");
+    loadPref("defaultPanel"); // must be loaded after activePanel
     loadPref("simplifyPostsDisplay");
   },
 
@@ -854,17 +863,18 @@ const uiStore = {
   },
 
   setOption(pref) {
-    savePref(pref, this[pref]);
+    const val = this[pref];
+
+    savePref(pref, val);
 
     if (pref === "combinePanels") {
-      if (this[pref]) {
-        this.openMenu = this.defaultPanel;
-      }
       this.checkMenuState();
     }
+
     if (pref === "sortAsc") {
       Alpine.store("files").sortToots();
     }
+
     if (pref === "pageSize") {
       Alpine.store("files").checkPagingValue();
     }
@@ -907,24 +917,24 @@ const uiStore = {
     document.getElementById("actortab-" + id).focus();
   },
 
-  menuClose() {
+  panelClose() {
     if (this.combinePanels) {
       return;
     }
 
-    const name = this.openMenu;
-    this.openMenu = "";
+    const name = this.activePanel;
+    this.activePanel = "";
     this.setInert();
 
     // bring focus back to where it was before the panel was opened
-    if (name === "tools" && !this.menuIsActive) {
+    if (name === "tools" && !this.panelIsActive) {
       document.getElementById("header-open-tools").focus();
     } else {
       document.querySelector("#main-section-inner .mobile-menu .menu-" + name).focus();
     }
   },
-  menuOpen(name, setFocus) {
-    this.openMenu = name;
+  panelOpen(name, setFocus) {
+    this.activePanel = name;
     this.resetPanels();
     this.setInert();
 
@@ -934,24 +944,25 @@ const uiStore = {
       }, 100);
     }
   },
-  menuToggle(name) {
+  panelToggle(name) {
     switch (name) {
       case "actor":
       case "filters":
       case "tags":
       case "tools":
-        if (this.openMenu === name) {
+        if (this.activePanel === name) {
           if (!this.combinePanels) {
-            this.menuClose();
+            this.panelClose();
           }
         } else {
-          this.menuOpen(name, true);
+          this.panelOpen(name, true);
+          savePref("activePanel", name);
         }
         break;
     }
   },
   resetPanels() {
-    const name = this.openMenu;
+    const name = this.activePanel;
     document.querySelectorAll(`#panel-${name} details[open]`).forEach((e) => {
       e.removeAttribute("open");
     });
@@ -970,9 +981,9 @@ const uiStore = {
   checkMenuState() {
     const menu = document.getElementById("mobile-menu");
     if (window.getComputedStyle(menu, null).display === "none") {
-      this.menuIsActive = false;
+      this.panelIsActive = false;
     } else {
-      this.menuIsActive = true;
+      this.panelIsActive = true;
     }
 
     this.setInert();
@@ -980,7 +991,7 @@ const uiStore = {
 
   setInertMain() {
     document
-      .querySelectorAll("#main-section-inner > *:not(.mobile-menu, .panel-backdrop, #panel-" + this.openMenu)
+      .querySelectorAll("#main-section-inner > *:not(.mobile-menu, .panel-backdrop, #panel-" + this.activePanel)
       .forEach((e) => {
         e.setAttribute("inert", true);
       });
@@ -1010,14 +1021,14 @@ const uiStore = {
     if (this.combinePanels) {
       this.setInertPanels();
     } else {
-      if (this.menuIsActive) {
-        if (this.openMenu) {
+      if (this.panelIsActive) {
+        if (this.activePanel) {
           this.setInertMain();
         } else {
           this.setInertPanels();
         }
       } else {
-        if (this.openMenu === "tools") {
+        if (this.activePanel === "tools") {
           this.setInertMain();
         } else {
           this.setInertTools();
@@ -1039,8 +1050,8 @@ const uiStore = {
   },
   get appInsideClasses() {
     let classes = [];
-    if (this.openMenu) {
-      classes.push("menu-open menu-open-" + this.openMenu);
+    if (this.activePanel) {
+      classes.push("menu-open menu-open-" + this.activePanel);
     } else {
       classes.push("menu-closed");
     }
