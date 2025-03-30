@@ -814,7 +814,7 @@ const uiStore = {
     this.actorPanel = 0;
     this.sortAsc = true;
     this.pageSize = 10;
-    this.panelIsActive = false;
+    this.mobileLayout = false;
     this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
     this.theme = "light";
@@ -868,7 +868,7 @@ const uiStore = {
     savePref(pref, val);
 
     if (pref === "combinePanels") {
-      this.checkMenuState();
+      this.checkMobileLayout();
     }
 
     if (pref === "sortAsc") {
@@ -927,7 +927,7 @@ const uiStore = {
     this.setInert();
 
     // bring focus back to where it was before the panel was opened
-    if (name === "tools" && !this.panelIsActive) {
+    if (name === "tools" && !this.mobileLayout) {
       document.getElementById("header-open-tools").focus();
     } else {
       document.querySelector("#main-section-inner .mobile-menu .menu-" + name).focus();
@@ -978,12 +978,17 @@ const uiStore = {
       }, 250);
     }
   },
-  checkMenuState() {
+  checkMobileLayout() {
+    // called on init and window.resize
     const menu = document.getElementById("mobile-menu");
-    if (window.getComputedStyle(menu, null).display === "none") {
-      this.panelIsActive = false;
+    const menuVisible = window.getComputedStyle(menu, null).display !== "none";
+    // const backdrop = document.getElementById("panel-backdrop");
+    // const backdropVisible = window.getComputedStyle(backdrop, null).display !== "none";
+
+    if (menuVisible) {
+      this.mobileLayout = true;
     } else {
-      this.panelIsActive = true;
+      this.mobileLayout = false;
     }
 
     this.setInert();
@@ -1021,7 +1026,7 @@ const uiStore = {
     if (this.combinePanels) {
       this.setInertPanels();
     } else {
-      if (this.panelIsActive) {
+      if (this.mobileLayout) {
         if (this.activePanel) {
           this.setInertMain();
         } else {

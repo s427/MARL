@@ -209,7 +209,7 @@ function checkAppReady(ok) {
     cleanUpRaw();
     setHueForSources();
     document.getElementById("main-section").focus();
-    Alpine.store("ui").checkMenuState();
+    Alpine.store("ui").checkMobileLayout();
     Alpine.store("files").sortToots();
     Alpine.store("files").loading = false;
   }
