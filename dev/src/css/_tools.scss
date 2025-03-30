@@ -44,6 +44,10 @@
   justify-content: flex-start;
   container-type: inline-size;
 
+  &[inert="true"] {
+    box-shadow: none;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     transition: right 0.2s ease-out;
     transition-property: right, box-shadow;
