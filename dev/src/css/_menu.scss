@@ -1,7 +1,7 @@
 html {
   --toolbar-width: 75px;
   --icon-width: 35px;
-  --panel-width: min(40vw, 400px);
+  --panel-width: max(40vw, 400px);
 }
 
 .mobile-menu {
@@ -313,6 +313,7 @@ html {
     }
     li {
       flex-grow: 1;
+      flex-basis: 25%;
     }
     button {
       aspect-ratio: unset;

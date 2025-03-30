@@ -53,7 +53,7 @@ html {
     .order {
       font-weight: normal;
       &::before {
-        content: "-";
+        content: "- ";
       }
     }
   }

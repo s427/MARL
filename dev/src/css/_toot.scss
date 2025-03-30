@@ -703,8 +703,9 @@ $meta-visible: 100ch;
   &.combine-panels {
     @media screen and (width >= 1400px) {
       .toot {
+        display: grid;
         max-width: 1100px;
-        grid-template-columns: 80ch 1fr;
+        grid-template-columns: min(80ch, calc(100% - 360px)) 1fr;
         grid-template-areas:
           "header ."
           "pretty infos";
