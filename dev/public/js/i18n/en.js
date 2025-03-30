@@ -84,7 +84,7 @@ appStrings["en"] = {
 
     visibility: "Visibility",
     visibilityPublic: "Public",
-    visibilityUnlisted: "Unlisted",
+    visibilityUnlisted: "Quiet public (Unlisted)",
     visibilityFollowers: "Followers only",
     visibilityMentioned: "Mentioned people only",
 
