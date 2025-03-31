@@ -103,7 +103,6 @@ appStrings["en"] = {
     prev: "Prev",
     next: "Next",
     last: "Last",
-    pagingOptions: "Paging options",
     page: "Page",
   },
   posts: {

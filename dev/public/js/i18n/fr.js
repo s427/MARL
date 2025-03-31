@@ -103,7 +103,6 @@ appStrings["fr"] = {
     prev: "Précédente",
     next: "Suivante",
     last: "Dernière",
-    pagingOptions: "Options de pagination",
     page: "Page",
   },
   posts: {

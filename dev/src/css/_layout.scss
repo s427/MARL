@@ -107,9 +107,9 @@ html {
   // -> align with padding-bottom on .toots-filters and .toots-tags (side panels)
 
   @media (width < 400px) {
+    .paging-options-toggle,
     .direction-back,
-    .direction-fwd,
-    .paging-options-toggle {
+    .direction-fwd {
       .btn-label {
         @include mixins.visually-hidden();
       }
@@ -132,8 +132,8 @@ html {
   .paging {
     clear: both;
     flex-wrap: wrap;
-    .paging-options,
-    .paging-options-toggle {
+    .paging-options-toggle,
+    .paging-options {
       order: 2;
       user-select: none;
     }
@@ -145,7 +145,7 @@ html {
     }
   }
 
-  @container (width < 675px) {
+  @container (width < 475px) {
     // hide the paging options and show "options" button
 
     .paging-options-toggle {
@@ -193,11 +193,11 @@ html {
     }
   } // ! @container
 
-  @container (width < 550px) {
+  @container (width < 650px) {
     .paging {
+      .paging-options-toggle,
       .direction-back,
-      .direction-fwd,
-      .paging-options-toggle {
+      .direction-fwd {
         .btn-label {
           @include mixins.visually-hidden();
         }
