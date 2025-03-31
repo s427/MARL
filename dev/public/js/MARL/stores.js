@@ -45,7 +45,7 @@ const userPrefsStore = {
         break;
 
       case "activePanel":
-        if (value) {
+        if (value && Alpine.store("ui").combinePanels) {
           Alpine.store("ui")[pref] = value;
         }
         break;
@@ -53,7 +53,7 @@ const userPrefsStore = {
       case "defaultPanel":
         if (value) {
           Alpine.store("ui")[pref] = value;
-          if (value !== "auto") {
+          if (value !== "auto" && Alpine.store("ui").combinePanels) {
             Alpine.store("ui").panelOpen(value, false);
           }
         }
