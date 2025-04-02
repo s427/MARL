@@ -4,25 +4,58 @@ import chalk from "chalk";
 
 const verbose = false;
 
-function cleanup(option) {
+function cleanup(options) {
   let json = "";
   let level = 2;
+  let levelDesc = "";
+  let noBoosts = false;
 
-  if (option && option.privacy) {
-    switch (+option.privacy) {
-      case 1:
-      case 2:
-      case 3:
-        level = +option.privacy;
-        break;
-      default:
-        console.log(
-          chalk.red(`Invalid option provided (${option.privacy}); falling back to default value (${level}).`)
-        );
-        break;
+  if (options) {
+    if (options.privacy) {
+      switch (+options.privacy) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+          level = +options.privacy;
+          break;
+        default:
+          console.log(
+            chalk.red(`Invalid option provided (${options.privacy}); falling back to default value (${level}).`)
+          );
+          break;
+      }
+    }
+    if (options.noboosts) {
+      noBoosts = true;
     }
   }
-  console.log(chalk.cyan(`MARL cleanup - privacy level: ${level}`));
+
+  switch (level) {
+    case 1:
+      levelDesc = "only keep public posts";
+      break;
+    case 2:
+      levelDesc = "only keep public and unlisted posts";
+      break;
+    case 3:
+      levelDesc = "only keep public, unlisted, and followers-only posts";
+      break;
+    case 4:
+      levelDesc = "keep all posts";
+      break;
+  }
+
+  console.log(chalk.cyan("MARL cleanup"));
+  console.log(chalk.cyan(`  - privacy level: ${level} (${levelDesc})`));
+  if (noBoosts) {
+    console.log(chalk.cyan(`  - exclude boosts`));
+  }
+
+  const opt = {
+    level: level,
+    noBoosts: noBoosts,
+  };
 
   try {
     const data = readFileSync("./outbox.json");
@@ -48,19 +81,27 @@ function cleanup(option) {
 
       if (answer === "" || answer.toLocaleLowerCase() === "y") {
         console.log(chalk.yellow("Overwriting..."));
-        writeFile(json, level);
+        writeFile(json, opt);
       } else {
         console.log(chalk.yellow("Aborting."));
         return;
       }
     });
   } else {
-    writeFile(json, level);
+    writeFile(json, opt);
   }
 }
 
-function filterPosts(json, level) {
+function filterPosts(json, opt) {
+  const level = opt.level;
+  const noBoosts = opt.noBoosts;
+
   const filteredItems = json.orderedItems.filter((item) => {
+    if (noBoosts && item.type === "Announce") {
+      // this is a boost
+      return false;
+    }
+
     // conditions borrowed from MARL (utils.js > tootVisibility())
     if (item.to.includes("https://www.w3.org/ns/activitystreams#Public")) {
       // post is public
@@ -88,7 +129,7 @@ function filterPosts(json, level) {
       !item.cc.includes("https://www.w3.org/ns/activitystreams#Public")
     ) {
       // post is private (mentioned people only)
-      return false;
+      return level === 4;
     }
   });
   json.orderedItems = filteredItems;
@@ -96,11 +137,11 @@ function filterPosts(json, level) {
   return json;
 }
 
-function writeFile(json, level) {
+function writeFile(json, opt) {
   if (json && json.orderedItems) {
     const path = "./outbox-public.json";
 
-    json = filterPosts(json, level);
+    json = filterPosts(json, opt);
 
     try {
       writeFileSync(path, JSON.stringify(json), "utf8");

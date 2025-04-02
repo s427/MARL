@@ -26,9 +26,15 @@ Basic command:
 
 The script will look for a file named `outbox.json` in the current folder and output a file named `outbox-public.json` in the same folder. If such a file already exists, the user is asked to confirm whether it should be overwritten or not.
 
-By default, the script will remove posts that are _private_ (mentioned users only) or for _followers only_. In other words, only the public and unlisted posts are kept.
+By default:
+- The script will remove posts that are _private_ (mentioned users only) or for _followers only_; in other words, only the public and unlisted posts are kept.
+- Boosts are preserved.
 
-You can specifiy which types of posts get removed from the output:
+## Options
+
+### Visibility level
+
+You can specifiy which types of posts get removed from the output based on their visibility level:
 
     marl cleanup -p [CODE]
     marl cleanup --privacy [CODE]
@@ -38,10 +44,18 @@ The following codes are available:
 - `1`: only keep public posts
 - `2`: only keep public and unlisted posts
 - `3`: only keep public, unlisted, and followers-only posts
+- `4`: keep all posts (useful if you only want to remove your boosts; see below)
 
 The default value is `2`.
 
-Help:
+### Excluding boosts
+
+You can exclude all boosts from the output:
+
+    marl cleanup -b
+    marl cleanup --noboosts
+
+### Help
 
     marl cleanup --help
 

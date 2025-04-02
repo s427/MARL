@@ -16,8 +16,10 @@ program
           1: only keep public posts
           2: only keep public and unlisted posts
           3: only keep public, unlisted, and followers-only posts
-    `
+          4: keep all posts
+`
   )
+  .option("-b, --noboosts", "Remove all boosts from archive.")
   .action(cleanup);
 
 program.parse();
