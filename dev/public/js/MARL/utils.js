@@ -1,3 +1,31 @@
+function customPrefsAvailable() {
+  return (
+    typeof customPrefs !== "undefined" &&
+    typeof customPrefs === "object" &&
+    !Array.isArray(customPrefs) &&
+    customPrefs !== null
+  );
+}
+
+function customPrefAvailable(pref) {
+  if (customPrefsAvailable() && pref && customPrefs[pref]) {
+    return true;
+  }
+  return false;
+}
+
+function loadCustomPrefs() {
+  if (customPrefsAvailable()) {
+    marlConsole(`Loading custom preferences. <b>${JSON.stringify(customPrefs)}</b>`);
+    for (const pref in customPrefs) {
+      if (Object.prototype.hasOwnProperty.call(customPrefs, pref)) {
+        const val = customPrefs[pref];
+        Alpine.store("ui").changeDefault(pref, val);
+      }
+    }
+  }
+}
+
 function resetStores() {
   Alpine.store("files").resetState();
   Alpine.store("lightbox").resetState();
@@ -600,11 +628,15 @@ function startOver() {
 }
 
 function detectLangFromBrowser() {
+  if (customPrefAvailable("lang") && validLang(customPrefs.lang)) {
+    return customPrefs.lang;
+  }
+
   const langs = navigator.languages;
   if (langs && langs.length) {
     for (let i = 0; i < langs.length; i++) {
       let lang = langs[i].split("-")[0];
-      if (Alpine.store("ui").appLangs[lang]) {
+      if (validLang(lang)) {
         const msg = `Setting language based on browser preference: <b>'${lang}' (${
           Alpine.store("ui").appLangs[lang]
         })</b>`;
@@ -638,6 +670,22 @@ function setTheme(theme) {
 function marlConsole(msg, cls = "info") {
   // classes: "info", "warn", "error"
   Alpine.store("ui").logMsg(msg, cls);
+}
+
+function validPanel(name) {
+  const panels = ["actor", "filters", "tags", "tools"];
+  return panels.includes(name);
+}
+function validTheme(name) {
+  const themes = ["light", "dark"];
+  return themes.includes(name);
+}
+function validLang(name) {
+  if (appLangs[name]) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 // drag'n'drop over entire page

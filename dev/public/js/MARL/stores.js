@@ -79,8 +79,12 @@ const userPrefsStore = {
         break;
 
       case "theme":
-        if (!(value === "dark" || value === "light")) {
-          value = "light";
+        if (!validTheme(value)) {
+          if (customPrefAvailable("theme") && validTheme(customPrefs.theme)) {
+            value = customPrefs.theme;
+          } else {
+            value = "light";
+          }
           this.save("theme", value);
         }
         Alpine.store("ui")[pref] = value;
@@ -97,7 +101,6 @@ const filesStore = {
     this.currentlyLoadingId = "";
     this.currentlyLoadingName = "";
 
-    this.serverMode = false;
     this.remotes = [];
     this.marlBasePath = "";
 
@@ -189,6 +192,8 @@ const filesStore = {
       boostsAuthors: "",
     };
   },
+
+  serverMode: false,
 
   setFilter(filterName) {
     this.checkPagingValue();
@@ -808,22 +813,32 @@ const lightboxStore = {
 
 const uiStore = {
   log: [],
+  defaultOptions: {
+    lang: "en",
+    theme: "light",
+    sortAsc: true,
+    pageSize: 10,
+    combinePanels: false,
+    defaultPanel: "auto",
+    simplifyPostsDisplay: false,
+  },
+
   resetState() {
     this.pagingOptionsVisible = false;
-    this.activePanel = "";
     this.actorPanel = 0;
-    this.sortAsc = true;
-    this.pageSize = 10;
     this.mobileLayout = false;
-    this.lang = "en";
     this.appLangs = appLangs ?? { en: "English" };
-    this.theme = "light";
     this.errorInLog = false;
     this.log = this.log ?? [];
 
-    this.combinePanels = false;
-    this.defaultPanel = "auto";
-    this.simplifyPostsDisplay = false;
+    this.lang = this.defaultOptions.lang;
+    this.theme = this.defaultOptions.theme;
+    this.sortAsc = this.defaultOptions.sortAsc;
+    this.pageSize = this.defaultOptions.pageSize;
+    this.combinePanels = this.defaultOptions.combinePanels;
+    this.activePanel = this.defaultOptions.activePanel;
+    this.defaultPanel = this.defaultOptions.defaultPanel;
+    this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
 
     loadPref("lang");
     loadPref("theme");
@@ -833,6 +848,46 @@ const uiStore = {
     loadPref("activePanel");
     loadPref("defaultPanel"); // must be loaded after activePanel
     loadPref("simplifyPostsDisplay");
+  },
+  changeDefault(pref, val) {
+    switch (pref) {
+      case "sortAsc":
+      case "combinePanels":
+      case "simplifyPostsDisplay":
+        val = val ? true : false;
+        break;
+
+      case "pageSize":
+        val = +val;
+        if (typeof val !== "number" || isNaN(val) || val === 0) {
+          return;
+        }
+        break;
+
+      case "defaultPanel":
+        if (!validPanel(val)) {
+          return;
+        }
+        this.defaultOptions.activePanel = val;
+        break;
+
+      case "theme":
+        if (!validTheme(val)) {
+          return;
+        }
+        setTheme(val);
+        break;
+
+      case "lang":
+        if (!validLang(val)) {
+          return;
+        }
+        break;
+      default:
+        return;
+    }
+
+    this.defaultOptions[pref] = val;
   },
 
   logMsg(msg, type) {

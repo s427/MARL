@@ -12,44 +12,41 @@ function setMarlMode() {
   }
 
   Alpine.store("files").serverMode = serverMode;
-
-  if (serverMode) {
-    let remotes = [];
-
-    for (const res of servers) {
-      let remote = {
-        path: "",
-        actor: "waiting",
-        outbox: "waiting",
-        bookmarks: "waiting",
-        likes: "waiting",
-        // => "waiting", "error", [json]
-        failed: false,
-      };
-      let path = res;
-
-      if (!(res.indexOf("http") === 0)) {
-        path = marlBasePath() + res;
-      }
-
-      if (path.slice(-1) !== "/") {
-        path = path + "/";
-      }
-
-      remote.path = path;
-      remotes.push(remote);
-    }
-
-    Alpine.store("files").remotes = remotes;
-
-    loadRemoteArchives();
-  } else {
-    loadScript("jszip");
-    drag.init("app");
-  }
 }
 
 // SERVER MODE
+
+function initServerMode() {
+  let remotes = [];
+
+  for (const res of servers) {
+    let remote = {
+      path: "",
+      actor: "waiting",
+      outbox: "waiting",
+      bookmarks: "waiting",
+      likes: "waiting",
+      // => "waiting", "error", [json]
+      failed: false,
+    };
+    let path = res;
+
+    if (!(res.indexOf("http") === 0)) {
+      path = marlBasePath() + res;
+    }
+
+    if (path.slice(-1) !== "/") {
+      path = path + "/";
+    }
+
+    remote.path = path;
+    remotes.push(remote);
+  }
+
+  Alpine.store("files").remotes = remotes;
+
+  loadRemoteArchives();
+}
 
 function loadRemoteArchives() {
   Alpine.store("files").loading = true;
@@ -203,6 +200,11 @@ function loadRemotesData() {
 }
 
 // LOCAL MODE (unzip)
+
+function initLocalMode() {
+  loadScript("jszip");
+  drag.init("app");
+}
 
 function loadZipFiles(files) {
   if (serverMode() || Alpine.store("files").loading) {

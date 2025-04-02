@@ -22,8 +22,15 @@ document.addEventListener("alpine:init", () => {
   ];
   marlConsole(`MARL loaded. ${salutations[Math.floor(Math.random() * salutations.length)]} 😊`);
 
-  resetStores();
   setMarlMode();
+  loadCustomPrefs();
+  resetStores();
+
+  if (serverMode()) {
+    initServerMode();
+  } else {
+    initLocalMode();
+  }
 });
 
 // i18n
