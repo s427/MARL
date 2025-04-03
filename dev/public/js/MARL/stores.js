@@ -8,9 +8,11 @@ const userPrefsStore = {
     if (value === false) {
       value = 0;
     }
-    const msg = `Saving user preference <b>(${pref}: ${value})</b>`;
-    marlConsole(msg, "info");
     localStorage.setItem(this.prefix + pref, value);
+    if (pref !== "activePanel") {
+      const msg = `Saving user preference <b>(${pref}: ${value})</b>`;
+      marlConsole(msg, "info");
+    }
   },
   load(pref) {
     const value = localStorage.getItem(this.prefix + pref);
@@ -123,28 +125,37 @@ const filesStore = {
       mentionText: "",
       externalLink: "",
       summary: "",
-      isEdited: false,
       isDuplicate: false,
-      startingAt: false,
-      noStartingAt: false,
+
       hasExternalLink: false,
       hasHashtags: false,
       hasMentions: false,
       hasPoll: false,
       hasSummary: false,
+      startingAt: false,
+      noStartingAt: false,
       isSensitive: false,
-      visibilityPublic: true,
-      visibilityUnlisted: true,
-      visibilityFollowers: true,
-      visibilityMentioned: true,
+      isEdited: false,
+
+      hasLikes: false,
+      hasLikesMin: 1,
+      hasShares: false,
+      hasSharesMin: 1,
+
       typeOriginal: true,
       typeBoost: true,
+
       attachmentAny: false,
       attachmentImage: false,
       attachmentVideo: false,
       attachmentSound: false,
       attachmentNoAltText: false,
       attachmentWithAltText: false,
+
+      visibilityPublic: true,
+      visibilityUnlisted: true,
+      visibilityFollowers: true,
+      visibilityMentioned: true,
 
       // automatically generated (see unpackJsonFile()):
       // lang_en: true,
@@ -172,10 +183,8 @@ const filesStore = {
       hasPoll: false,
       hasSummary: false,
       isSensitive: false,
-      visibilityPublic: false,
-      visibilityUnlisted: false,
-      visibilityFollowers: false,
-      visibilityMentioned: false,
+      hasLikes: false,
+      hasShares: false,
       typeOriginal: false,
       typeBoost: false,
       attachmentAny: false,
@@ -184,6 +193,10 @@ const filesStore = {
       attachmentSound: false,
       attachmentNoAltText: false,
       attachmentWithAltText: false,
+      visibilityPublic: false,
+      visibilityUnlisted: false,
+      visibilityFollowers: false,
+      visibilityMentioned: false,
     };
 
     this.tagsFilters = {
@@ -213,6 +226,31 @@ const filesStore = {
       if (filterName === "noStartingAt") {
         this.filters.startingAt = false;
       }
+    }
+
+    // number dependent on checkbox
+    if (filterName === "hasLikesMin") {
+      if (!+this.filters.hasLikesMin > 0) {
+        this.filters.hasLikesMin = 1;
+      }
+      if (this.filters.hasLikesMin > 1 && !this.filters.hasLikes) {
+        this.filters.hasLikes = true;
+      }
+    }
+    if (filterName === "hasSharesMin") {
+      if (!+this.filters.hasSharesMin > 0) {
+        this.filters.hasSharesMin = 1;
+      }
+      if (this.filters.hasSharesMin > 1 && !this.filters.hasShares) {
+        this.filters.hasShares = true;
+      }
+    }
+
+    if (filterName === "hasLikes" && !this.filters.hasLikes) {
+      this.filters.hasLikesMin = 1;
+    }
+    if (filterName === "hasShares" && !this.filters.hasShares) {
+      this.filters.hasSharesMin = 1;
     }
 
     const self = this;
@@ -265,6 +303,8 @@ const filesStore = {
       if (!fa) {
         return true;
       }
+
+      // text search
 
       if (f.fullText) {
         let show = false;
@@ -344,8 +384,15 @@ const filesStore = {
         }
       }
 
-      if (f.isEdited) {
-        if (!(typeof t.object === "object" && t.object !== null && t.object.updated)) {
+      if (f.externalLink) {
+        let show = false;
+        if (t._marl.externalLinks && t._marl.externalLinks.length) {
+          const filterValue = f.externalLink.toLowerCase();
+          show = t._marl.externalLinks.some((link) => {
+            return link.href.indexOf(filterValue) > -1 || link.text.indexOf(filterValue) > -1;
+          });
+        }
+        if (!show) {
           return false;
         }
       }
@@ -356,23 +403,7 @@ const filesStore = {
         }
       }
 
-      if (f.startingAt) {
-        if (!t._marl.textContent || t._marl.textContent.indexOf("@") !== 0) {
-          return false;
-        }
-      }
-
-      if (f.noStartingAt) {
-        if (!t._marl.textContent || t._marl.textContent.indexOf("@") === 0) {
-          return false;
-        }
-      }
-
-      if (f.hasExternalLink) {
-        if (!t._marl.externalLinks || !t._marl.externalLinks.length) {
-          return false;
-        }
-      }
+      // must contain
 
       if (f.hasHashtags) {
         if (typeof t.object === "object" && t.object !== null && t.object.tag) {
@@ -422,6 +453,24 @@ const filesStore = {
         }
       }
 
+      if (f.hasExternalLink) {
+        if (!t._marl.externalLinks || !t._marl.externalLinks.length) {
+          return false;
+        }
+      }
+
+      if (f.startingAt) {
+        if (!t._marl.textContent || t._marl.textContent.indexOf("@") !== 0) {
+          return false;
+        }
+      }
+
+      if (f.noStartingAt) {
+        if (!t._marl.textContent || t._marl.textContent.indexOf("@") === 0) {
+          return false;
+        }
+      }
+
       if (f.isSensitive) {
         if (typeof t.object === "object" && t.object !== null) {
           if (!t.object.sensitive) {
@@ -432,44 +481,54 @@ const filesStore = {
         }
       }
 
-      if (f.externalLink) {
-        let show = false;
-        if (t._marl.externalLinks && t._marl.externalLinks.length) {
-          const filterValue = f.externalLink.toLowerCase();
-          show = t._marl.externalLinks.some((link) => {
-            return link.href.indexOf(filterValue) > -1 || link.text.indexOf(filterValue) > -1;
-          });
-        }
-        if (!show) {
+      if (f.isEdited) {
+        if (!(typeof t.object === "object" && t.object !== null && t.object.updated)) {
           return false;
         }
       }
 
-      if (!f.visibilityPublic && t._marl.visibility[0] === "public") {
-        return false;
+      // activities
+
+      if (f.hasLikes) {
+        if (typeof t.object === "object" && t.object !== null && t.object.likes) {
+          const nb = f.hasLikesMin;
+          if (t.object.likes.totalItems < nb) {
+            return false;
+          }
+        } else {
+          return false;
+        }
       }
-      if (!f.visibilityUnlisted && t._marl.visibility[0] === "unlisted") {
-        return false;
+
+      if (f.hasShares) {
+        if (typeof t.object === "object" && t.object !== null && t.object.shares) {
+          const nb = f.hasSharesMin;
+          if (t.object.shares.totalItems < nb) {
+            return false;
+          }
+        } else {
+          return false;
+        }
       }
-      if (!f.visibilityFollowers && t._marl.visibility[0] === "followers") {
-        return false;
-      }
-      if (!f.visibilityMentioned && t._marl.visibility[0] === "mentioned") {
-        return false;
-      }
+
+      // type
 
       if (!f.typeOriginal && t.type === "Create") {
         return false;
       }
+
       if (!f.typeBoost && t.type === "Announce") {
         return false;
       }
+
+      // attachment
 
       if (f.attachmentAny) {
         if (!t._marl.hasAttachments) {
           return false;
         }
       }
+
       if (f.attachmentImage) {
         if (t._marl.hasAttachments) {
           if (
@@ -483,6 +542,7 @@ const filesStore = {
           return false;
         }
       }
+
       if (f.attachmentVideo) {
         if (t._marl.hasAttachments) {
           if (
@@ -496,6 +556,7 @@ const filesStore = {
           return false;
         }
       }
+
       if (f.attachmentSound) {
         if (t._marl.hasAttachments) {
           if (
@@ -538,6 +599,26 @@ const filesStore = {
         }
       }
 
+      // visibility
+
+      if (!f.visibilityPublic && t._marl.visibility[0] === "public") {
+        return false;
+      }
+
+      if (!f.visibilityUnlisted && t._marl.visibility[0] === "unlisted") {
+        return false;
+      }
+
+      if (!f.visibilityFollowers && t._marl.visibility[0] === "followers") {
+        return false;
+      }
+
+      if (!f.visibilityMentioned && t._marl.visibility[0] === "mentioned") {
+        return false;
+      }
+
+      // language
+
       for (const lang in this.languages) {
         if (f.hasOwnProperty("lang_" + lang) && f["lang_" + lang] === false) {
           if (t._marl.langs.includes(lang) || t._marl.langs.length === 0) {
@@ -545,6 +626,8 @@ const filesStore = {
           }
         }
       }
+
+      // author
 
       for (const source of this.sources) {
         const id = source.id;

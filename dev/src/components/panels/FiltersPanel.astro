@@ -2,6 +2,7 @@
 import CloseBtn from './CloseBtn.astro'
 import FilterText from './filters/FilterText.astro';
 import FilterCheckbox from './filters/FilterCheckbox.astro';
+import FilterCheckboxNumber from './filters/FilterCheckboxNumber.astro';
 ---
 
 <div
@@ -39,8 +40,8 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
       <FilterCheckbox name="hasHashtags" />
       <FilterCheckbox name="hasMentions" />
       <FilterCheckbox name="hasPoll" />
-      <FilterCheckbox name="hasExternalLink" />
       <FilterCheckbox name="hasSummary" />
+      <FilterCheckbox name="hasExternalLink" />
     </div>
 
     <div class="form-items-group">
@@ -48,6 +49,18 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
       <FilterCheckbox name="noStartingAt" />
       <FilterCheckbox name="isSensitive" />
       <FilterCheckbox name="isEdited" />
+    </div>
+  </div>
+
+  <div
+    class="form-items-section section-activities"
+    x-show="$store.files.activeFilters.hasLikes && $store.files.activeFilters.hasShares"
+  >
+    <h3 class="form-items-section-title" x-text="$t('filters.activities')"></h3>
+
+    <div class="form-items-group">
+      <FilterCheckboxNumber name="hasLikes" />
+      <FilterCheckboxNumber name="hasShares" />
     </div>
   </div>
 
@@ -100,7 +113,7 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
       <div class="form-items-group">
         <template x-for="lang in $store.files.sortedLanguages">
           <div class="form-item checkbox" :class="isFilterActive('lang_' + lang[0]) ? 'active' : ''">
-            <label :for="'filter-lang-' + lang[0]">
+            <label :for="'filter-lang-' + lang[0]" class="checkbox-label">
               <input
                 :id="'filter-lang-' + lang[0]"
                 type="checkbox"
@@ -124,7 +137,7 @@ import FilterCheckbox from './filters/FilterCheckbox.astro';
       <div class="form-items-group">
         <template x-for="source in $store.files.sources">
           <div class="form-item checkbox" :class="isFilterActive('actor_' + source.id) ? 'active' : ''">
-            <label :for="'filter-actor-' + source.id">
+            <label :for="'filter-actor-' + source.id" class="checkbox-label">
               <input
                 :id="'filter-actor-' + source.id"
                 type="checkbox"

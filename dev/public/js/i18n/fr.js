@@ -67,6 +67,12 @@ appStrings["fr"] = {
     hasExternalLink: "Lien(s) externe(s)",
     hasSummary: "Avertissement de contenu",
 
+    activities: "Activités",
+    hasLikes: "Favoris",
+    hasLikesMin: "au moins",
+    hasShares: "Partages",
+    hasSharesMin: "au moins",
+
     type: "Type",
     typeOriginal: "Posts originaux (y.c. réponses)",
     typeBoost: "Partages",

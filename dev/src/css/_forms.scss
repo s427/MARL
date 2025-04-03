@@ -76,7 +76,7 @@
   }
 
   &.checkbox {
-    label {
+    .checkbox-label {
       position: relative;
       padding-left: 1.7rem;
       background: transparent url("../svg/dark/checkbox-unchecked.svg") no-repeat 2px 2px / auto 18.4px scroll;
@@ -85,7 +85,7 @@
         background-image: url("../svg/dark/checkbox-checked.svg");
       }
     }
-    input {
+    input[type="checkbox"] {
       position: absolute;
       left: 1px;
       top: 1px;
@@ -94,14 +94,53 @@
     }
 
     @media (forced-colors: active) {
-      label {
+      .checkbox-label {
         background-image: none !important;
       }
-      input {
+      input[type="checkbox"] {
         left: 3px;
         top: 4px;
         opacity: 1;
         outline: none !important;
+      }
+    }
+  }
+
+  &.checkbox-number {
+    .checkbox-label,
+    .number-label {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .checkbox-label {
+      background-position-y: 50%;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .number-label {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      input {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-left: 0.6em;
+        text-align: left;
+        color: var(--fg1);
+      }
+    }
+
+    &.active {
+      .number-label input {
+        outline-color: var(--fg-inv);
+      }
+    }
+
+    html.dark &.active {
+      .number-label {
+        input {
+          background-color: rgba(0, 0, 0, 0.25);
+        }
       }
     }
   }
@@ -136,10 +175,10 @@
 // light
 
 @media (prefers-color-scheme: light) {
-  .form-item.checkbox label {
+  .form-item.checkbox .checkbox-label {
     background-image: url("../svg/dark/checkbox-unchecked.svg");
   }
-  .form-item.checkbox label:has(input:checked) {
+  .form-item.checkbox .checkbox-label:has(input:checked) {
     background-image: url("../svg/dark/checkbox-checked.svg");
   }
   .form-item:hover label,
@@ -152,10 +191,10 @@
   }
 }
 html.light {
-  .form-item.checkbox label {
+  .form-item.checkbox .checkbox-label {
     background-image: url("../svg/dark/checkbox-unchecked.svg");
   }
-  .form-item.checkbox label:has(input:checked) {
+  .form-item.checkbox .checkbox-label:has(input:checked) {
     background-image: url("../svg/dark/checkbox-checked.svg");
   }
   .form-item:hover label,
@@ -171,10 +210,10 @@ html.light {
 // dark
 
 @media (prefers-color-scheme: dark) {
-  .form-item.checkbox label {
+  .form-item.checkbox .checkbox-label {
     background-image: url("../svg/light/checkbox-unchecked.svg");
   }
-  .form-item.checkbox label:has(input:checked) {
+  .form-item.checkbox .checkbox-label:has(input:checked) {
     background-image: url("../svg/light/checkbox-checked.svg");
   }
   .form-item:hover label,
@@ -187,10 +226,10 @@ html.light {
   }
 }
 html.dark {
-  .form-item.checkbox label {
+  .form-item.checkbox .checkbox-label {
     background-image: url("../svg/light/checkbox-unchecked.svg");
   }
-  .form-item.checkbox label:has(input:checked) {
+  .form-item.checkbox .checkbox-label:has(input:checked) {
     background-image: url("../svg/light/checkbox-checked.svg");
   }
   .form-item:hover label,

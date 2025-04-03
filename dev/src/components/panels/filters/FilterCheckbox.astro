@@ -7,7 +7,10 @@ const { name } = Astro.props;
   :class={`isFilterActive('${name}') ? 'active' : ''`}
   x-show={`$store.files.activeFilters['${name}'] !== false`}
 >
-  <label for={"filter-"+name}>
+  <label
+    for={"filter-"+name}
+    class="checkbox-label"
+  >
     <input
       id={"filter-"+name}
       type="checkbox"

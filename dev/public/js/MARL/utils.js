@@ -146,6 +146,14 @@ function preprocessToots(t, index) {
       }
     }
 
+    if (t.object.likes && t.object.likes.totalItems > 0) {
+      Alpine.store("files").activeFilters.hasLikes = true;
+    }
+
+    if (t.object.shares && t.object.shares.totalItems > 0) {
+      Alpine.store("files").activeFilters.hasShares = true;
+    }
+
     if (t.object.sensitive) {
       Alpine.store("files").activeFilters.isSensitive = true;
     }
@@ -676,10 +684,12 @@ function validPanel(name) {
   const panels = ["actor", "filters", "tags", "tools"];
   return panels.includes(name);
 }
+
 function validTheme(name) {
   const themes = ["light", "dark"];
   return themes.includes(name);
 }
+
 function validLang(name) {
   if (appLangs[name]) {
     return true;

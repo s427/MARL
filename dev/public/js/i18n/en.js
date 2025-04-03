@@ -67,6 +67,12 @@ appStrings["en"] = {
     hasExternalLink: "External link(s)",
     hasSummary: "Summary (CW)",
 
+    activities: "Activities",
+    hasLikes: "Likes",
+    hasLikesMin: "at least",
+    hasShares: "Shares",
+    hasSharesMin: "at least",
+
     type: "Type",
     typeOriginal: "Original posts (incl. replies)",
     typeBoost: "Boosts",

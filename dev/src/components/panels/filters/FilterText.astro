@@ -9,6 +9,7 @@ const { name } = Astro.props;
   <label
     for={"filter-"+name}
     x-text={`$t('filters.${name}')`}
+    class="text-label"
   ></label>
   <div class="input-wrapper">
     <input
