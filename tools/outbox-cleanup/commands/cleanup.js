@@ -113,7 +113,7 @@ function filterPosts(json, opt) {
       item.cc.includes("https://www.w3.org/ns/activitystreams#Public")
     ) {
       // post is unlisted
-      return level === 2 || level === 3;
+      return level >= 2;
     }
     if (
       item.to.some((x) => x.indexOf("/followers") > -1) &&
@@ -121,7 +121,7 @@ function filterPosts(json, opt) {
       !item.cc.includes("https://www.w3.org/ns/activitystreams#Public")
     ) {
       // post is followers only
-      return level === 3;
+      return level >= 3;
     }
     if (
       !item.to.some((x) => x.indexOf("/followers") > -1) &&
@@ -129,7 +129,7 @@ function filterPosts(json, opt) {
       !item.cc.includes("https://www.w3.org/ns/activitystreams#Public")
     ) {
       // post is private (mentioned people only)
-      return level === 4;
+      return level >= 4;
     }
   });
   json.orderedItems = filteredItems;
