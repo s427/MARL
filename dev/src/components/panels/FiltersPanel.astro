@@ -169,8 +169,14 @@ import FilterTime from './filters/FilterTime.astro';
     </div>
   </template>
 
-  <div class="toots-filters-reset">
-    <button @click="$store.files.resetFilters(true)" :disabled="!$store.files.filtersActive">
+  <div
+    class="toots-filters-reset"
+    x-show="$store.files.filtersActive"
+  >
+    <button
+      @click="$store.files.resetFilters(true)"
+      :disabled="!$store.files.filtersActive"
+    >
       <svg class="btn-icon" aria-hidden="true">
         <use href="#reset-filters" />
       </svg>
