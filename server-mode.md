@@ -70,3 +70,9 @@ To use MARL in server mode, you need to:
 5. __Upload MARL on a web server__
 
 That's it! When it loads the configuration (step 4), MARL will automatically switch to server mode.
+
+## Change the default options
+
+You can also change de default values for all the options found in the "Tools" panel in the app (e.g. number of posts per page, combine panels, simplify post display etc). This also takes place in the `js/config.js` file. Please refer to this file for more information.
+
+Note that this only changes the _default_ values for those options. Users will still be able to use the Tools panel to set different options for themselves if they wish.

@@ -68,6 +68,8 @@ Many filters allow you to quickly find a subset of posts in your archive:
 - search full text, or exclusively in hashtags, mentions, content warnings or external links
 - filter posts depending on their language or visibility (public, unlisted etc)
 - filter posts depending on whether they contain images, videos or sounds
+- filter posts based on their number of likes or shares
+- filter posts based on their date/time of publication
 - and more.
 
 ### Media viewer
@@ -142,6 +144,14 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.8
+  - New filters:
+    - Activities: filter posts by the number of likes or shares they received.
+    - Date and time: filter posts before/after a certain date; or before/after a given time of the day.
+    - The "reset" button is now hidden when not needed; when visible, it remains sticky at the bottom of the filters panel (so that it's always visible).
+  - Server mode:
+    - You can change the default options for the app in the `config.js` file. All the options found in the tools panel can be set (e.g. number of posts per page, combine panels, etc...). See `config.default.js` for more information.
+    - New option in the MARL cleanup script: `-b` allows you to remove all boosts from the archive.
 - v. 2.7
   - Posts:
     - The number of likes and shares on posts is now displayed, if available in the archive.  

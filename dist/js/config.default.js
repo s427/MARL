@@ -3,7 +3,7 @@
 This file is used to determine whether MARL operates in LOCAL or SERVER mode.
 For more information, please read the "server-mode.md" documentation file.
 
-Important : please rename this file "config.js" if you want to use it.
+Important: please rename this file "config.js" if you want to use it.
 
 1. local mode
 =============
@@ -37,3 +37,47 @@ You may specify as many archives as you want. You can store them wherever you wa
 */
 
 const servers = [];
+
+/*
+
+You can use the following object to change the default options for the app (those are the options found in the tools panel).
+Note: Users will still be able to change those options for themselves.
+
+const customPrefs = {};
+
+You can use the following properties. All properties are optional:
+
+- lang: the language for the UI
+  possible values: "en" (default), "fr"
+  note: if no option is set, the app will attempt to use the same language as the user's browser (if available for the app)
+
+- theme: the theme for the app
+  possible values: "light" (default), "dark"
+  note: if no option is set, the app will follow the user preference (set in their browser or OS)
+
+- sortAsc: the order of the posts (chronological or not); true means "oldest posts first"
+  possible values: true (default), false
+
+- pageSize: the number of posts per page
+  possibles values: any number above 0; default is 10; be mindful that large values may slow down the app significantly
+
+- combinePanels: (on large screens) combine the panels into one sidebar
+  possible values: true, false (default)
+
+- defaultPanel: if "combinePanels" is active (true), which panel is displayed upon loading the app
+  possible values: "actor", "filters", "tags", "tools"
+  note: "combinePanels" is active and if this option is not set, no panel will be initially displayed
+
+- simplifyPostsDisplay: hide some technical or redundant elements in posts display
+  possible values: true, false (default)
+
+Example:
+
+const customPrefs = {
+  pageSize: 5,
+  combinePanels: true,
+  defaultPanel: "actor",
+  simplifyPostsDisplay: true,
+};
+
+*/
