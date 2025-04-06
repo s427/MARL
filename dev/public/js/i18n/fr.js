@@ -55,7 +55,7 @@ appStrings["fr"] = {
     fullText: "Partout",
     hashtagText: "Hashtags",
     mentionText: "Mentions",
-    externalLink: "Liens externes",
+    externalLink: "Liens externes",
     summary: "Avertissement de contenu",
     isEdited: "A été modifié",
     isDuplicate: "Doublons imparfaits",
