@@ -5,23 +5,25 @@
   margin: 0 0 0.5rem;
 }
 .form-items-group {
-  margin: 0 0 1.5rem;
+  margin: 0 0 0.75rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-.form-items-section:has(.text) {
+.section-text {
   display: grid;
   grid-template-columns: min-content 1fr;
   gap: 0.35rem;
   .form-item {
+    margin-bottom: 0;
     grid-column: span 2;
-    &.text {
-      display: grid;
-      grid-template-columns: subgrid;
-    }
+    display: grid;
+    grid-template-columns: subgrid;
   }
   @container (width < 260px) {
     display: block;
-    .form-item.text label {
+    .form-item label {
       margin: 0.5rem 0 0.25rem;
     }
   }
@@ -33,14 +35,12 @@
   label {
     display: block;
     padding: 0.2rem 0.3rem;
+    font-size: 0.85em;
     border-radius: 0.2rem;
   }
 
   &.sep-above {
     margin-top: 1rem;
-  }
-  label {
-    font-size: 0.85em;
   }
 
   &.text {
@@ -106,42 +106,22 @@
     }
   }
 
-  &.checkbox-number {
-    .checkbox-label,
-    .number-label {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
-    .checkbox-label {
-      background-position-y: 50%;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    .number-label {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+  &.datetime {
+    display: flex;
+    gap: 0.35rem;
+    .input-wrapper {
       input {
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-left: 0.6em;
-        text-align: left;
-        color: var(--fg1);
+        display: block;
+        width: 100%;
       }
     }
+  }
 
-    &.active {
-      .number-label input {
-        outline-color: var(--fg-inv);
-      }
-    }
-
-    html.dark &.active {
-      .number-label {
-        input {
-          background-color: rgba(0, 0, 0, 0.25);
-        }
-      }
+  &.activity {
+    display: flex;
+    gap: 0.35rem;
+    .checkbox-label {
+      flex-grow: 1;
     }
   }
 

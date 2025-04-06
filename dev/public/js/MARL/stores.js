@@ -118,6 +118,11 @@ const filesStore = {
     this.languages = {};
     this.boostsAuthors = [];
 
+    this.date = {
+      first: null,
+      last: null,
+    };
+
     this.filters = {};
     this.filtersDefault = {
       fullText: "",
@@ -137,10 +142,13 @@ const filesStore = {
       isSensitive: false,
       isEdited: false,
 
-      hasLikes: false,
-      hasLikesMin: 1,
-      hasShares: false,
-      hasSharesMin: 1,
+      hasLikes: "0",
+      hasShares: "0",
+
+      afterDate: "",
+      beforeDate: "",
+      afterTime: "",
+      beforeTime: "",
 
       typeOriginal: true,
       typeBoost: true,
@@ -212,11 +220,7 @@ const filesStore = {
     this.checkPagingValue();
     scrollTootsToTop();
     pagingUpdated();
-    if (JSON.stringify(this.filters) === JSON.stringify(this.filtersDefault)) {
-      this.filtersActive = false;
-    } else {
-      this.filtersActive = true;
-    }
+    this.checkFiltersActive();
 
     // mutually exclusive filters
     if (this.filters.startingAt && this.filters.noStartingAt) {
@@ -228,35 +232,17 @@ const filesStore = {
       }
     }
 
-    // number dependent on checkbox
-    if (filterName === "hasLikesMin") {
-      if (!+this.filters.hasLikesMin > 0) {
-        this.filters.hasLikesMin = 1;
-      }
-      if (this.filters.hasLikesMin > 1 && !this.filters.hasLikes) {
-        this.filters.hasLikes = true;
-      }
-    }
-    if (filterName === "hasSharesMin") {
-      if (!+this.filters.hasSharesMin > 0) {
-        this.filters.hasSharesMin = 1;
-      }
-      if (this.filters.hasSharesMin > 1 && !this.filters.hasShares) {
-        this.filters.hasShares = true;
-      }
-    }
-
-    if (filterName === "hasLikes" && !this.filters.hasLikes) {
-      this.filters.hasLikesMin = 1;
-    }
-    if (filterName === "hasShares" && !this.filters.hasShares) {
-      this.filters.hasSharesMin = 1;
-    }
-
     const self = this;
     setTimeout(() => {
       self.checkPagingValue();
     }, 50);
+  },
+  checkFiltersActive() {
+    if (JSON.stringify(this.filters) === JSON.stringify(this.filtersDefault)) {
+      this.filtersActive = false;
+    } else {
+      this.filtersActive = true;
+    }
   },
   filterByTag(filter, value, id) {
     if (value) {
@@ -290,7 +276,7 @@ const filesStore = {
     this.filters = JSON.parse(JSON.stringify(this.filtersDefault));
     if (userAction) {
       this.currentPage = 1;
-      this.filtersActive = false;
+      this.checkFiltersActive();
       scrollTootsToTop();
       pagingUpdated();
     }
@@ -489,10 +475,9 @@ const filesStore = {
 
       // activities
 
-      if (f.hasLikes) {
+      if (f.hasLikes && f.hasLikes > 0) {
         if (typeof t.object === "object" && t.object !== null && t.object.likes) {
-          const nb = f.hasLikesMin;
-          if (t.object.likes.totalItems < nb) {
+          if (t.object.likes.totalItems < f.hasLikes) {
             return false;
           }
         } else {
@@ -500,13 +485,41 @@ const filesStore = {
         }
       }
 
-      if (f.hasShares) {
+      if (f.hasShares && f.hasShares > 0) {
         if (typeof t.object === "object" && t.object !== null && t.object.shares) {
-          const nb = f.hasSharesMin;
-          if (t.object.shares.totalItems < nb) {
+          if (t.object.shares.totalItems < f.hasShares) {
             return false;
           }
         } else {
+          return false;
+        }
+      }
+
+      // date & time
+      if (f.afterDate) {
+        const date = f.afterDate.replace(/-/g, "");
+        if (t._marl.date < +date) {
+          return false;
+        }
+      }
+
+      if (f.beforeDate) {
+        const date = f.beforeDate.replace(/-/g, "");
+        if (t._marl.date > +date) {
+          return false;
+        }
+      }
+
+      if (f.afterTime) {
+        const time = f.afterTime.replace(":", "");
+        if (t._marl.time < +time) {
+          return false;
+        }
+      }
+
+      if (f.beforeTime) {
+        const time = f.beforeTime.replace(":", "");
+        if (t._marl.time > +time) {
           return false;
         }
       }

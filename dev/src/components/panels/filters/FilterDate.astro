@@ -3,20 +3,24 @@ const { name } = Astro.props;
 ---
 
 <div
-  class="form-item checkbox"
+  class="form-item datetime date"
   :class={`isFilterActive('${name}') ? 'active' : ''`}
   x-show={`$store.files.activeFilters['${name}'] !== false`}
 >
-  <label
-    for={"filter-"+name}
-    class="checkbox-label"
-  >
+  <div class="input-wrapper">
     <input
+      type="date"
       id={"filter-"+name}
-      type="checkbox"
+      :min="$store.files.date.first.toISOString().split('T')[0]"
+      :max="$store.files.date.last.toISOString().split('T')[0]"
       x-model.debounce={"$store.files.filters."+name}
       @change.debounce={"$store.files.setFilter('"+name+"')"}
     />
-    <span x-text={`$t('filters.${name}')`}></span>
-  </label>
+  </div>
+
+  <label
+    for={"filter-"+name}
+    class="field-label"
+    x-text={`$t('filters.${name}')`}
+  ></label>
 </div>

@@ -68,10 +68,14 @@ appStrings["fr"] = {
     hasSummary: "Avertissement de contenu",
 
     activities: "Activités",
-    hasLikes: "Favoris",
-    hasLikesMin: "au moins",
-    hasShares: "Partages",
-    hasSharesMin: "au moins",
+    hasLikes: "favoris ou plus",
+    hasShares: "partages ou plus",
+
+    dateTime: "Date & heure",
+    afterDate: "ou plus tard",
+    beforeDate: "ou plus tôt",
+    afterTime: "ou plus tard",
+    beforeTime: "ou plus tôt",
 
     type: "Type",
     typeOriginal: "Posts originaux (y.c. réponses)",

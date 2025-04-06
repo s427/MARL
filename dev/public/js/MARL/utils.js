@@ -88,8 +88,30 @@ function preprocessToots(t, index) {
   // build the '_marl' prop for each toot
   let marl = {
     langs: [],
+    date: "", // int, eg. 20250430
+    time: "", // int, eg. "0935"
     source: index,
   };
+
+  const date = new Date(t.published);
+  marl.date = +date.toISOString().slice(0, 10).replace(/-/g, "");
+
+  if (!Alpine.store("files").date.first || date < Alpine.store("files").date.first) {
+    Alpine.store("files").date.first = date;
+  }
+  if (!Alpine.store("files").date.last || date > Alpine.store("files").date.last) {
+    Alpine.store("files").date.last = date;
+  }
+
+  let hour = "" + date.getHours();
+  if (hour < 10) {
+    hour = "0" + hour;
+  }
+  let min = "" + date.getMinutes();
+  if (min < 10) {
+    min = "0" + min;
+  }
+  marl.time = +(hour + min);
 
   // check for duplicates (in case of multiple archive files)
   if (Alpine.store("files").toc.includes(t.id)) {

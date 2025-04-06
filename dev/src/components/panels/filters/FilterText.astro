@@ -3,7 +3,7 @@ const { name } = Astro.props;
 ---
 
 <div
-  class="toots-filter form-item text"
+  class="form-item text"
   :class={"isFilterActive('"+name+"') ? 'active' : ''"}
 >
   <label
@@ -11,6 +11,7 @@ const { name } = Astro.props;
     x-text={`$t('filters.${name}')`}
     class="text-label"
   ></label>
+
   <div class="input-wrapper">
     <input
       id={"filter-"+name}

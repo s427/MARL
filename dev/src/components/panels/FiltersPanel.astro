@@ -2,7 +2,9 @@
 import CloseBtn from './CloseBtn.astro'
 import FilterText from './filters/FilterText.astro';
 import FilterCheckbox from './filters/FilterCheckbox.astro';
-import FilterCheckboxNumber from './filters/FilterCheckboxNumber.astro';
+import FilterActivity from './filters/FilterActivity.astro';
+import FilterDate from './filters/FilterDate.astro';
+import FilterTime from './filters/FilterTime.astro';
 ---
 
 <div
@@ -18,7 +20,7 @@ import FilterCheckboxNumber from './filters/FilterCheckboxNumber.astro';
 
   <p class="visually-hidden" x-text="$t('filters.panelNotice')"></p>
 
-  <div class="form-items-section">
+  <div class="form-items-section section-text">
     <FilterText name="fullText" />
     <FilterText name="hashtagText" />
     <FilterText name="mentionText" />
@@ -33,7 +35,7 @@ import FilterCheckboxNumber from './filters/FilterCheckboxNumber.astro';
     <FilterCheckbox name="isDuplicate" />
   </div>
 
-  <div class="form-items-section">
+  <div class="form-items-section section-must-contain">
     <h3 class="form-items-section-title" x-text="$t('filters.mustContain')"></h3>
 
     <div class="form-items-group">
@@ -59,13 +61,26 @@ import FilterCheckboxNumber from './filters/FilterCheckboxNumber.astro';
     <h3 class="form-items-section-title" x-text="$t('filters.activities')"></h3>
 
     <div class="form-items-group">
-      <FilterCheckboxNumber name="hasLikes" />
-      <FilterCheckboxNumber name="hasShares" />
+      <FilterActivity name="hasLikes" />
+      <FilterActivity name="hasShares" />
+    </div>
+  </div>
+
+  <div class="form-items-section section-datetime">
+    <h3 class="form-items-section-title" x-text="$t('filters.dateTime')"></h3>
+
+    <div class="form-items-group">
+      <FilterDate name="afterDate" />
+      <FilterDate name="beforeDate" />
+    </div>
+    <div class="form-items-group">
+      <FilterTime name="afterTime" />
+      <FilterTime name="beforeTime" />
     </div>
   </div>
 
   <div
-    class="form-items-section"
+    class="form-items-section section-type"
     x-show="$store.files.activeFilters.typeOriginal && $store.files.activeFilters.typeBoost"
   >
     <h3 class="form-items-section-title" x-text="$t('filters.type')"></h3>
@@ -74,7 +89,7 @@ import FilterCheckboxNumber from './filters/FilterCheckboxNumber.astro';
   </div>
 
   <div
-    class="form-items-section"
+    class="form-items-section section-attachments"
     x-show="$store.files.activeFilters.attachmentImage || $store.files.activeFilters.attachmentVideo || $store.files.activeFilters.attachmentSound"
   >
     <h3 class="form-items-section-title" x-text="$t('filters.mustHaveAttachement')"></h3>

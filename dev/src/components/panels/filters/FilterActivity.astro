@@ -1,0 +1,28 @@
+---
+const { name } = Astro.props;
+---
+
+<div
+  class="form-item activity"
+  :class={`isFilterActive('${name}') ? 'active' : ''`}
+  x-show={`$store.files.activeFilters['${name}'] !== false`}
+>
+  <div class="input-wrapper">
+    <input
+      type="number"
+      min="0"
+      step="1"
+      id={"filter-"+name}
+      onclick="this.select()"
+      x-model.debounce={"$store.files.filters."+name}
+      @keyup.debounce={"$store.files.setFilter('"+name+"')"}
+      @change.debounce={"$store.files.setFilter('"+name+"')"}
+    >
+  </div>
+
+  <label
+    for={"filter-"+name}
+    class="checkbox-label"
+    x-text={`$t('filters.${name}')`}
+  ></label>
+</div>

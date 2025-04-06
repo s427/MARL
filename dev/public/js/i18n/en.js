@@ -68,10 +68,14 @@ appStrings["en"] = {
     hasSummary: "Summary (CW)",
 
     activities: "Activities",
-    hasLikes: "Likes",
-    hasLikesMin: "at least",
-    hasShares: "Shares",
-    hasSharesMin: "at least",
+    hasLikes: "likes or more",
+    hasShares: "shares or more",
+
+    dateTime: "Date & time",
+    afterDate: "or later",
+    beforeDate: "or earlier",
+    afterTime: "or later",
+    beforeTime: "or earlier",
 
     type: "Type",
     typeOriginal: "Original posts (incl. replies)",
