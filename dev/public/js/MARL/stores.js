@@ -452,7 +452,7 @@ const filesStore = {
       }
 
       if (f.noStartingAt) {
-        if (!t._marl.textContent || t._marl.textContent.indexOf("@") === 0) {
+        if (t._marl.textContent || t._marl.textContent.indexOf("@") === 0) {
           return false;
         }
       }
