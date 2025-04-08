@@ -232,6 +232,7 @@ html {
 }
 
 @media screen and (width >= 1200px) {
+  // ! value used in checkMobileLayout()
   .combine-panels {
     --panel-width: 500px;
     @include side-menu();
@@ -288,6 +289,7 @@ html {
 }
 
 @media screen and (width < 1200px) {
+  // ! value used in checkMobileLayout()
   @include side-menu();
 }
 

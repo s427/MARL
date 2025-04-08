@@ -59,6 +59,22 @@ function localMode() {
   return !Alpine.store("files").serverMode;
 }
 
+function mobileLayout() {
+  return Alpine.store("ui").mobileLayout;
+}
+
+function desktopLayout() {
+  return !Alpine.store("ui").mobileLayout;
+}
+
+function combinedPanelsMode() {
+  return Alpine.store("ui").combinePanels && desktopLayout();
+}
+
+function appReady() {
+  return Alpine.store("files").appReady;
+}
+
 function marlBasePath() {
   let r = Alpine.store("files").marlBasePath;
 
@@ -89,7 +105,7 @@ function preprocessToots(t, index) {
   let marl = {
     langs: [],
     date: "", // int, eg. 20250430
-    time: "", // int, eg. "0935"
+    time: "", // int, eg. 935
     source: index,
   };
 

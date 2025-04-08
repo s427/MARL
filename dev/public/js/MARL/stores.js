@@ -33,7 +33,7 @@ const userPrefsStore = {
           Alpine.store("ui")[pref] = value;
         }
 
-        if (pref === "combinePanels" && value) {
+        if (pref === "combinePanels" && combinedPanelsMode()) {
           Alpine.store("ui").activePanel = Alpine.store("ui").defaultPanel;
         }
         break;
@@ -47,7 +47,7 @@ const userPrefsStore = {
         break;
 
       case "activePanel":
-        if (value && Alpine.store("ui").combinePanels) {
+        if (value && combinedPanelsMode()) {
           Alpine.store("ui")[pref] = value;
         }
         break;
@@ -55,7 +55,7 @@ const userPrefsStore = {
       case "defaultPanel":
         if (value) {
           Alpine.store("ui")[pref] = value;
-          if (value !== "auto" && Alpine.store("ui").combinePanels) {
+          if (value !== "auto" && combinedPanelsMode()) {
             Alpine.store("ui").panelOpen(value, false);
           }
         }
@@ -936,6 +936,8 @@ const uiStore = {
     this.defaultPanel = this.defaultOptions.defaultPanel;
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
 
+    this.checkMobileLayout();
+
     loadPref("lang");
     loadPref("theme");
     loadPref("sortAsc");
@@ -1069,7 +1071,7 @@ const uiStore = {
   },
 
   panelClose() {
-    if (this.combinePanels) {
+    if (combinedPanelsMode()) {
       return;
     }
 
@@ -1102,7 +1104,7 @@ const uiStore = {
       case "tags":
       case "tools":
         if (this.activePanel === name) {
-          if (!this.combinePanels) {
+          if (!combinedPanelsMode()) {
             this.panelClose();
           }
         } else {
@@ -1131,50 +1133,68 @@ const uiStore = {
   },
   checkMobileLayout() {
     // called on init and window.resize
-    const menu = document.getElementById("mobile-menu");
-    const menuVisible = window.getComputedStyle(menu, null).display !== "none";
-    // const backdrop = document.getElementById("panel-backdrop");
-    // const backdropVisible = window.getComputedStyle(backdrop, null).display !== "none";
+    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 
-    if (menuVisible) {
+    if (vw < 1200) {
       this.mobileLayout = true;
     } else {
       this.mobileLayout = false;
     }
 
-    this.setInert();
+    if (appReady()) {
+      this.setInert();
+    }
   },
 
   setInertMain() {
-    document
-      .querySelectorAll("#main-section-inner > *:not(.mobile-menu, .panel-backdrop, #panel-" + this.activePanel)
-      .forEach((e) => {
-        e.setAttribute("inert", true);
-      });
+    const elms = document.querySelectorAll(
+      "#main-section-inner > *:not(.mobile-menu, .panel-backdrop, #panel-" + this.activePanel
+    );
+    if (!elms.length) {
+      return;
+    }
+    elms.forEach((e) => {
+      e.setAttribute("inert", true);
+    });
   },
   setInertPanels() {
-    if (this.combinePanels) {
-    } else {
-      document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags, #panel-tools").forEach((e) => {
-        e.setAttribute("inert", true);
-      });
+    const panels = document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags, #panel-tools");
+    if (!panels.length) {
+      return;
+    }
+
+    panels.forEach((e) => {
+      e.setAttribute("inert", true);
+    });
+
+    if (combinedPanelsMode()) {
+      if (this.activePanel) {
+        document.getElementById("panel-" + this.activePanel).removeAttribute("inert");
+      }
     }
   },
   setInertTools() {
-    document.querySelectorAll("#panel-tools").forEach((e) => {
-      e.setAttribute("inert", true);
-    });
+    const panel = document.getElementById("panel-tools");
+    if (!panel) {
+      return;
+    }
+    panel.setAttribute("inert", true);
   },
   setInert() {
     // set the 'inert' state on the side panels or the main part of the app
     // depending on whether they are hidden or not, AND whether the mobile
     // menu is active
 
-    document.querySelectorAll("#main-section-inner > *").forEach((e) => {
+    const elms = document.querySelectorAll("#main-section-inner > *");
+    if (!elms.length) {
+      return;
+    }
+
+    elms.forEach((e) => {
       e.removeAttribute("inert");
     });
 
-    if (this.combinePanels) {
+    if (combinedPanelsMode()) {
       this.setInertPanels();
     } else {
       if (this.mobileLayout) {
@@ -1195,7 +1215,7 @@ const uiStore = {
 
   get appClasses() {
     let classes = [];
-    if (this.combinePanels) {
+    if (combinedPanelsMode()) {
       classes.push("combine-panels");
     }
     if (this.simplifyPostsDisplay) {
