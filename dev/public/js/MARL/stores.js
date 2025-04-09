@@ -933,6 +933,8 @@ const uiStore = {
     this.defaultPanel = this.defaultOptions.defaultPanel;
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
 
+    checkMobileLayout();
+
     loadPref("lang");
     loadPref("theme");
     loadPref("sortAsc");
@@ -941,6 +943,10 @@ const uiStore = {
     loadPref("activePanel");
     loadPref("defaultPanel"); // must be loaded after activePanel
     loadPref("simplifyPostsDisplay");
+
+    if (combinedPanelsMode()) {
+      this.activePanel = this.defaultPanel;
+    }
   },
   changeDefault(pref, val) {
     switch (pref) {
@@ -961,7 +967,6 @@ const uiStore = {
         if (!validPanel(val)) {
           return;
         }
-        this.defaultOptions.activePanel = val;
         break;
 
       case "theme":
@@ -1137,14 +1142,14 @@ const uiStore = {
     if (!panels.length) {
       return;
     }
-
     panels.forEach((e) => {
       e.setAttribute("inert", true);
     });
 
-    if (combinedPanelsMode()) {
-      if (this.activePanel) {
-        document.getElementById("panel-" + this.activePanel).removeAttribute("inert");
+    if (combinedPanelsMode() && this.activePanel) {
+      const panel = document.getElementById("panel-" + this.activePanel);
+      if (panel) {
+        panel.removeAttribute("inert");
       }
     }
   },
