@@ -149,9 +149,11 @@
   margin: 2.4rem 0 0;
   padding-left: 1rem;
   font-weight: normal;
+  line-height: 1;
 }
 .actor-url {
   grid-area: url;
+  padding-top: 0.5rem;
   padding-left: 1rem;
 }
 
