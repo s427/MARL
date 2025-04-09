@@ -1027,19 +1027,6 @@ const uiStore = {
     setTheme(this.theme);
   },
 
-  togglePagingOptions() {
-    this.pagingOptionsVisible = !this.pagingOptionsVisible;
-
-    if (this.pagingOptionsVisible) {
-      setTimeout(() => {
-        document.getElementById("paging-options").focus();
-      }, 100);
-    }
-  },
-  get pagingOptionsClass() {
-    return this.pagingOptionsVisible ? "open" : "";
-  },
-
   openActorTab(id) {
     this.actorPanel = id;
 

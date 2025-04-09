@@ -67,9 +67,6 @@ html {
   .paging {
     flex: 0 0 100%;
   }
-  .paging-options-toggle {
-    display: none;
-  }
 }
 
 .toots {
@@ -107,7 +104,6 @@ html {
   // -> align with padding-bottom on .toots-filters and .toots-tags (side panels)
 
   @media (width < 400px) {
-    .paging-options-toggle,
     .direction-back,
     .direction-fwd {
       .btn-label {
@@ -132,7 +128,6 @@ html {
   .paging {
     clear: both;
     flex-wrap: wrap;
-    .paging-options-toggle,
     .paging-options {
       order: 2;
       user-select: none;
@@ -146,56 +141,13 @@ html {
   }
 
   @container (width < 475px) {
-    // hide the paging options and show "options" button
-
-    .paging-options-toggle {
-      display: block;
-    }
-
-    .paging .paging-options {
-      font-size: 0.85em;
-
+    .paging-label {
       display: none;
-      order: 4;
-      flex-basis: calc(100% + 2rem);
-      position: relative;
-      margin: 0.5rem -1rem -1rem;
-      text-align: center;
-      background: var(--bg4);
-      box-shadow: 0 0.75rem 0.75rem -1rem #000 inset;
-
-      &::before {
-        content: "";
-        position: absolute;
-        left: calc(50% - 0.5rem);
-        top: 0;
-        z-index: 2;
-        width: 0;
-        height: 0;
-        border: 0.5rem solid transparent;
-        border-top: 0.4rem solid var(--bg3);
-      }
-      @media (forced-colors: active) {
-        &::before {
-          content: none;
-          display: none;
-        }
-      }
-
-      &.open {
-        display: block;
-      }
-    }
-
-    .paging-options-inner {
-      display: inline-block;
-      padding: 1rem;
     }
   } // ! @container
 
   @container (width < 650px) {
     .paging {
-      .paging-options-toggle,
       .direction-back,
       .direction-fwd {
         .btn-label {
