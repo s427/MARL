@@ -8,6 +8,10 @@ $display-wide: 340px;
   overflow: hidden;
   background-color: var(--bg4);
   container-type: inline-size;
+
+  &.no-boosts {
+    grid-template-rows: min-content repeat(2, 1fr);
+  }
 }
 
 .tags-title {

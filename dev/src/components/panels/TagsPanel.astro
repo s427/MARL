@@ -5,6 +5,7 @@ import TagsGroup from './tags/TagsGroup.astro';
 
 <aside
   class="toots-tags mobile-menu-panel"
+  :class="$store.files.listBoostsAuthors.length === 0 ? 'no-boosts' : ''"
   id="panel-tags"
   aria-labelledby="toots-tags-title"
   tabindex="-1"
@@ -19,5 +20,7 @@ import TagsGroup from './tags/TagsGroup.astro';
 
   <TagsGroup type="hashtags" />
   <TagsGroup type="mentions" />
-  <TagsGroup type="boosts" />
+  <template x-if="$store.files.listBoostsAuthors.length">
+    <TagsGroup type="boosts" />
+  </template>
 </aside>
