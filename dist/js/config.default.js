@@ -66,7 +66,7 @@ You can use the following properties. All properties are optional:
 
 - defaultPanel: if "combinePanels" is active (true), which panel is displayed upon loading the app
   possible values: "actor", "filters", "tags", "tools"
-  note: "combinePanels" is active and if this option is not set, no panel will be initially displayed
+  note: if "combinePanels" is active and if this option is not set, no panel will be initially displayed
 
 - simplifyPostsDisplay: hide some technical or redundant elements in posts display
   possible values: true, false (default)
