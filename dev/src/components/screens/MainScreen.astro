@@ -15,7 +15,7 @@ import ToolsPanel from '../panels/ToolsPanel.astro';
   :class="$store.ui.appInsideClasses"
   id="main-section"
   tabindex="-1"
-  x-on:resize.window="$store.ui.checkMobileLayout()"
+  x-on:resize.window="checkMobileLayout()"
 >
   <div
     class="main-section-inner"

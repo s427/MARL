@@ -880,10 +880,7 @@ const lightboxStore = {
 
   close() {
     const origin = this.origin;
-    this.data = [];
-    this.index = 0;
-    this.show = false;
-    this.origin = "";
+    this.resetState();
     document.getElementById("main-section-inner").removeAttribute("inert");
     document.getElementById(origin).focus();
   },
@@ -935,8 +932,6 @@ const uiStore = {
     this.activePanel = this.defaultOptions.activePanel;
     this.defaultPanel = this.defaultOptions.defaultPanel;
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
-
-    this.checkMobileLayout();
 
     loadPref("lang");
     loadPref("theme");
@@ -1009,20 +1004,8 @@ const uiStore = {
     }
   },
 
-  toggleTheme() {
-    this.theme = this.theme === "light" ? "dark" : "light";
-    savePref("theme", this.theme);
-    setTheme(this.theme);
-  },
-
   setOption(pref) {
-    const val = this[pref];
-
-    savePref(pref, val);
-
-    if (pref === "combinePanels") {
-      this.checkMobileLayout();
-    }
+    savePref(pref, this[pref]);
 
     if (pref === "sortAsc") {
       Alpine.store("files").sortToots();
@@ -1031,6 +1014,12 @@ const uiStore = {
     if (pref === "pageSize") {
       Alpine.store("files").checkPagingValue();
     }
+  },
+
+  toggleTheme() {
+    this.theme = this.theme === "light" ? "dark" : "light";
+    savePref("theme", this.theme);
+    setTheme(this.theme);
   },
 
   togglePagingOptions() {
@@ -1046,14 +1035,14 @@ const uiStore = {
     return this.pagingOptionsVisible ? "open" : "";
   },
 
-  openActorPanel(id) {
+  openActorTab(id) {
     this.actorPanel = id;
 
     setTimeout(() => {
       document.getElementById("actorpanel-" + id).scrollTop = 0;
     }, 50);
   },
-  switchActorPanel(dir) {
+  switchActorTab(dir) {
     let id = this.actorPanel;
     if (dir === "up") {
       id++;
@@ -1129,20 +1118,6 @@ const uiStore = {
       setTimeout(() => {
         document.getElementById("panel-" + name).scrollTop = 0;
       }, 250);
-    }
-  },
-  checkMobileLayout() {
-    // called on init and window.resize
-    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-
-    if (vw < 1200) {
-      this.mobileLayout = true;
-    } else {
-      this.mobileLayout = false;
-    }
-
-    if (appReady()) {
-      this.setInert();
     }
   },
 

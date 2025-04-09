@@ -59,6 +59,17 @@ function localMode() {
   return !Alpine.store("files").serverMode;
 }
 
+function checkMobileLayout() {
+  // called on init and window.resize
+  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+
+  if (vw < 1200) {
+    Alpine.store("ui").mobileLayout = true;
+  } else {
+    Alpine.store("ui").mobileLayout = false;
+  }
+}
+
 function mobileLayout() {
   return Alpine.store("ui").mobileLayout;
 }
@@ -283,7 +294,7 @@ function checkAppReady(ok) {
     cleanUpRaw();
     setHueForSources();
     document.getElementById("main-section").focus();
-    Alpine.store("ui").checkMobileLayout();
+    Alpine.store("ui").setInert();
     Alpine.store("files").sortToots();
     Alpine.store("files").loading = false;
   }

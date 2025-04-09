@@ -22,6 +22,7 @@ document.addEventListener("alpine:init", () => {
   ];
   marlConsole(`MARL loaded. ${salutations[Math.floor(Math.random() * salutations.length)]} 😊`);
 
+  checkMobileLayout();
   setMarlMode();
   loadCustomPrefs();
   resetStores();

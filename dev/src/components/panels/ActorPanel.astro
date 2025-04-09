@@ -28,9 +28,9 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
             :aria-selected="source === $store.ui.actorPanel ? 'true': 'false'"
             :aria-controls="'actorpanel-' + source"
             :style="'--actor-hue: '+ $store.files.sources[source].hue"
-            @click="$store.ui.openActorPanel(source)"
-            @keyup.right="$store.ui.switchActorPanel('up')"
-            @keyup.left="$store.ui.switchActorPanel('down')"
+            @click="$store.ui.openActorTab(source)"
+            @keyup.right="$store.ui.switchActorTab('up')"
+            @keyup.left="$store.ui.switchActorTab('down')"
           >
             <span x-text="$store.files.sources[source].actor.name"></span>
           </button>
