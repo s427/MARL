@@ -4,20 +4,24 @@
 
 MARL is a lightweight, single-page app that provides a user-friendly interface to explore the content of a Mastodon archive file: account data, posts, attachments, etc.
 
-Project page: https://github.com/s427/MARL
-
-Should you want to spread the word, here are the announcement posts on Mastodon:  
-[English](https://lou.lt/@s427/113567190207673533) - [French](https://lou.lt/@s427/113567186376766727)
+| Links                  |                                         |                                                    |
+| ---------------------- | --------------------------------------- | -------------------------------------------------- |
+| Project page           | https://github.com/s427/MARL            |                                                    |
+| Demo page              | https://s427.ch/marl                    | uses a subset of my own archive data               |
+| Try it for yourself    | https://s427.github.io/MARL/            | online version - you need to have your own archive |
+| Announcement post (en) | https://lou.lt/@s427/113567190207673533 | should you want to spread the word :)              |
+| Announcement post (fr) | https://lou.lt/@s427/113567186376766727 | should you want to spread the word :)              |
 
 ## Usage
 
 __Access MARL online here:__ https://s427.github.io/MARL/
 
-Alternatively, you can download this project from its [project page](https://github.com/s427/MARL), unpack it on your device, and simply launch (double click) `index.html`.
+__Alternatively__, you can download this project from its [project page](https://github.com/s427/MARL), unpack it on your device, and simply launch (double click) `index.html`. That's it. No installation is necessary.
 
 ⚠️ __Only ZIP files are supported__ —not GZ files. This is a limitation of the JSZip library which is used by MARL to unpack the archive file. Older versions of Mastodon (prior to version 4.2.0) used to export the archive in TAR.GZ. If this is your case, you will have to first convert your archive to a ZIP file.
 
-⚠️ __A note about very large archives:__ Browsers may struggle opening very large ZIP files (several GB), in which case you will see an error and the archive will not be loaded. If this happens, you can try upacking your archive, removing the `media_attachments` folder, and repacking everything else. This will significantly reduce the size of the archive, by removing all attachments from your posts (images, videos or sounds). MARL will still be able to work without those attachments and display their media type and alt text (or lack thereof). Filters related to attachments still work too. Also note that for each attachment, MARL indicates where you can find it in your archive.
+⚠️ __A note about very large archives:__ Browsers may struggle opening very large ZIP files (several GB), in which case you will see an error and the archive will not be loaded. If this happens, you can try upacking your archive, removing the `media_attachments` folder, and repacking everything else. This will significantly reduce the size of the archive, by removing all attachments from your posts (images, videos or sounds). MARL will still be able to work without those attachments and display their media type and alt text (or lack thereof). Filters related to attachments still work too. Also note that for each attachment, MARL indicates where you can find it in your archive.  
+Another solution to this problem is to use MARL in __server mode__. See below for more information.
 
 ## Screenshots
 
