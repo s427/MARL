@@ -69,12 +69,30 @@ html {
   }
 }
 
-.toots {
-  background: var(--bg3);
+.toots,
+.conversation {
+  position: relative;
+  background: var(--bg1);
   overflow: auto;
   container-type: inline-size;
   @media (prefers-reduced-motion: no-preference) {
     scroll-behavior: smooth;
+  }
+}
+
+.conversation {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  background: var(--bg2);
+  h2 {
+    text-align: center;
+  }
+  .post-has-replies {
+    display: none !important;
   }
 }
 

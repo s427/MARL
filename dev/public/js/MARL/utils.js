@@ -118,6 +118,7 @@ function preprocessToots(t, index) {
     date: "", // int, eg. 20250430
     time: "", // int, eg. 935
     source: index,
+    replies: [],
   };
 
   const date = new Date(t.published);
@@ -287,25 +288,14 @@ function preprocessToots(t, index) {
   return t;
 }
 
-function checkAppReady(ok) {
-  if (ok) {
-    buildTootsInfos();
-    buildDynamicFilters();
-    cleanUpRaw();
-    setHueForSources();
-    document.getElementById("main-section").focus();
-    Alpine.store("ui").setInert();
-    Alpine.store("files").sortToots();
-    Alpine.store("files").loading = false;
-  }
-}
-
 function buildTootsInfos() {
   let langs = {};
   let boosts = [];
+  let hasReplies = false;
+  const toots = Alpine.store("files").toots;
 
-  if (Alpine.store("files").toots.length > 0) {
-    let infos = Alpine.store("files").toots.reduce(
+  if (toots.length > 0) {
+    let infos = toots.reduce(
       (accu, toot) => {
         for (let lang in toot._marl.langs) {
           const l = toot._marl.langs[lang];
@@ -365,12 +355,29 @@ function buildTootsInfos() {
             }
           }
         }
+
+        if (typeof toot.object === "object" && toot.object !== null && toot.object.inReplyTo) {
+          accu.replies[toot.object.inReplyTo] = toot.object.id;
+          hasReplies = true;
+        }
+
         return accu;
       },
-      { langs: {}, boosts: {} }
-    );
+      { langs: {}, boosts: {}, replies: {} }
+    ); // reduce
 
     langs = infos.langs;
+
+    if (hasReplies) {
+      for (let i = 0; i < toots.length; i++) {
+        const t = toots[i];
+        if (typeof t.object === "object" && t.object !== null && t.object.id) {
+          if (infos.replies[t.object.id]) {
+            Alpine.store("files").toots[i]._marl.replies.push(infos.replies[t.object.id]);
+          }
+        }
+      }
+    }
 
     boosts = [];
     for (var key in infos.boosts) {
@@ -402,6 +409,19 @@ function buildDynamicFilters() {
   }
 
   Alpine.store("files").resetFilters(false);
+}
+
+function checkAppReady(ok) {
+  if (ok) {
+    buildTootsInfos();
+    buildDynamicFilters();
+    cleanUpRaw();
+    setHueForSources();
+    document.getElementById("main-section").focus();
+    Alpine.store("ui").setInert();
+    Alpine.store("files").sortToots();
+    Alpine.store("files").loading = false;
+  }
 }
 
 function cleanUpRaw() {

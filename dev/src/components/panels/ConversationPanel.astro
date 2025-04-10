@@ -1,0 +1,24 @@
+---
+import Post from './posts/Post.astro';
+---
+<template x-if="$store.files.conversation.length">
+  <div
+    class="conversation"
+    id="conversation"
+    role="region"
+    tabindex="-1"
+    >
+    <!-- aria-labelledby="toots-title" -->
+    <h2
+      id="conversation-title"
+    >
+      Conversation
+      <button @click="$store.files.closeConversation()">close</button>
+    </h2>
+      <!-- x-text="$t('posts.panelTitle')" -->
+
+    <template x-for="toot in $store.files.conversation">
+      <Post />
+    </template>
+  </div>
+</template>

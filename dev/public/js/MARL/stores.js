@@ -117,6 +117,7 @@ const filesStore = {
 
     this.languages = {};
     this.boostsAuthors = [];
+    this.conversation = [];
 
     this.date = {
       first: null,
@@ -141,6 +142,7 @@ const filesStore = {
       noStartingAt: false,
       isSensitive: false,
       isEdited: false,
+      hasReplies: false,
 
       hasLikes: "0",
       hasShares: "0",
@@ -473,6 +475,12 @@ const filesStore = {
         }
       }
 
+      if (f.hasReplies) {
+        if (!t._marl.replies.length) {
+          return false;
+        }
+      }
+
       // activities
 
       if (f.hasLikes && f.hasLikes > 0) {
@@ -743,6 +751,41 @@ const filesStore = {
       }
     });
     return r;
+  },
+
+  loadConversation(t) {
+    this.conversation = [];
+
+    // ### first find the start of thread, if "inReplyTo" is filled and the
+    // corresponding post is available (recursive); then start from here
+
+    this.loadReplies(t);
+
+    if (this.conversation.length) {
+      // ### gérer le focus // inert quand le panneau conversations est ouvert
+    }
+  },
+  loadReplies(t, level = 0) {
+    t._marl.conversationLevel = level;
+    this.conversation.push(t);
+
+    if (t._marl.replies.length) {
+      t._marl.replies.forEach((id) => {
+        const posts = this.getPostsById(id);
+        posts.forEach((t) => {
+          this.loadReplies(t, level);
+          level++;
+        });
+      });
+    }
+  },
+  getPostsById(id) {
+    return this.toots.filter((t) => {
+      return t.id.indexOf(id) === 0;
+    });
+  },
+  closeConversation() {
+    this.conversation = [];
   },
 
   get sortedLanguages() {

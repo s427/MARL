@@ -83,6 +83,7 @@ appStrings["en"] = {
     startingAt: 'Starts with "@"',
     noStartingAt: 'Does not start with "@"',
     isSensitive: "Marked as sensitive",
+    hasReplies: "Has replies",
 
     mustHaveAttachement: "Must have attachment",
     attachmentAny: "Any type",

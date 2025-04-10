@@ -83,6 +83,7 @@ appStrings["fr"] = {
     startingAt: 'Commence par "@"',
     noStartingAt: 'Ne commence pas par "@"',
     isSensitive: "Marqué comme sensible",
+    inReplyTo: "Fait partie d'un fil",
 
     mustHaveAttachement: "Doit avoir un fichier joint",
     attachmentAny: "N'importe quel type",

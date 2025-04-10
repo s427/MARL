@@ -2,11 +2,15 @@
 import AttachmentImage from "./AttachmentImage.astro";
 import AttachmentSound from "./AttachmentSound.astro";
 import AttachmentVideo from "./AttachmentVideo.astro";
+import HasReply from "./HasReply.astro";
 import Poll from "./Poll.astro";
 ---
 
 <template x-if="toot.type === 'Create'">
   <div class="toot-pretty">
+    <template x-if="toot._marl.replies.length">
+      <HasReply />
+    </template>
     <div class="toot-summary" x-show="toot.object.summary">
       <span x-text="toot.object.summary"></span>
     </div>
