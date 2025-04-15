@@ -143,7 +143,7 @@ const filesStore = {
       noStartingAt: false,
       isSensitive: false,
       isEdited: false,
-      hasReplies: false,
+      isInConversation: false,
 
       hasLikes: "0",
       hasShares: "0",
@@ -194,6 +194,7 @@ const filesStore = {
       hasPoll: false,
       hasSummary: false,
       isSensitive: false,
+      isInConversation: false,
       hasLikes: false,
       hasShares: false,
       typeOriginal: false,
@@ -476,8 +477,8 @@ const filesStore = {
         }
       }
 
-      if (f.hasReplies) {
-        if (!t._marl.replies.length) {
+      if (f.isInConversation) {
+        if (!t._marl.replies.length && !t._marl.inReplyTo) {
           return false;
         }
       }
@@ -755,15 +756,10 @@ const filesStore = {
   },
 
   loadConversation(t) {
-    // console.log("loadConversation", t);
     this.conversation = [];
     this.conversationSource = "conversation-" + t._marl.id;
 
-    // ### first find the start of thread, if "inReplyTo" is filled and the
-    // corresponding post is available (recursive); then start from here
     const start = this.searchConversationStart(t);
-    // console.log("\tstart", start);
-
     this.loadReplies(start);
 
     if (this.conversation.length) {
@@ -773,18 +769,14 @@ const filesStore = {
     }
   },
   searchConversationStart(t) {
-    // console.log("searchConversationStart", t);
-
     if (typeof t.object === "object" && t.object !== null && t.object.inReplyTo) {
       const posts = this.getPostsById(t.object.inReplyTo);
-      // console.log("\tposts", posts);
       if (posts.length) {
         return this.searchConversationStart(posts[0]);
       } else {
         return t;
       }
     } else {
-      // console.log("\treturn", t);
       return t;
     }
   },
@@ -1233,7 +1225,6 @@ const uiStore = {
     panel.setAttribute("inert", true);
   },
   setInert() {
-    console.log("setInert");
     // set the 'inert' state on the side panels or the main part of the app
     // depending on whether they are hidden or not, AND whether the mobile
     // menu is active

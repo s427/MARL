@@ -36,5 +36,21 @@ import Post from './posts/Post.astro';
         <Post />
       </template>
     </div>
+
+    <div class="conversation-help-wrapper">
+      <details class="conversation-help">
+        <summary class="conversation-help-summary">
+          <span class="summary-icon">
+            <svg aria-hidden="true">
+              <use href="#question" />
+            </svg>
+          </span>
+          <span class="summary-label" x-text="$t('conversation.helpSummary')"></span>
+        </summary>
+        <div class="details-content conversation-help-content">
+          <p x-html="$t('conversation.helpContent')"></p>
+        </div>
+      </details>
+    </div>
   </div>
 </template>

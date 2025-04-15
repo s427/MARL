@@ -76,11 +76,6 @@ async function fetchRemoteFile(index, file) {
 
   let path = remote.path + fileName;
 
-  // ### traiter les erreurs possibles :
-  // 404
-  // fichier invalide
-  // console.log(Alpine.store("files").remotes[index]);
-
   fetch(path)
     .then((response) => {
       if (!response.ok) {

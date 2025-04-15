@@ -119,6 +119,7 @@ function preprocessToots(t, index) {
     time: "", // int, eg. 935
     source: index,
     replies: [],
+    inReplyTo: null,
   };
 
   const date = new Date(t.published);
@@ -248,6 +249,10 @@ function preprocessToots(t, index) {
       }
     }
 
+    if (t.object.inReplyTo) {
+      marl.inReplyTo = t.object.inReplyTo;
+    }
+
     if (t.object.type === "Question") {
       Alpine.store("files").activeFilters.hasPoll = true;
       if (t.object.oneOf) {
@@ -369,11 +374,22 @@ function buildTootsInfos() {
     langs = infos.langs;
 
     if (hasReplies) {
+      Alpine.store("files").activeFilters.isInConversation = true;
       for (let i = 0; i < toots.length; i++) {
         const t = toots[i];
+        // does the post have replies
         if (typeof t.object === "object" && t.object !== null && t.object.id) {
           if (infos.replies[t.object.id]) {
             Alpine.store("files").toots[i]._marl.replies.push(infos.replies[t.object.id]);
+          }
+        }
+
+        // is the post a reply; and is the parent available (in the archive)
+        if (t._marl.inReplyTo) {
+          const parentId = t._marl.inReplyTo;
+          const parents = toots.filter((t) => t.object.id === parentId);
+          if (parents.length === 0) {
+            Alpine.store("files").toots[i]._marl.inReplyTo = null;
           }
         }
       }

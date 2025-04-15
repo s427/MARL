@@ -57,7 +57,6 @@ appStrings["fr"] = {
     mentionText: "Mentions",
     externalLink: "Liens externes",
     summary: "Avertissement de contenu",
-    isEdited: "A été modifié",
     isDuplicate: "Doublons imparfaits",
 
     mustContain: "Doit contenir",
@@ -82,8 +81,9 @@ appStrings["fr"] = {
     typeBoost: "Partages",
     startingAt: 'Commence par "@"',
     noStartingAt: 'Ne commence pas par "@"',
+    isInConversation: "Fait partie d'un fil",
     isSensitive: "Marqué comme sensible",
-    inReplyTo: "Fait partie d'un fil",
+    isEdited: "A été modifié",
 
     mustHaveAttachement: "Doit avoir un fichier joint",
     attachmentAny: "N'importe quel type",
@@ -122,7 +122,7 @@ appStrings["fr"] = {
     noPostsError: "Aucun post trouvé dans l'archive",
   },
   post: {
-    showReplies: "Voir les réponses",
+    showConversation: "Voir le fil",
     by: "par",
     lastUpdated: "Dernière modification",
     linkToPost: "Lien",
@@ -149,9 +149,12 @@ appStrings["fr"] = {
     rawData: "Données brutes",
   },
   conversation: {
-    panelTitle: "Conversation",
+    panelTitle: "Fil",
     panelTitleNbPosts: "(<strong>{nb}</strong> posts dans l'archive)",
-    closePanel: "Fermer la conversation",
+    closePanel: "Fermer le fil",
+    helpSummary: "Pourquoi ce fil est-il cassé ou incomplet ?",
+    helpContent:
+      "MARL peut seulement afficher les posts qui sont présents dans votre archive. De manière générale, les posts rédigés par d'autres personnes ne font pas partie du contenu d'une archive. Si un fil est cassé du fait de l'absence d'un post, il est impossible pour MARL de reconnecter les fragments. En d'autres termes, ce que vous verrez ici, ce sont principalement des réponses à vous-même (autrement dit, des fils ou <em>threads</em> 🧵).",
   },
   tags: {
     panelTitle: "Tags",
