@@ -122,6 +122,7 @@ appStrings["en"] = {
     noPostsError: "No posts found in archive",
   },
   post: {
+    showReplies: "Show replies",
     by: "by",
     lastUpdated: "Last updated",
     linkToPost: "Link",
@@ -146,6 +147,11 @@ appStrings["en"] = {
     hashtags: "Hashtags",
     extLinks: "External links",
     rawData: "Raw data",
+  },
+  conversation: {
+    panelTitle: "Conversation",
+    panelTitleNbPosts: "(<strong>{nb}</strong> posts in archive)",
+    closePanel: "Close conversation",
   },
   tags: {
     panelTitle: "Tags",

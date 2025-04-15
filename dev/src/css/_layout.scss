@@ -87,9 +87,29 @@ html {
   top: 0;
   bottom: 0;
   z-index: 5;
-  background: var(--bg2);
-  h2 {
+  background: var(--bg1);
+  .conversation-close {
+    z-index: 2;
+  }
+  .conversation-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 1rem 3rem;
     text-align: center;
+    background: var(--bg2);
+    .count {
+      font-size: 0.75em;
+      margin-left: 0.4em;
+      font-weight: normal;
+      strong {
+        color: var(--accent);
+        font-weight: inherit;
+      }
+    }
+  }
+  .conversation-wrapper {
+    padding: 1rem 0 4rem;
   }
   .post-has-replies {
     display: none !important;

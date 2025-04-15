@@ -6,7 +6,7 @@ $hue: 30; // === 59.17 in oklch
 /*********************************/
 
 $bg0:                      #fff;                  // post content
-$bg1:                      hsl($hue, 12%,   95%); // post
+$bg1:                      hsl($hue, 12%,   95%); // post, incl. conversation
 $bg2:                      hsl($hue, 12%,   90%); // post attachment/meta/raw
 $bg3:                      hsl($hue, 15%,   89%); // posts header
 $bg4:                      hsl($hue, 17.5%, 84%); // filters/tags/tools panels

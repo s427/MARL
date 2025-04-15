@@ -124,7 +124,8 @@ html {
   }
 }
 
-.panel-close {
+.panel-close,
+.conversation-close {
   position: absolute;
   right: 6px;
   top: 6px;
@@ -144,10 +145,9 @@ html {
   @media (forced-colors: active) {
     color: buttonText;
   }
-
-  .actor & {
-    color: #fff;
-  }
+}
+.actor .panel-close {
+  color: #fff;
 }
 
 @mixin side-menu() {

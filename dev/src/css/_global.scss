@@ -12,7 +12,7 @@
 
 /* anti-mini-reset */
 .actor-summary,
-.toot-content {
+.toot-content-inner {
   * {
     all: revert;
   }

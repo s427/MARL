@@ -118,6 +118,7 @@ const filesStore = {
     this.languages = {};
     this.boostsAuthors = [];
     this.conversation = [];
+    this.conversationSource = null;
 
     this.date = {
       first: null,
@@ -754,15 +755,37 @@ const filesStore = {
   },
 
   loadConversation(t) {
+    // console.log("loadConversation", t);
     this.conversation = [];
+    this.conversationSource = "conversation-" + t._marl.id;
 
     // ### first find the start of thread, if "inReplyTo" is filled and the
     // corresponding post is available (recursive); then start from here
+    const start = this.searchConversationStart(t);
+    // console.log("\tstart", start);
 
-    this.loadReplies(t);
+    this.loadReplies(start);
 
     if (this.conversation.length) {
-      // ### gérer le focus // inert quand le panneau conversations est ouvert
+      setTimeout(() => {
+        this.focusConversation();
+      }, 10);
+    }
+  },
+  searchConversationStart(t) {
+    // console.log("searchConversationStart", t);
+
+    if (typeof t.object === "object" && t.object !== null && t.object.inReplyTo) {
+      const posts = this.getPostsById(t.object.inReplyTo);
+      // console.log("\tposts", posts);
+      if (posts.length) {
+        return this.searchConversationStart(posts[0]);
+      } else {
+        return t;
+      }
+    } else {
+      // console.log("\treturn", t);
+      return t;
     }
   },
   loadReplies(t, level = 0) {
@@ -784,8 +807,21 @@ const filesStore = {
       return t.id.indexOf(id) === 0;
     });
   },
+  focusConversation() {
+    const elm = document.getElementById("panel-conversation");
+    if (elm) {
+      Alpine.store("ui").setInert();
+      elm.focus();
+    }
+  },
   closeConversation() {
     this.conversation = [];
+    Alpine.store("ui").setInert();
+    const elm = document.getElementById(this.conversationSource);
+    if (elm) {
+      elm.focus();
+    }
+    this.conversationSource = null;
   },
 
   get sortedLanguages() {
@@ -1062,6 +1098,10 @@ const uiStore = {
     if (pref === "pageSize") {
       Alpine.store("files").checkPagingValue();
     }
+
+    if (pref === "combinePanels") {
+      this.setInert();
+    }
   },
 
   toggleTheme() {
@@ -1168,7 +1208,9 @@ const uiStore = {
     });
   },
   setInertPanels() {
-    const panels = document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags, #panel-tools");
+    const panels = document.querySelectorAll(
+      "#panel-actor, #panel-filters, #panel-tags, #panel-tools, #panel-conversation"
+    );
     if (!panels.length) {
       return;
     }
@@ -1191,6 +1233,7 @@ const uiStore = {
     panel.setAttribute("inert", true);
   },
   setInert() {
+    console.log("setInert");
     // set the 'inert' state on the side panels or the main part of the app
     // depending on whether they are hidden or not, AND whether the mobile
     // menu is active
@@ -1198,6 +1241,21 @@ const uiStore = {
     const elms = document.querySelectorAll("#main-section-inner > *");
     if (!elms.length) {
       return;
+    }
+
+    if (Alpine.store("files").conversation.length) {
+      elms.forEach((e) => {
+        if (e.id === "panel-conversation") {
+          return;
+        }
+        e.setAttribute("inert", true);
+      });
+      return;
+    } else {
+      const elm = document.getElementById("panel-conversation");
+      if (elm) {
+        elm.setAttribute("inert", true);
+      }
     }
 
     elms.forEach((e) => {

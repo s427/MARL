@@ -122,6 +122,7 @@ appStrings["fr"] = {
     noPostsError: "Aucun post trouvé dans l'archive",
   },
   post: {
+    showReplies: "Voir les réponses",
     by: "par",
     lastUpdated: "Dernière modification",
     linkToPost: "Lien",
@@ -146,6 +147,11 @@ appStrings["fr"] = {
     hashtags: "Hashtags",
     extLinks: "Liens externes",
     rawData: "Données brutes",
+  },
+  conversation: {
+    panelTitle: "Conversation",
+    panelTitleNbPosts: "(<strong>{nb}</strong> posts dans l'archive)",
+    closePanel: "Fermer la conversation",
   },
   tags: {
     panelTitle: "Tags",
