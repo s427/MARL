@@ -4,17 +4,20 @@
 
 MARL is a lightweight, single-page app that provides a user-friendly interface to explore the content of a Mastodon archive file: account data, posts, attachments, etc.
 
-| Links                  |                                         |                                                    |
-| ---------------------- | --------------------------------------- | -------------------------------------------------- |
-| Project page           | https://github.com/s427/MARL            |                                                    |
-| Demo page              | https://s427.ch/marl                    | uses a subset of my own archive data               |
-| Try it for yourself    | https://s427.github.io/MARL/            | online version - you need to have your own archive |
-| Announcement post (en) | https://lou.lt/@s427/113567190207673533 | should you want to spread the word :)              |
-| Announcement post (fr) | https://lou.lt/@s427/113567186376766727 | should you want to spread the word :)              |
+## Project links
+
+- __Project page__: https://github.com/s427/MARL
+- __Demo page__: https://s427.ch/marl  
+  Uses a subset of my own archive data.
+- __Try it for yourself__: https://s427.github.io/MARL/  
+  Online version - you need to have your own archive.
+- __Announcement post__ (should you want to spread the word 😊):  
+  English: https://lou.lt/@s427/113567190207673533  
+  French: https://lou.lt/@s427/113567186376766727
 
 ## Usage
 
-__Access MARL online here:__ https://s427.github.io/MARL/
+__You can use the online version here:__ https://s427.github.io/MARL/
 
 __Alternatively__, you can download this project from its [project page](https://github.com/s427/MARL), unpack it on your device, and simply launch (double click) `index.html`. That's it. No installation is necessary.
 
