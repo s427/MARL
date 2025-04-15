@@ -106,7 +106,7 @@ import LikesBookmarks from './actor/LikesBookmarks.astro'
           </div>
         </div>
 
-        <template x-if="localMode()">
+        <template x-if="localMode() || (customPrefAvailable('showActorJson') && customPrefs.showActorJson)">
           <div class="actor-raw">
             <div class="actor-raw-inner">
               <details>

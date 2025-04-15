@@ -553,7 +553,7 @@ function tootHasTags(toot) {
 
 function formatJson(data) {
   let r = data;
-  if (r._marl) {
+  if (r._marl && !(customPrefAvailable("showMarlJson") && customPrefs.showMarlJson)) {
     // not a part of the source data; let's hide it to avoid confusion
     r = JSON.parse(JSON.stringify(data));
     delete r._marl;
