@@ -32,10 +32,6 @@ const userPrefsStore = {
         if (value !== Alpine.store("ui")[pref]) {
           Alpine.store("ui")[pref] = value;
         }
-
-        if (pref === "combinePanels" && combinedPanelsMode()) {
-          Alpine.store("ui").activePanel = Alpine.store("ui").defaultPanel;
-        }
         break;
 
       // numerical values
@@ -55,9 +51,6 @@ const userPrefsStore = {
       case "defaultPanel":
         if (value) {
           Alpine.store("ui")[pref] = value;
-          if (value !== "auto" && combinedPanelsMode()) {
-            Alpine.store("ui").panelOpen(value, false);
-          }
         }
         break;
 
@@ -994,13 +987,13 @@ const uiStore = {
     this.appLangs = appLangs ?? { en: "English" };
     this.errorInLog = false;
     this.log = this.log ?? [];
+    this.activePanel = "";
 
     this.lang = this.defaultOptions.lang;
     this.theme = this.defaultOptions.theme;
     this.sortAsc = this.defaultOptions.sortAsc;
     this.pageSize = this.defaultOptions.pageSize;
     this.combinePanels = this.defaultOptions.combinePanels;
-    this.activePanel = this.defaultOptions.activePanel;
     this.defaultPanel = this.defaultOptions.defaultPanel;
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
 
@@ -1016,7 +1009,11 @@ const uiStore = {
     loadPref("simplifyPostsDisplay");
 
     if (combinedPanelsMode()) {
-      this.activePanel = this.defaultPanel;
+      if (this.defaultPanel === "auto") {
+        this.panelOpen(this.activePanel ? this.activePanel : "actor", false);
+      } else {
+        this.panelOpen(this.defaultPanel, false);
+      }
     }
   },
   changeDefault(pref, val) {
@@ -1172,6 +1169,10 @@ const uiStore = {
   },
   resetPanels() {
     const name = this.activePanel;
+    if (name === "auto") {
+      return;
+    }
+
     document.querySelectorAll(`#panel-${name} details[open]`).forEach((e) => {
       e.removeAttribute("open");
     });
