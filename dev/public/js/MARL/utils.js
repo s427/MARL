@@ -208,6 +208,7 @@ function preprocessToots(t, index) {
     if (t.object.sensitive) {
       Alpine.store("files").activeFilters.isSensitive = true;
     }
+
     if (t.object.updated) {
       Alpine.store("files").activeFilters.isEdited = true;
     }
@@ -251,6 +252,21 @@ function preprocessToots(t, index) {
 
     if (t.object.inReplyTo) {
       marl.inReplyTo = t.object.inReplyTo;
+    }
+
+    if (tootHasTags(t)) {
+      // we normalize usernames (always "@username@domain.tld") in case we deal with
+      // multiple archives from different instances referencing the same user.
+      // (users local to the source instance will only be refered to as "@username")
+      for (let i = 0; i < t.object.tag.length; i++) {
+        const tag = t.object.tag[i];
+        if (tag.type === "Mention" && (tag.name.match(/@/g) || []).length === 1) {
+          const host = tag.href.split("/");
+          if (host[2]) {
+            t.object.tag[i].name += "@" + host[2];
+          }
+        }
+      }
     }
 
     if (t.object.type === "Question") {
