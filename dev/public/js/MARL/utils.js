@@ -767,7 +767,19 @@ function setLang() {
   marlConsole(msg);
 }
 
+function detectThemePreference() {
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    return "dark";
+  } else {
+    return "light";
+  }
+}
+
 function setTheme(theme) {
+  if (!theme) {
+    theme = detectThemePreference();
+  }
+
   document.getElementsByTagName("html")[0].setAttribute("class", theme);
   if (theme === "dark") {
     document.querySelector('meta[name="color-scheme"]').setAttribute("content", "dark");

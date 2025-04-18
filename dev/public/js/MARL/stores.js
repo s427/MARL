@@ -18,8 +18,14 @@ const userPrefsStore = {
     const value = localStorage.getItem(this.prefix + pref);
     if (value !== null) {
       this.set(pref, value);
-    } else if (pref === "lang") {
-      this.set(pref, value);
+    } else {
+      // let's load those prefs even if there's no stored value
+      switch (pref) {
+        case "lang":
+        case "theme":
+          this.set(pref, value);
+          break;
+      }
     }
   },
   set(pref, value) {
@@ -74,16 +80,18 @@ const userPrefsStore = {
         break;
 
       case "theme":
+        if (!value) {
+          value = detectThemePreference();
+        }
         if (!validTheme(value)) {
           if (customPrefAvailable("theme") && validTheme(customPrefs.theme)) {
             value = customPrefs.theme;
           } else {
-            value = "light";
+            value = detectThemePreference();
           }
           this.save("theme", value);
         }
         Alpine.store("ui")[pref] = value;
-        setTheme(value);
         break;
     }
   },
@@ -1005,8 +1013,10 @@ const uiStore = {
     loadPref("pageSize");
     loadPref("combinePanels");
     loadPref("activePanel");
-    loadPref("defaultPanel"); // must be loaded after activePanel
+    loadPref("defaultPanel");
     loadPref("simplifyPostsDisplay");
+
+    setTheme(this.theme);
 
     if (combinedPanelsMode()) {
       if (this.defaultPanel === "auto") {
@@ -1177,16 +1187,17 @@ const uiStore = {
       e.removeAttribute("open");
     });
 
+    let panelId = "panel-" + name;
     if (name === "actor") {
-      const panel = "actorpanel-" + this.actorPanel;
-      setTimeout(() => {
-        document.getElementById(panel).scrollTop = 0;
-      }, 250);
-    } else {
-      setTimeout(() => {
-        document.getElementById("panel-" + name).scrollTop = 0;
-      }, 250);
+      panelId = "actorpanel-" + this.actorPanel;
     }
+
+    setTimeout(() => {
+      const elm = document.getElementById(panelId);
+      if (elm) {
+        elm.scrollTop = 0;
+      }
+    }, 250);
   },
 
   setInertMain() {
