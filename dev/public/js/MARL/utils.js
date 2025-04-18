@@ -378,7 +378,10 @@ function buildTootsInfos() {
         }
 
         if (typeof toot.object === "object" && toot.object !== null && toot.object.inReplyTo) {
-          accu.replies[toot.object.inReplyTo] = toot.object.id;
+          if (!accu.replies[toot.object.inReplyTo]) {
+            accu.replies[toot.object.inReplyTo] = [];
+          }
+          accu.replies[toot.object.inReplyTo].push(toot.object.id);
           hasReplies = true;
         }
 
@@ -391,12 +394,13 @@ function buildTootsInfos() {
 
     if (hasReplies) {
       Alpine.store("files").activeFilters.isInConversation = true;
+
       for (let i = 0; i < toots.length; i++) {
         const t = toots[i];
         // does the post have replies
         if (typeof t.object === "object" && t.object !== null && t.object.id) {
           if (infos.replies[t.object.id]) {
-            Alpine.store("files").toots[i]._marl.replies.push(infos.replies[t.object.id]);
+            Alpine.store("files").toots[i]._marl.replies = infos.replies[t.object.id];
           }
         }
 
