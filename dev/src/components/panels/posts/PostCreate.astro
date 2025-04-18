@@ -18,9 +18,6 @@ import Poll from "./Poll.astro";
         x-html="toot.object.content"
       ></div>
     </div>
-    <template x-if="toot._marl.replies.length || toot._marl.inReplyTo">
-      <HasReply />
-    </template>
 
     <div class="toot-poll" x-show="toot._marl.pollType">
       <Poll />
@@ -40,5 +37,9 @@ import Poll from "./Poll.astro";
         </template>
       </ul>
     </div>
+
+    <template x-if="toot._marl.replies.length || toot._marl.inReplyTo">
+      <HasReply />
+    </template>
   </div>
 </template>
