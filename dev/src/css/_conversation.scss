@@ -24,7 +24,7 @@
 .conversation-header {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 5;
   padding: 1rem 3rem;
   text-align: center;
   background: var(--bg2);
@@ -45,7 +45,7 @@
 
 .conversation-help-wrapper {
   margin-top: auto;
-  padding: 1rem 0 4.5rem;
+  padding: 1rem 1rem 4.5rem;
   text-align: center;
   font-size: 0.85em;
   opacity: 0.6;

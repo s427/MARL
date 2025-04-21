@@ -52,6 +52,10 @@ html.dark {
 
 /* global rules */
 
+html {
+  overscroll-behavior: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -59,6 +63,7 @@ body {
   font-size: 1rem;
   background: var(--bg2);
   font-family: sans-serif;
+  overscroll-behavior: none;
 }
 
 h1,
