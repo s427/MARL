@@ -102,6 +102,7 @@ appStrings["fr"] = {
     language: "Langue",
     author: "Auteur",
 
+    showResults: "Afficher les résultats",
     resetFilters: "Réinitialiser les filtres",
   },
   header: {

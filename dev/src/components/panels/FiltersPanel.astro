@@ -171,10 +171,22 @@ import FilterTime from './filters/FilterTime.astro';
   </template>
 
   <div
-    class="toots-filters-reset"
+    class="toots-filters-actions"
     x-show="$store.files.filtersActive"
   >
     <button
+      class="toots-filters-close"
+      @click="$store.ui.panelClose()"
+      x-show="$store.ui.mobileLayout"
+    >
+      <svg class="btn-icon" aria-hidden="true">
+        <use href="#show-results" />
+      </svg>
+      <span class="btn-label" x-text="$t('filters.showResults')"></span>
+    </button>
+
+    <button
+      class="toots-filters-reset"
       @click="$store.files.resetFilters(true)"
       :disabled="!$store.files.filtersActive"
     >
