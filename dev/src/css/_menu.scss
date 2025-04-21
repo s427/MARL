@@ -154,10 +154,16 @@ html {
   // toolbar becomes visible, positionned to the left side of the screen
   .toots-header {
     z-index: 2;
-    box-shadow: 0 -0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.35);
+    @media (prefers-reduced-motion: no-preference) {
+      transition: box-shadow 100ms ease-in-out;
+    }
     .open-tools {
       display: none;
     }
+  }
+  .posts-scrolled .toots-header {
+    box-shadow: 0 -0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.35);
   }
   .toots {
     z-index: 1;
