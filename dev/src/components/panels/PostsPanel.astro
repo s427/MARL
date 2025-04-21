@@ -9,6 +9,7 @@ import Post from './posts/Post.astro';
   role="region"
   aria-labelledby="toots-title"
   tabindex="-1"
+  @scroll.throttle.200ms="postsScrolled()"
 >
   <h2
     id="toots-title"

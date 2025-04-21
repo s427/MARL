@@ -815,6 +815,13 @@ function validLang(name) {
   }
 }
 
+function postsScrolled() {
+  Alpine.store("ui").checkPostsScrolling();
+  setTimeout(() => {
+    Alpine.store("ui").checkPostsScrolling();
+  }, 200);
+}
+
 // drag'n'drop over entire page
 
 const drag = {

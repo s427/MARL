@@ -996,6 +996,7 @@ const uiStore = {
     this.errorInLog = false;
     this.log = this.log ?? [];
     this.activePanel = "";
+    this.postsScrolled = false;
 
     this.lang = this.defaultOptions.lang;
     this.theme = this.defaultOptions.theme;
@@ -1284,6 +1285,18 @@ const uiStore = {
     }
   },
 
+  checkPostsScrolling() {
+    const elm = document.getElementById("toots");
+    if (!elm) {
+      return;
+    }
+    if (elm.scrollTop > 5) {
+      this.postsScrolled = true;
+    } else {
+      this.postsScrolled = false;
+    }
+  },
+
   get appClasses() {
     let classes = [];
     if (combinedPanelsMode()) {
@@ -1291,6 +1304,9 @@ const uiStore = {
     }
     if (this.simplifyPostsDisplay) {
       classes.push("simplify-posts-display");
+    }
+    if (this.postsScrolled) {
+      classes.push("posts-scrolled");
     }
 
     return classes;
