@@ -674,12 +674,16 @@ const filesStore = {
   },
   listTags(type) {
     let filterSource = "";
+    let storeFilter = "";
+
     switch (type) {
       case "Mention":
         filterSource = "mentions";
+        storeFilter = "mentionText";
         break;
       case "Hashtag":
         filterSource = "hashtags";
+        storeFilter = "hashtagText";
         break;
     }
     let h = this.filteredToots.reduce((accu, toot) => {
@@ -707,6 +711,7 @@ const filesStore = {
                 name: tag.name,
                 href: tag.href,
                 nb: 1,
+                active: Alpine.store("files").filters[storeFilter] === tag.name,
               });
             }
           }
@@ -728,10 +733,12 @@ const filesStore = {
   get listBoostsAuthors() {
     let r = this.boostsAuthors.reduce((accu, item) => {
       if (item.name.toLowerCase().indexOf(this.tagsFilters.boostsAuthors.toLowerCase()) >= 0) {
+        item.active = item.url === Alpine.store("files").filters.fullText.toLowerCase();
         accu.push(item);
       }
       return accu;
     }, []);
+
     r.sort((a, b) => {
       if (a.nb === b.nb) {
         let aHasNoName = a.name.indexOf("? ") === 0;
