@@ -71,6 +71,15 @@ You can use the following properties. All properties are optional:
 - simplifyPostsDisplay: hide some technical or redundant elements in posts display
   possible values: true, false (default)
 
+The folloging options are specific to server mode and not present in the tools panel:
+
+- showActorJson: whether or not to display the full JSON data in the actor panel
+  possible values: true, false (default)
+
+- showPostsJson: whether or not to display the full JSON data related to each post
+  possible values: true, false (default)
+  note: JSON data for posts is always hidden in "simplify post display" mode
+
 Example:
 
 const customPrefs = {

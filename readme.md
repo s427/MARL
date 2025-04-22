@@ -151,6 +151,14 @@ Mastodon: https://lou.lt/@s427
 
 ## Version history
 
+- v. 2.9
+  - [NEW] Conversation view
+    - When two posts (or more) are direct replies to each other, a new "Show thread" button allows to view all the posts in the thread.
+    - A new "Is part of a thread" filter has been added to show those posts only.
+    - Limitation (as explained in the app): MARL can only show posts that are present in the archive. Posts written by other people are typically not included in an archive. If posts are missing in a thread, it's impossible for MARL to reconnect the broken parts. In other words, this feature will mostly be useful to display posts where you reply to yourself (aka "threads").
+  - Server mode:
+    - Two new options in `config.js` allow you to choose whether you want the JSON code for posts and/or for your profile to be displayed (default is `false` for both).
+  - Various fixes and improvements.
 - v. 2.8
   - New filters:
     - Activities: filter posts by the number of likes or shares they received.
