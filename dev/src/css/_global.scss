@@ -12,7 +12,7 @@
 
 /* anti-mini-reset */
 .actor-summary,
-.toot-content {
+.toot-content-inner {
   * {
     all: revert;
   }
@@ -52,6 +52,10 @@ html.dark {
 
 /* global rules */
 
+html {
+  overscroll-behavior: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -59,6 +63,7 @@ body {
   font-size: 1rem;
   background: var(--bg2);
   font-family: sans-serif;
+  overscroll-behavior: none;
 }
 
 h1,
@@ -223,6 +228,7 @@ details {
       svg {
         height: 1.3em;
         aspect-ratio: 1;
+        fill: currentColor;
       }
     }
     .summary-label {

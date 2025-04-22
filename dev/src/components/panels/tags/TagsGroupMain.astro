@@ -29,8 +29,8 @@ switch (type) {
 ---
 <div class="tags-group-scroll">
   <ul x-show={`$store.files.${storeData}.length`}>
-    <template x-for={`item in $store.files.${storeData}`}>
-      <li :class={`item.${filterProp} === $store.files.filters.${storeFilter} ? 'active' : ''`}>
+    <template x-for={`(item, key) in $store.files.${storeData}`}>
+      <li :class="item.active ? 'active' : ''">
         <button
           :id={`'filter-${btnId}-' + item.${filterProp}.toLowerCase()${clickCmd}`}
           @click={`$store.files.filterByTag('${storeFilter}', item.${filterProp}, 'filter-${btnId}-' + item.${filterProp}.toLowerCase()${clickCmd})`}

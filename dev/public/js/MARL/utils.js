@@ -118,6 +118,8 @@ function preprocessToots(t, index) {
     date: "", // int, eg. 20250430
     time: "", // int, eg. 935
     source: index,
+    replies: [],
+    inReplyTo: null,
   };
 
   const date = new Date(t.published);
@@ -206,6 +208,7 @@ function preprocessToots(t, index) {
     if (t.object.sensitive) {
       Alpine.store("files").activeFilters.isSensitive = true;
     }
+
     if (t.object.updated) {
       Alpine.store("files").activeFilters.isEdited = true;
     }
@@ -243,6 +246,25 @@ function preprocessToots(t, index) {
         }
         if (attachmentIsSound(att)) {
           Alpine.store("files").activeFilters.attachmentSound = true;
+        }
+      }
+    }
+
+    if (t.object.inReplyTo) {
+      marl.inReplyTo = t.object.inReplyTo;
+    }
+
+    if (tootHasTags(t)) {
+      // we normalize usernames (always "@username@domain.tld") in case we deal with
+      // multiple archives from different instances referencing the same user.
+      // (users local to the source instance will only be refered to as "@username")
+      for (let i = 0; i < t.object.tag.length; i++) {
+        const tag = t.object.tag[i];
+        if (tag.type === "Mention" && (tag.name.match(/@/g) || []).length === 1) {
+          const host = tag.href.split("/");
+          if (host[2]) {
+            t.object.tag[i].name += "@" + host[2];
+          }
         }
       }
     }
@@ -287,25 +309,14 @@ function preprocessToots(t, index) {
   return t;
 }
 
-function checkAppReady(ok) {
-  if (ok) {
-    buildTootsInfos();
-    buildDynamicFilters();
-    cleanUpRaw();
-    setHueForSources();
-    document.getElementById("main-section").focus();
-    Alpine.store("ui").setInert();
-    Alpine.store("files").sortToots();
-    Alpine.store("files").loading = false;
-  }
-}
-
 function buildTootsInfos() {
   let langs = {};
   let boosts = [];
+  let hasReplies = false;
+  const toots = Alpine.store("files").toots;
 
-  if (Alpine.store("files").toots.length > 0) {
-    let infos = Alpine.store("files").toots.reduce(
+  if (toots.length > 0) {
+    let infos = toots.reduce(
       (accu, toot) => {
         for (let lang in toot._marl.langs) {
           const l = toot._marl.langs[lang];
@@ -365,12 +376,44 @@ function buildTootsInfos() {
             }
           }
         }
+
+        if (typeof toot.object === "object" && toot.object !== null && toot.object.inReplyTo) {
+          if (!accu.replies[toot.object.inReplyTo]) {
+            accu.replies[toot.object.inReplyTo] = [];
+          }
+          accu.replies[toot.object.inReplyTo].push(toot.object.id);
+          hasReplies = true;
+        }
+
         return accu;
       },
-      { langs: {}, boosts: {} }
-    );
+      { langs: {}, boosts: {}, replies: {} }
+    ); // reduce
 
     langs = infos.langs;
+
+    if (hasReplies) {
+      Alpine.store("files").activeFilters.isInConversation = true;
+
+      for (let i = 0; i < toots.length; i++) {
+        const t = toots[i];
+        // does the post have replies
+        if (typeof t.object === "object" && t.object !== null && t.object.id) {
+          if (infos.replies[t.object.id]) {
+            Alpine.store("files").toots[i]._marl.replies = infos.replies[t.object.id];
+          }
+        }
+
+        // is the post a reply; and is the parent available (in the archive)
+        if (t._marl.inReplyTo) {
+          const parentId = t._marl.inReplyTo;
+          const parents = toots.filter((t) => t.object.id === parentId);
+          if (parents.length === 0) {
+            Alpine.store("files").toots[i]._marl.inReplyTo = null;
+          }
+        }
+      }
+    }
 
     boosts = [];
     for (var key in infos.boosts) {
@@ -402,6 +445,19 @@ function buildDynamicFilters() {
   }
 
   Alpine.store("files").resetFilters(false);
+}
+
+function checkAppReady(ok) {
+  if (ok) {
+    buildTootsInfos();
+    buildDynamicFilters();
+    cleanUpRaw();
+    setHueForSources();
+    document.getElementById("main-section").focus();
+    Alpine.store("ui").setInert();
+    Alpine.store("files").sortToots();
+    Alpine.store("files").loading = false;
+  }
 }
 
 function cleanUpRaw() {
@@ -533,7 +589,7 @@ function tootHasTags(toot) {
 
 function formatJson(data) {
   let r = data;
-  if (r._marl) {
+  if (r._marl && !(customPrefAvailable("showMarlJson") && customPrefs.showMarlJson)) {
     // not a part of the source data; let's hide it to avoid confusion
     r = JSON.parse(JSON.stringify(data));
     delete r._marl;
@@ -715,7 +771,19 @@ function setLang() {
   marlConsole(msg);
 }
 
+function detectThemePreference() {
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    return "dark";
+  } else {
+    return "light";
+  }
+}
+
 function setTheme(theme) {
+  if (!theme) {
+    theme = detectThemePreference();
+  }
+
   document.getElementsByTagName("html")[0].setAttribute("class", theme);
   if (theme === "dark") {
     document.querySelector('meta[name="color-scheme"]').setAttribute("content", "dark");
@@ -745,6 +813,13 @@ function validLang(name) {
   } else {
     return false;
   }
+}
+
+function postsScrolled() {
+  Alpine.store("ui").checkPostsScrolling();
+  setTimeout(() => {
+    Alpine.store("ui").checkPostsScrolling();
+  }, 200);
 }
 
 // drag'n'drop over entire page

@@ -1,0 +1,11 @@
+<div class="post-has-conversation">
+  <button
+    @click="$store.files.loadConversation(toot)"
+    :id="'conversation-' + toot._marl.id"
+  >
+    <svg class="btn-icon" aria-hidden="true">
+      <use href="#conversation" />
+    </svg>
+    <span x-text="$t('post.showConversation')"></span>
+  </button>
+</div>

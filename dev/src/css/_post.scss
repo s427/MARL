@@ -108,6 +108,11 @@ $meta-visible: 100ch;
   }
 }
 
+.post-has-conversation {
+  margin-top: 1rem;
+  text-align: right;
+}
+
 .toot-poll {
   padding-top: 1rem;
 
@@ -651,7 +656,7 @@ $meta-visible: 100ch;
   }
   .toot {
     max-width: 80ch;
-    margin: 2.5rem auto;
+    margin: 0 auto 2.5rem;
     grid-template-columns: 1fr;
     grid-template-areas:
       "header"

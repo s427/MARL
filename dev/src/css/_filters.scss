@@ -74,10 +74,13 @@
   }
 }
 
-.toots-filters-reset {
+.toots-filters-actions {
   margin: 0 -1rem;
   padding: 1rem;
-  text-align: right;
+
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
 
   position: sticky;
   bottom: 0;
@@ -87,4 +90,8 @@
   .reset:not(:disabled) {
     box-shadow: 0 0 0 0.25rem var(--accent);
   }
+}
+
+.toots-filters-reset {
+  margin-left: auto;
 }

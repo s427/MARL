@@ -69,8 +69,10 @@ html {
   }
 }
 
-.toots {
-  background: var(--bg3);
+.toots,
+.conversation {
+  position: relative;
+  background: var(--bg1);
   overflow: auto;
   container-type: inline-size;
   @media (prefers-reduced-motion: no-preference) {
@@ -177,6 +179,9 @@ html {
           margin: 0 1rem;
         }
       }
+    }
+    .toots {
+      padding-top: 2.5rem;
     }
   }
 }

@@ -1,0 +1,56 @@
+---
+import Post from './posts/Post.astro';
+---
+<template x-if="$store.files.conversation.length">
+  <div
+    class="conversation"
+    id="panel-conversation"
+    role="region"
+    tabindex="-1"
+    aria-labelledby="conversation-title"
+    @keyup.esc="$store.files.closeConversation()"
+  >
+
+    <header class="conversation-header">
+      <button
+        class="conversation-close"
+        @click="$store.files.closeConversation()"
+      >
+        <svg class="btn-icon" aria-hidden="true">
+          <use href="#close" />
+        </svg>
+        <span class="visually-hidden" x-text="$t('conversation.closePanel')"></span>
+      </button>
+
+      <h2
+        id="conversation-title"
+        class="conversation-title"
+        >
+        <span x-text="$t('conversation.panelTitle')"></span>
+        <span class="count" x-html="$t('conversation.panelTitleNbPosts', {nb: $store.files.conversation.length})"></span>
+      </h2>
+    </header>
+
+    <div class="conversation-wrapper">
+      <template x-for="toot in $store.files.conversation">
+        <Post />
+      </template>
+    </div>
+
+    <div class="conversation-help-wrapper">
+      <details class="conversation-help">
+        <summary class="conversation-help-summary">
+          <span class="summary-icon">
+            <svg aria-hidden="true">
+              <use href="#question" />
+            </svg>
+          </span>
+          <span class="summary-label" x-text="$t('conversation.helpSummary')"></span>
+        </summary>
+        <div class="details-content conversation-help-content">
+          <p x-html="$t('conversation.helpContent')"></p>
+        </div>
+      </details>
+    </div>
+  </div>
+</template>

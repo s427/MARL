@@ -18,8 +18,14 @@ const userPrefsStore = {
     const value = localStorage.getItem(this.prefix + pref);
     if (value !== null) {
       this.set(pref, value);
-    } else if (pref === "lang") {
-      this.set(pref, value);
+    } else {
+      // let's load those prefs even if there's no stored value
+      switch (pref) {
+        case "lang":
+        case "theme":
+          this.set(pref, value);
+          break;
+      }
     }
   },
   set(pref, value) {
@@ -31,10 +37,6 @@ const userPrefsStore = {
         value = +value === 1 ? true : false;
         if (value !== Alpine.store("ui")[pref]) {
           Alpine.store("ui")[pref] = value;
-        }
-
-        if (pref === "combinePanels" && combinedPanelsMode()) {
-          Alpine.store("ui").activePanel = Alpine.store("ui").defaultPanel;
         }
         break;
 
@@ -55,9 +57,6 @@ const userPrefsStore = {
       case "defaultPanel":
         if (value) {
           Alpine.store("ui")[pref] = value;
-          if (value !== "auto" && combinedPanelsMode()) {
-            Alpine.store("ui").panelOpen(value, false);
-          }
         }
         break;
 
@@ -81,16 +80,18 @@ const userPrefsStore = {
         break;
 
       case "theme":
+        if (!value) {
+          value = detectThemePreference();
+        }
         if (!validTheme(value)) {
           if (customPrefAvailable("theme") && validTheme(customPrefs.theme)) {
             value = customPrefs.theme;
           } else {
-            value = "light";
+            value = detectThemePreference();
           }
           this.save("theme", value);
         }
         Alpine.store("ui")[pref] = value;
-        setTheme(value);
         break;
     }
   },
@@ -117,6 +118,8 @@ const filesStore = {
 
     this.languages = {};
     this.boostsAuthors = [];
+    this.conversation = [];
+    this.conversationSource = null;
 
     this.date = {
       first: null,
@@ -141,6 +144,7 @@ const filesStore = {
       noStartingAt: false,
       isSensitive: false,
       isEdited: false,
+      isInConversation: false,
 
       hasLikes: "0",
       hasShares: "0",
@@ -191,6 +195,7 @@ const filesStore = {
       hasPoll: false,
       hasSummary: false,
       isSensitive: false,
+      isInConversation: false,
       hasLikes: false,
       hasShares: false,
       typeOriginal: false,
@@ -473,6 +478,12 @@ const filesStore = {
         }
       }
 
+      if (f.isInConversation) {
+        if (!t._marl.replies.length && !t._marl.inReplyTo) {
+          return false;
+        }
+      }
+
       // activities
 
       if (f.hasLikes && f.hasLikes > 0) {
@@ -663,12 +674,16 @@ const filesStore = {
   },
   listTags(type) {
     let filterSource = "";
+    let storeFilter = "";
+
     switch (type) {
       case "Mention":
         filterSource = "mentions";
+        storeFilter = "mentionText";
         break;
       case "Hashtag":
         filterSource = "hashtags";
+        storeFilter = "hashtagText";
         break;
     }
     let h = this.filteredToots.reduce((accu, toot) => {
@@ -696,6 +711,7 @@ const filesStore = {
                 name: tag.name,
                 href: tag.href,
                 nb: 1,
+                active: Alpine.store("files").filters[storeFilter] === tag.name,
               });
             }
           }
@@ -717,10 +733,12 @@ const filesStore = {
   get listBoostsAuthors() {
     let r = this.boostsAuthors.reduce((accu, item) => {
       if (item.name.toLowerCase().indexOf(this.tagsFilters.boostsAuthors.toLowerCase()) >= 0) {
+        item.active = item.url === Alpine.store("files").filters.fullText.toLowerCase();
         accu.push(item);
       }
       return accu;
     }, []);
+
     r.sort((a, b) => {
       if (a.nb === b.nb) {
         let aHasNoName = a.name.indexOf("? ") === 0;
@@ -743,6 +761,67 @@ const filesStore = {
       }
     });
     return r;
+  },
+
+  loadConversation(t) {
+    this.conversation = [];
+    this.conversationSource = "conversation-" + t._marl.id;
+
+    const start = this.searchConversationStart(t);
+    this.loadReplies(start);
+
+    if (this.conversation.length) {
+      setTimeout(() => {
+        this.focusConversation();
+      }, 10);
+    }
+  },
+  searchConversationStart(t) {
+    if (typeof t.object === "object" && t.object !== null && t.object.inReplyTo) {
+      const posts = this.getPostsById(t.object.inReplyTo);
+      if (posts.length) {
+        return this.searchConversationStart(posts[0]);
+      } else {
+        return t;
+      }
+    } else {
+      return t;
+    }
+  },
+  loadReplies(t, level = 0) {
+    t._marl.conversationLevel = level;
+    this.conversation.push(t);
+
+    if (t._marl.replies.length) {
+      t._marl.replies.forEach((id) => {
+        const posts = this.getPostsById(id);
+        posts.forEach((t) => {
+          this.loadReplies(t, level);
+          level++;
+        });
+      });
+    }
+  },
+  getPostsById(id) {
+    return this.toots.filter((t) => {
+      return t.id.indexOf(id) === 0;
+    });
+  },
+  focusConversation() {
+    const elm = document.getElementById("panel-conversation");
+    if (elm) {
+      Alpine.store("ui").setInert();
+      elm.focus();
+    }
+  },
+  closeConversation() {
+    this.conversation = [];
+    Alpine.store("ui").setInert();
+    const elm = document.getElementById(this.conversationSource);
+    if (elm) {
+      elm.focus();
+    }
+    this.conversationSource = null;
   },
 
   get sortedLanguages() {
@@ -923,13 +1002,14 @@ const uiStore = {
     this.appLangs = appLangs ?? { en: "English" };
     this.errorInLog = false;
     this.log = this.log ?? [];
+    this.activePanel = "";
+    this.postsScrolled = false;
 
     this.lang = this.defaultOptions.lang;
     this.theme = this.defaultOptions.theme;
     this.sortAsc = this.defaultOptions.sortAsc;
     this.pageSize = this.defaultOptions.pageSize;
     this.combinePanels = this.defaultOptions.combinePanels;
-    this.activePanel = this.defaultOptions.activePanel;
     this.defaultPanel = this.defaultOptions.defaultPanel;
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
 
@@ -941,11 +1021,17 @@ const uiStore = {
     loadPref("pageSize");
     loadPref("combinePanels");
     loadPref("activePanel");
-    loadPref("defaultPanel"); // must be loaded after activePanel
+    loadPref("defaultPanel");
     loadPref("simplifyPostsDisplay");
 
+    setTheme(this.theme);
+
     if (combinedPanelsMode()) {
-      this.activePanel = this.defaultPanel;
+      if (this.defaultPanel === "auto") {
+        this.panelOpen(this.activePanel ? this.activePanel : "actor", false);
+      } else {
+        this.panelOpen(this.defaultPanel, false);
+      }
     }
   },
   changeDefault(pref, val) {
@@ -1018,6 +1104,10 @@ const uiStore = {
 
     if (pref === "pageSize") {
       Alpine.store("files").checkPagingValue();
+    }
+
+    if (pref === "combinePanels") {
+      this.setInert();
     }
   },
 
@@ -1097,20 +1187,25 @@ const uiStore = {
   },
   resetPanels() {
     const name = this.activePanel;
+    if (name === "auto") {
+      return;
+    }
+
     document.querySelectorAll(`#panel-${name} details[open]`).forEach((e) => {
       e.removeAttribute("open");
     });
 
+    let panelId = "panel-" + name;
     if (name === "actor") {
-      const panel = "actorpanel-" + this.actorPanel;
-      setTimeout(() => {
-        document.getElementById(panel).scrollTop = 0;
-      }, 250);
-    } else {
-      setTimeout(() => {
-        document.getElementById("panel-" + name).scrollTop = 0;
-      }, 250);
+      panelId = "actorpanel-" + this.actorPanel;
     }
+
+    setTimeout(() => {
+      const elm = document.getElementById(panelId);
+      if (elm) {
+        elm.scrollTop = 0;
+      }
+    }, 250);
   },
 
   setInertMain() {
@@ -1125,7 +1220,9 @@ const uiStore = {
     });
   },
   setInertPanels() {
-    const panels = document.querySelectorAll("#panel-actor, #panel-filters, #panel-tags, #panel-tools");
+    const panels = document.querySelectorAll(
+      "#panel-actor, #panel-filters, #panel-tags, #panel-tools, #panel-conversation"
+    );
     if (!panels.length) {
       return;
     }
@@ -1157,6 +1254,21 @@ const uiStore = {
       return;
     }
 
+    if (Alpine.store("files").conversation.length) {
+      elms.forEach((e) => {
+        if (e.id === "panel-conversation") {
+          return;
+        }
+        e.setAttribute("inert", true);
+      });
+      return;
+    } else {
+      const elm = document.getElementById("panel-conversation");
+      if (elm) {
+        elm.setAttribute("inert", true);
+      }
+    }
+
     elms.forEach((e) => {
       e.removeAttribute("inert");
     });
@@ -1180,6 +1292,18 @@ const uiStore = {
     }
   },
 
+  checkPostsScrolling() {
+    const elm = document.getElementById("toots");
+    if (!elm) {
+      return;
+    }
+    if (elm.scrollTop > 5) {
+      this.postsScrolled = true;
+    } else {
+      this.postsScrolled = false;
+    }
+  },
+
   get appClasses() {
     let classes = [];
     if (combinedPanelsMode()) {
@@ -1187,6 +1311,9 @@ const uiStore = {
     }
     if (this.simplifyPostsDisplay) {
       classes.push("simplify-posts-display");
+    }
+    if (this.postsScrolled) {
+      classes.push("posts-scrolled");
     }
 
     return classes;

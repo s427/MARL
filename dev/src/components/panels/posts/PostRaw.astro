@@ -1,4 +1,4 @@
-<template x-if="localMode()">
+<template x-if="localMode() || (customPrefAvailable('showPostsJson') && customPrefs.showPostsJson)">
   <div class="toot-raw">
     <details>
       <summary>

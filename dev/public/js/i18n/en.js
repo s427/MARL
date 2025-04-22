@@ -57,7 +57,6 @@ appStrings["en"] = {
     mentionText: "Mentions",
     externalLink: "External links",
     summary: "Summary (CW)",
-    isEdited: "Has been edited",
     isDuplicate: "Non-exact duplicates",
 
     mustContain: "Must contain",
@@ -82,7 +81,9 @@ appStrings["en"] = {
     typeBoost: "Boosts",
     startingAt: 'Starts with "@"',
     noStartingAt: 'Does not start with "@"',
+    isInConversation: "Is part of a thread",
     isSensitive: "Marked as sensitive",
+    isEdited: "Has been edited",
 
     mustHaveAttachement: "Must have attachment",
     attachmentAny: "Any type",
@@ -101,6 +102,7 @@ appStrings["en"] = {
     language: "Language",
     author: "Author",
 
+    showResults: "Show results",
     resetFilters: "Reset filters",
   },
   header: {
@@ -121,6 +123,7 @@ appStrings["en"] = {
     noPostsError: "No posts found in archive",
   },
   post: {
+    showConversation: "Show thread",
     by: "by",
     lastUpdated: "Last updated",
     linkToPost: "Link",
@@ -145,6 +148,14 @@ appStrings["en"] = {
     hashtags: "Hashtags",
     extLinks: "External links",
     rawData: "Raw data",
+  },
+  conversation: {
+    panelTitle: "Thread",
+    panelTitleNbPosts: "(<strong>{nb}</strong> posts in archive)",
+    closePanel: "Close thread",
+    helpSummary: "Why is this thread broken or incomplete?",
+    helpContent:
+      "MARL can only show you posts that are present in your archive. Posts written by other people are typically not included in an archive. If posts are missing in a thread, it's impossible for MARL to reconnect the broken parts. In other words, what you will mostly see here are posts where you reply to yourself (aka threads 🧵).",
   },
   tags: {
     panelTitle: "Tags",

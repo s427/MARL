@@ -2,6 +2,7 @@
 import AttachmentImage from "./AttachmentImage.astro";
 import AttachmentSound from "./AttachmentSound.astro";
 import AttachmentVideo from "./AttachmentVideo.astro";
+import HasReply from "./HasReply.astro";
 import Poll from "./Poll.astro";
 ---
 
@@ -11,7 +12,12 @@ import Poll from "./Poll.astro";
       <span x-text="toot.object.summary"></span>
     </div>
 
-    <div class="toot-content" x-html="toot.object.content"></div>
+    <div class="toot-content">
+      <div
+        class="toot-content-inner"
+        x-html="toot.object.content"
+      ></div>
+    </div>
 
     <div class="toot-poll" x-show="toot._marl.pollType">
       <Poll />
@@ -31,5 +37,9 @@ import Poll from "./Poll.astro";
         </template>
       </ul>
     </div>
+
+    <template x-if="toot._marl.replies.length || toot._marl.inReplyTo">
+      <HasReply />
+    </template>
   </div>
 </template>
