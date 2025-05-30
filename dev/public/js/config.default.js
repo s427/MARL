@@ -48,7 +48,7 @@ const customPrefs = {};
 You can use the following properties. All properties are optional:
 
 - lang: the language for the UI
-  possible values: "en" (default), "fr"
+  possible values: "en" (default), "fr", "es"
   note: if no option is set, the app will attempt to use the same language as the user's browser (if available for the app)
 
 - theme: the theme for the app
