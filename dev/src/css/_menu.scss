@@ -26,6 +26,7 @@ html {
   li {
     display: block;
     list-style: none;
+    word-wrap: anywhere;
   }
   button {
     display: flex;
