@@ -7,7 +7,7 @@ MARL is a lightweight, single-page app that provides a user-friendly interface t
 ## Project links
 
 - __Project page__: https://github.com/s427/MARL
-- __Demo page__: https://s427.ch/marl  
+- __Demo page__: https://marl.s427.ch  
   Uses a subset of my own archive data.
 - __Try it for yourself__: https://s427.github.io/MARL/  
   Online version - you need to have your own archive.
@@ -90,7 +90,7 @@ Accessibility is a vast and complex topic, and there's probably room for improve
 
 ### Multilingual
 
-MARL is available in English and French. Get in touch if you want to help translating it in your language! (The file for English can be found at `dev/public/js/i18n/en.js`.)
+MARL is available in English, French and Spanish. Get in touch if you want to help translating it in your language! (The file for English can be found at `dev/public/js/i18n/en.js`.)
 
 ### Responsive
 
@@ -149,8 +149,14 @@ You can reach me via github or on Mastodon:
 Github: https://github.com/s427  
 Mastodon: https://lou.lt/@s427
 
+## Credits
+
+Spanish translation: https://github.com/anauta
+
 ## Version history
 
+- v. 2.10
+  - [Github issue #14](https://github.com/s427/MARL/issues/14) - Spanish translation. Thanks to [@anauta](https://github.com/anauta)!
 - v. 2.9
   - [NEW] Conversation view
     - When two posts (or more) are direct replies to each other, a new "Show thread" button allows to view all the posts in the thread.
@@ -196,7 +202,7 @@ Mastodon: https://lou.lt/@s427
     - Please read [server-mode.md](server-mode.md) for more information.
     - A stand-alone script is available in `tools/outbox-cleanup` to generate a JSON file without private posts (it has its own [readme](tools/outbox-cleanup/readme.md)  file).
 - v. 2.3
-  - [Github issue #10](https://github.com/s427/MARL/issues/10) Support for archives with `media_attachments` folder removed. This allows very large archive files, which would normally fail to load because they exceed the browser cache capacity, to still be loaded, although without any attachment visible. Attachments metadata (alt text and path) are still shown, and attachment-related filters still work.
+  - [Github issue #10](https://github.com/s427/MARL/issues/10) - Support for archives with `media_attachments` folder removed. This allows very large archive files, which would normally fail to load because they exceed the browser cache capacity, to still be loaded, although without any attachment visible. Attachments metadata (alt text and path) are still shown, and attachment-related filters still work.
 - v. 2.2
   - Better error handling when loading files
     - In case of errors, MARL should not remain stuck on the loading screen anymore, but will get back to the welcome screen (or the main screen if another archive is already loaded) and show an error message (either directly on the welcome screen, or in the tools panel).
