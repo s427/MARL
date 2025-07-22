@@ -447,16 +447,33 @@ function buildDynamicFilters() {
   Alpine.store("files").resetFilters(false);
 }
 
+function buildLikesBookmarks() {
+  const types = ["likes", "bookmarks"];
+
+  for (const source of Alpine.store("files").sources) {
+    for (const type of types) {
+      if (source[type].data.length) {
+        const list = source[type].data;
+        let list2 = [];
+        for (let i = 0; i < list.length; i++) {
+          const url = list[i];
+          list2.push({
+            url: url,
+            inArchive: Alpine.store("files").toots.some((t) => t.id.indexOf(url) === 0),
+          });
+        }
+
+        Alpine.store("files").sources[source.id][type].data = list2;
+      }
+    }
+  }
+}
+
 function checkAppReady(ok) {
   if (ok) {
-    buildTootsInfos();
-    buildDynamicFilters();
-    cleanUpRaw();
-    setHueForSources();
     document.getElementById("main-section").focus();
     Alpine.store("ui").setInert();
     Alpine.store("files").sortToots();
-    Alpine.store("files").loading = false;
   }
 }
 
@@ -820,6 +837,12 @@ function postsScrolled() {
   setTimeout(() => {
     Alpine.store("ui").checkPostsScrolling();
   }, 200);
+}
+
+function searchFullText(val) {
+  Alpine.store("files").resetFilters(true);
+  Alpine.store("files").filters.fullText = val;
+  Alpine.store("files").setFilter();
 }
 
 // drag'n'drop over entire page

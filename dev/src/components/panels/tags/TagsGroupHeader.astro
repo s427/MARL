@@ -28,19 +28,21 @@ switch (type) {
   <div class="tags-group-filter">
     <label
       for={`tags-group-${filterId}-filter`}
-      class="visually-hidden"
+      class="local-filter-label visually-hidden"
       x-text={`$t('tags.${type}Filter')`}
     ></label>
     <input
       id={`tags-group-${filterId}-filter`}
       type="text"
       onclick="this.select()"
+      class="local-filter-input"
       x-model.debounce={`$store.files.tagsFilters.${filterId}`}
     />
     <button
       type="button"
-      class="tags-group-filter-reset"
+      class="local-filter-reset"
       x-show={`$store.files.tagsFilters.${filterId}`}
+      onclick="this.previousElementSibling.focus()"
       @click={`$store.files.tagsFilters.${filterId} = ''`}
     >
       <svg aria-hidden="true">

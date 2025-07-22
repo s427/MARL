@@ -170,8 +170,14 @@ function loadRemotesData() {
       nbToots: 0,
       actor: {},
       outbox: {},
-      likes: [],
-      bookmarks: [],
+      likes: {
+        filter: "",
+        data: [],
+      },
+      bookmarks: {
+        filter: "",
+        data: [],
+      },
     };
 
     loadJsonData("actor", remote.actor, i);
@@ -191,7 +197,7 @@ function loadRemotesData() {
   // remove temporary JSON data
   Alpine.store("files").remotes = [];
 
-  Alpine.store("files").loading = false;
+  AllArchivesLoaded();
 }
 
 // LOCAL MODE (unzip)
@@ -288,8 +294,14 @@ function unzipStart(file) {
 
         actor: {},
         outbox: {},
-        likes: [],
-        bookmarks: [],
+        likes: {
+          filter: "",
+          data: [],
+        },
+        bookmarks: {
+          filter: "",
+          data: [],
+        },
         avatar: {},
         header: {},
       };
@@ -415,7 +427,7 @@ function loadJsonData(name, data, index) {
   } // outbox.json
 
   if (name === "likes" || name === "bookmarks") {
-    Alpine.store("files").sources[index][name] = data.orderedItems;
+    Alpine.store("files").sources[index][name].data = data.orderedItems;
     if (localMode()) {
       Alpine.store("files").currentlyLoading[Alpine.store("files").currentlyLoadingId][name] = true;
     }
@@ -500,5 +512,15 @@ function unzipEnd() {
 }
 
 function endQueue() {
+  AllArchivesLoaded();
+}
+
+function AllArchivesLoaded() {
+  buildTootsInfos();
+  buildDynamicFilters();
+  buildLikesBookmarks();
+  setHueForSources();
+  cleanUpRaw();
+
   Alpine.store("files").loading = false;
 }

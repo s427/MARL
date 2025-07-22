@@ -307,6 +307,18 @@ const filesStore = {
           }
         }
 
+        if (t.id.indexOf(filterValue) >= 0) {
+          show = true;
+        }
+        if (
+          typeof t.object === "object" &&
+          t.object !== null &&
+          t.object.inReplyTo &&
+          t.object.inReplyTo.indexOf(filterValue) >= 0
+        ) {
+          show = true;
+        }
+
         if (t._marl.hasAttachments) {
           t.object.attachment.forEach((att) => {
             const alt = att.name;
@@ -761,6 +773,21 @@ const filesStore = {
       }
     });
     return r;
+  },
+
+  filteredLikesBookmarks(type, sourceId) {
+    const f = this.sources[sourceId][type].filter.toLowerCase();
+    const d = this.sources[sourceId][type].data;
+
+    if (!d || !d.length) {
+      return [];
+    }
+
+    if (f) {
+      return d.filter((item) => item.url.toLowerCase().indexOf(f) >= 0);
+    } else {
+      return d;
+    }
   },
 
   loadConversation(t) {

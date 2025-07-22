@@ -45,8 +45,12 @@ appStrings["es"] = {
     rawData: "Datos en bruto {fileName}",
     likes: "Favoritos",
     likesEmpty: "sin favoritos",
+    likesFilter: "Filtrar favoritos",
     bookmarks: "Marcadores",
     bookmarksEmpty: "sin marcadores",
+    bookmarksFilter: "Filtrar marcadores",
+    showInMarl: "Mostrar en MARL",
+    resetFilter: "Reiniciar filtro",
   },
   filters: {
     panelTitle: "Filtrar publicaciones",
@@ -165,7 +169,7 @@ appStrings["es"] = {
     hashtagsFilter: "Filtrar etiquetas",
     mentionsFilter: "Filtrar menciones",
     boostsFilter: "Filtrar usuarios impulsados",
-    resetFilter: "reiniciar filtro",
+    resetFilter: "Reiniciar filtro",
   },
   tools: {
     panelTitle: "Herramientas",

@@ -2,7 +2,7 @@
 const { type } = Astro.props;
 ---
 
-<template x-if={`localMode() || source.${type}.length`}>
+<template x-if={`localMode() || source.${type}.data.length`}>
   <div class={`actor-${type}`}>
     <details>
       <summary>
@@ -13,20 +13,56 @@ const { type } = Astro.props;
         </span>
         <h2 class="summary-label">
           <span x-text={`$t('actor.${type}')`}></span>
-          (<span class="count" x-text={`source.${type}.length`}></span>)
+          (<template x-if={`source.${type}.filter`}><span class="count" x-text={`$store.files.filteredLikesBookmarks("${type}", source.id).length + " / "`}></span></template><span class="count" x-text={`source.${type}.data.length`}></span>)
         </h2>
+        <div class="actor-likes-bookmarks-filter">
+          <label for={`filter-${type}`} class="local-filter-label">
+            <span class="visually-hidden" x-text={`$t('actor.${type}Filter')`}></span>
+          </label>
+          <input
+            type="text"
+            id={`filter-${type}`}
+            class="local-filter-input"
+            onclick="this.select()"
+            x-model.debounce={`source.${type}.filter`}
+          >
+          <button
+            type="button"
+            class="local-filter-reset"
+            x-show={`source.${type}.filter`}
+            onclick="this.previousElementSibling.focus()"
+            @click={`source.${type}.filter = ''`}
+          >
+            <svg aria-hidden="true">
+              <use href="#close" />
+            </svg>
+            <span
+              class="visually-hidden"
+              x-text="$t('actor.resetFilter')"
+            ></span>
+          </button>
+        </div>
       </summary>
       <div class="details-content">
-        <template x-if={`source.${type}.length`}>
-          <ul>
-            <template x-for={`url in source.${type}`}>
-              <li>
-                <a :href="url" x-html="formatLikesBookmarks(url)"></a>
-              </li>
-            </template>
-          </ul>
+        <template x-if={`$store.files.filteredLikesBookmarks("${type}", source.id).length`}>
+          <div class="actor-likes-bookmarks-wrapper">
+            <ul>
+              <template x-for={`item in $store.files.filteredLikesBookmarks("${type}", source.id)`}>
+                <li>
+                  <a :href="item.url" x-html="formatLikesBookmarks(item.url)"></a>
+                  <template x-if="item.inArchive">
+                    <button
+                      :class="$store.files.filters.fullText === item.url ? 'active' : ''"
+                      @click="searchFullText(item.url)"
+                      x-text="$t('actor.showInMarl')"
+                    ></button>
+                  </template>
+                </li>
+              </template>
+            </ul>
+          </div>
         </template>
-        <template x-if={`! source.${type}.length`}>
+        <template x-if={`! $store.files.filteredLikesBookmarks("${type}", source.id).length`}>
           <p class="no-content">…&nbsp;<span x-text={`$t('actor.${type}Empty')`}></span>&nbsp;…</p>
         </template>
       </div>

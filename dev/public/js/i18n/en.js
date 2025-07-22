@@ -45,8 +45,12 @@ appStrings["en"] = {
     rawData: "Raw data {fileName}",
     likes: "Favorites",
     likesEmpty: "no favorites",
+    likesFilter: "Filter favorites",
     bookmarks: "Bookmarks",
     bookmarksEmpty: "no bookmarks",
+    bookmarksFilter: "Filter bookmarks",
+    showInMarl: "Show in MARL",
+    resetFilter: "Reset filter",
   },
   filters: {
     panelTitle: "Filter posts",
@@ -165,7 +169,7 @@ appStrings["en"] = {
     hashtagsFilter: "Filter hashtags",
     mentionsFilter: "Filter mentions",
     boostsFilter: "Filter boosted users",
-    resetFilter: "reset filter",
+    resetFilter: "Reset filter",
   },
   tools: {
     panelTitle: "Tools",

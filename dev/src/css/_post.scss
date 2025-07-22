@@ -694,6 +694,13 @@ $meta-visible: 100ch;
     }
   }
 
+  .toot:hover,
+  .toot:focus-within {
+    .toot-infos {
+      opacity: 1;
+    }
+  }
+
   .poll-meta,
   .poll-meta-simplified {
     opacity: 0.5;

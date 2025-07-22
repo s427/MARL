@@ -155,6 +155,12 @@ Spanish translation: https://github.com/anauta
 
 ## Version history
 
+- v. 2.11
+  - Likes and bookmarks get a little love in this release 🥰
+    - A new filter has been added to each section. It will simply search in the URL of likes or bookmarks, allowing you to easily find a specific domain, user or post ID.
+    - Likes or bookmarks who are present as toots in the archive now have a "Show in MARL" button next to them; as the name imply, you can click it to immediately show the corresponding post (it will simply do a full text search with the post URL).
+  - And also: the full text filter now also searches in the post "id" field (ie. the post URL), as well as in the "inReplyTo" field. Meaning you can now easily find a post by its ID, and MARL will also show the posts which are replies to this post (_if_ they are present in the archive, of course).
+  - Various minor improvements
 - v. 2.10
   - [Github issue #14](https://github.com/s427/MARL/issues/14) - Spanish translation. Thanks to [@anauta](https://github.com/anauta)!
 - v. 2.9

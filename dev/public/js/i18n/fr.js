@@ -45,8 +45,12 @@ appStrings["fr"] = {
     rawData: "Données brutes {fileName}",
     likes: "Favoris",
     likesEmpty: "aucun favori",
+    likesFilter: "Filtrer les favoris",
     bookmarks: "Marque-pages",
     bookmarksEmpty: "aucun marque-page",
+    bookmarksFilter: "Filtrer les marque-pages",
+    showInMarl: "Afficher dans MARL",
+    resetFilter: "Réinitialiser le filtre",
   },
   filters: {
     panelTitle: "Filtrer les posts",
@@ -165,7 +169,7 @@ appStrings["fr"] = {
     hashtagsFilter: "Filtrer les hashtags",
     mentionsFilter: "Filtrer les mentions",
     boostsFilter: "Filter utilisateurs partagés",
-    resetFilter: "réinitialiser le filtre",
+    resetFilter: "Réinitialiser le filtre",
   },
   tools: {
     panelTitle: "Outils",
