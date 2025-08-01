@@ -114,7 +114,7 @@ $meta-visible: 100ch;
 }
 
 .toot-poll {
-  padding-top: 1rem;
+  margin-top: 1rem;
 
   ul {
     display: grid;
@@ -239,6 +239,12 @@ $meta-visible: 100ch;
       color: var(--accent);
       font-weight: normal;
     }
+  }
+}
+.toot-pretty.no-content {
+  .toot-poll,
+  .toot-attachments {
+    margin-top: 0;
   }
 }
 
