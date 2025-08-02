@@ -86,6 +86,10 @@ The folloging options are specific to server mode and not present in the tools p
   possible values: true, false (default)
   note: JSON data for posts is always hidden in "simplify post display" mode
 
+- appTitle: allows you to change the title for the app (<title>, shown on the browser tab)
+  note: the text " — MARL" will still be added at the end.
+
+
 Example:
 
 const customPrefs = {

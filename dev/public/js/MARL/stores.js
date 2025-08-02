@@ -1024,6 +1024,8 @@ const uiStore = {
     imagesCompactLayout: false,
     hideNoAltTextNotice: false,
     simplifyPostsDisplay: false,
+    appTitle: "MARL - Mastodon Archive Reader Lite",
+    appTitleSuffix: " — MARL",
   },
 
   resetState() {
@@ -1045,6 +1047,7 @@ const uiStore = {
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
     this.hideNoAltTextNotice = this.defaultOptions.hideNoAltTextNotice;
     this.imagesCompactLayout = this.defaultOptions.imagesCompactLayout;
+    this.appTitle = this.defaultOptions.appTitle;
 
     checkMobileLayout();
 
@@ -1067,6 +1070,10 @@ const uiStore = {
       } else {
         this.panelOpen(this.defaultPanel, false);
       }
+    }
+
+    if (this.appTitle) {
+      document.title = this.appTitle;
     }
   },
   changeDefault(pref, val) {
@@ -1102,6 +1109,12 @@ const uiStore = {
       case "lang":
         if (!validLang(val)) {
           return;
+        }
+        break;
+
+      case "appTitle":
+        if (val) {
+          val = val + this.defaultOptions.appTitleSuffix;
         }
         break;
       default:
