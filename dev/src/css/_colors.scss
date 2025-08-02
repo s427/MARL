@@ -188,6 +188,8 @@ $stripe2:                  $accent-dark;
 $stripe-fg:                $fg-inv;
 $private-post-bg:          hsl($hue, 50%, 96%);
 $private-post-border:      $accent-light2;
+$tooltip-bg:               hsl($hue, 10%, 30%);
+$tooltip-text:             hsl($hue, 10%, 95%);
 
 // dark theme
 $dark-posts-count:         $dark-fg0;
@@ -198,4 +200,6 @@ $dark-stripe2:             hsl($hue, 75%, 30%);
 $dark-stripe-fg:           $dark-fg0;
 $dark-private-post-bg:     $dark-bg2;
 $dark-private-post-border: $dark-accent-dark;
+$dark-tooltip-bg:          #000;
+$dark-tooltip-text:        hsl($hue, 10%, 80%);
 

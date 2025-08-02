@@ -122,4 +122,33 @@
     </div>
   </div>
 
+  <div class="form-items-section settings-images">
+    <h3 class="form-items-section-title" x-text="$t('tools.imagesSettings')"></h3>
+
+    <div class="app-setting form-item checkbox app-settings-images-compact-layout">
+      <label for="setting-images-compact-layout" class="checkbox-label">
+        <input
+          id="setting-images-compact-layout"
+          type="checkbox"
+          x-model.debounce={"$store.ui.imagesCompactLayout"}
+          @change.debounce="$store.ui.setOption('imagesCompactLayout')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.imagesCompactLayout')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.imagesCompactLayoutDesc')`}></span>
+      </label>
+    </div>
+
+    <div class="app-setting form-item checkbox app-settings-alt-text-icon">
+      <label for="setting-alt-text-icon" class="checkbox-label">
+        <input
+          id="setting-alt-text-icon"
+          type="checkbox"
+          x-model.debounce={"$store.ui.hideNoAltTextNotice"}
+          @change.debounce="$store.ui.setOption('hideNoAltTextNotice')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.hideNoAltTextNotice')`}></span>
+      </label>
+    </div>
+  </div>
+
 </div>

@@ -248,11 +248,17 @@ $meta-visible: 100ch;
   }
 }
 
-.att-img {
-  & + .att-img {
-    margin-top: 1rem;
-  }
+.attachments-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+}
+.attachment-wrapper {
+  padding: 0.5rem;
+}
 
+.att-img {
   .att-wrapper {
     display: flex;
     align-items: flex-start;
@@ -324,20 +330,20 @@ $meta-visible: 100ch;
 }
 
 .att-sound {
-  padding: 1rem;
-  background-color: var(--bg2);
-  border-radius: 0.5rem;
-  @include mixins.box-shadow-inner();
-
-  & + .att-sound {
-    margin-top: 1rem;
+  .att-wrapper {
+    padding: 1rem;
+    background-color: var(--bg2);
+    border-radius: 0.5rem;
+    @include mixins.box-shadow-inner();
   }
 
   audio {
     display: block;
     width: 100%;
-    margin: 0 0 1rem 0;
     border-radius: 0.3rem;
+  }
+  .att-description {
+    margin-top: 1rem;
   }
 }
 
@@ -357,6 +363,69 @@ $meta-visible: 100ch;
   }
   .att-description {
     padding: 1rem;
+  }
+}
+
+// OPTION ON: "hideNoAltTextNotice"
+
+.toot-attachments.hide-no-alt-text-icon {
+  .att-img-wrapper::before {
+    content: none;
+    display: none;
+  }
+  .no-alt-text .att-description {
+    @include mixins.visually-hidden();
+  }
+}
+
+// OPTION ON: "imagesCompactLayout"
+
+.toot-attachments.compact-layout {
+  .attachments-wrapper {
+    flex-direction: row;
+    position: relative;
+  }
+  .attachment-wrapper {
+    flex: 0 0 100%;
+  }
+  .attachment-wrapper.att-img {
+    flex-basis: 25%;
+    .att-img-wrapper {
+      width: 100%;
+      flex-basis: 100%;
+    }
+    .att-description {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0.5rem;
+      right: 0.5rem;
+      z-index: 1;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      color: var(--tooltip-text);
+      background-color: var(--tooltip-bg);
+      @include mixins.box-shadow-post();
+      @include mixins.visually-hidden();
+    }
+    .att-wrapper {
+      &:hover,
+      &:focus-within {
+        .att-description {
+          @include mixins.cancel-visually-hidden();
+          position: absolute;
+        }
+      }
+    }
+  }
+  &.hide-no-alt-text-icon .attachment-wrapper.att-img.no-alt-text {
+    .att-wrapper {
+      &:hover,
+      &:focus-within {
+        .att-description {
+          @include mixins.visually-hidden();
+        }
+      }
+    }
   }
 }
 

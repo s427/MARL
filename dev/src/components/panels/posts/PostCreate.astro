@@ -26,10 +26,15 @@ import Poll from "./Poll.astro";
       <Poll />
     </div>
 
-    <div class="toot-attachments" x-show="toot.object.attachment && toot.object.attachment.length">
-      <ul>
+    <div
+      class="toot-attachments"
+      :class="$store.ui.attachementsClasses"
+      x-show="toot.object.attachment && toot.object.attachment.length"
+    >
+      <ul class="attachments-wrapper">
         <template x-for="(att, index) in toot.object.attachment">
           <li
+            class="attachment-wrapper"
             :class="attachmentWrapperClass(att)"
             :data-trigger="loadAttachedMedia(att, toot._marl.source)"
           >

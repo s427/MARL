@@ -34,6 +34,8 @@ const userPrefsStore = {
       case "sortAsc":
       case "combinePanels":
       case "simplifyPostsDisplay":
+      case "imagesCompactLayout":
+      case "hideNoAltTextNotice":
         value = +value === 1 ? true : false;
         if (value !== Alpine.store("ui")[pref]) {
           Alpine.store("ui")[pref] = value;
@@ -1019,6 +1021,8 @@ const uiStore = {
     pageSize: 10,
     combinePanels: false,
     defaultPanel: "auto",
+    imagesCompactLayout: false,
+    hideNoAltTextNotice: false,
     simplifyPostsDisplay: false,
   },
 
@@ -1039,6 +1043,8 @@ const uiStore = {
     this.combinePanels = this.defaultOptions.combinePanels;
     this.defaultPanel = this.defaultOptions.defaultPanel;
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
+    this.hideNoAltTextNotice = this.defaultOptions.hideNoAltTextNotice;
+    this.imagesCompactLayout = this.defaultOptions.imagesCompactLayout;
 
     checkMobileLayout();
 
@@ -1050,6 +1056,8 @@ const uiStore = {
     loadPref("activePanel");
     loadPref("defaultPanel");
     loadPref("simplifyPostsDisplay");
+    loadPref("hideNoAltTextNotice");
+    loadPref("imagesCompactLayout");
 
     setTheme(this.theme);
 
@@ -1066,6 +1074,8 @@ const uiStore = {
       case "sortAsc":
       case "combinePanels":
       case "simplifyPostsDisplay":
+      case "hideNoAltTextNotice":
+      case "imagesCompactLayout":
         val = val ? true : false;
         break;
 
@@ -1329,6 +1339,17 @@ const uiStore = {
     } else {
       this.postsScrolled = false;
     }
+  },
+
+  get attachementsClasses() {
+    let classes = [];
+    if (this.imagesCompactLayout) {
+      classes.push("compact-layout");
+    }
+    if (this.hideNoAltTextNotice) {
+      classes.push("hide-no-alt-text-icon");
+    }
+    return classes;
   },
 
   get appClasses() {

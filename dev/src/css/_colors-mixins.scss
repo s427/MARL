@@ -60,6 +60,8 @@
     --stripe-fg:           #{colors.$dark-stripe-fg};
     --private-post-bg:     #{colors.$dark-private-post-bg};
     --private-post-border: #{colors.$dark-private-post-border};
+    --tooltip-bg:          #{colors.$dark-tooltip-bg};
+    --tooltip-text:        #{colors.$dark-tooltip-text};
 
     .actors-wrapper {
       --actor-hue:          0;
@@ -155,6 +157,8 @@
     --stripe-fg:           #{colors.$stripe-fg};
     --private-post-bg:     #{colors.$private-post-bg};
     --private-post-border: #{colors.$private-post-border};
+    --tooltip-bg:          #{colors.$tooltip-bg};
+    --tooltip-text:        #{colors.$tooltip-text};
 
     .actors-wrapper {
       --actor-hue:          0;

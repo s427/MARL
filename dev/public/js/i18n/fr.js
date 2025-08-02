@@ -191,6 +191,11 @@ appStrings["fr"] = {
       "Décocher pour trier les posts dans l'ordre chronologique inverse (les plus récents en premier)",
     simplifyPostsDisplay: "Simplifier l'affichage des posts",
     simplifyPostsDisplayDesc: "Cacher certains éléments techniques ou redondants",
+    imagesSettings: "Images",
+    imagesCompactLayout: "Affichage compact pour les images",
+    imagesCompactLayoutDesc:
+      "Les images sont affichées en grille; les textes alternatifs (alt text) sont uniquement affichés lors du survol de la souris (ou focus clavier)",
+    hideNoAltTextNotice: "Masquer les indications de textes alternatifs absents (alt text)",
     loadedFiles: "Fichiers chargés",
     loadedRemotes: "Archives chargées",
     addAnother: "Ajouter une autre archive",

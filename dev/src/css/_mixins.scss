@@ -7,6 +7,15 @@
   position: absolute;
   white-space: nowrap;
 }
+@mixin cancel-visually-hidden() {
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  position: static;
+  white-space: normal;
+}
 
 @mixin box-shadow-inner() {
   box-shadow: 0 0.15rem 0.3rem -0.2rem rgba(0, 0, 0, 0.35) inset;
