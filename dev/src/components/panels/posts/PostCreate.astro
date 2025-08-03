@@ -1,4 +1,5 @@
 ---
+import AuthorAvatar from "./AuthorAvatar.astro";
 import AttachmentImage from "./AttachmentImage.astro";
 import AttachmentSound from "./AttachmentSound.astro";
 import AttachmentVideo from "./AttachmentVideo.astro";
@@ -8,6 +9,7 @@ import Poll from "./Poll.astro";
 
 <template x-if="toot.type === 'Create'">
   <div class="toot-pretty" :class="toot.object.content ? '' : 'no-content'">
+    <AuthorAvatar />
     <div class="toot-summary" x-show="toot.object.summary">
       <span x-text="toot.object.summary"></span>
     </div>

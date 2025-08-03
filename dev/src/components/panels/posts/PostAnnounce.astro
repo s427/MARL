@@ -1,5 +1,10 @@
+---
+import AuthorAvatar from "./AuthorAvatar.astro";
+---
+
 <template x-if="toot.type === 'Announce' && toot.object && toot.object.content">
   <div class="toot-pretty">
+    <AuthorAvatar />
     <div class="toot-content">
       <div class="toot-content-inner" x-html="toot.object.content"></div>
     </div>
@@ -8,6 +13,7 @@
 
 <template x-if="toot.type === 'Announce' && toot.object && !toot.object.content">
   <div class="toot-pretty">
+    <AuthorAvatar />
     <div class="toot-content">
       <div class="toot-content-inner">
         <a :href="toot.object" x-text="toot.object"></a>

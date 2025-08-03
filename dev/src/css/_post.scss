@@ -30,13 +30,43 @@ $meta-visible: 100ch;
   }
 }
 
+.multiple-actors .toot {
+  padding-left: 3.5rem;
+}
+
 .toot-pretty {
+  position: relative;
   grid-area: pretty;
   padding: 1rem;
 
   .fetch-boost-data {
     padding-top: 1rem;
     text-align: right;
+  }
+}
+
+.toot-author {
+  position: absolute;
+  right: 100%;
+  top: 1rem;
+  z-index: 1;
+  padding: 0;
+  width: 2.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: none;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5) url("../svg/light/person.svg") no-repeat 50% 50% / contain scroll !important;
+
+  &:active {
+    top: 1.2rem;
+  }
+  img {
+    color: transparent;
+    width: 2.5rem;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
   }
 }
 
@@ -390,6 +420,9 @@ $meta-visible: 100ch;
   }
   .attachment-wrapper.att-img {
     flex-basis: 25%;
+    @media screen and (width < 400px) {
+      flex-basis: 50%;
+    }
     .att-img-wrapper {
       width: 100%;
       flex-basis: 100%;
@@ -738,6 +771,14 @@ $meta-visible: 100ch;
       "pretty"
       "infos";
   }
+
+  .toot-author {
+    opacity: 0.5;
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 0.2s ease-out;
+    }
+  }
+
   .toot-infos {
     padding-top: 0;
     box-shadow: none;
@@ -745,11 +786,6 @@ $meta-visible: 100ch;
     opacity: 0.5;
     @media (prefers-reduced-motion: no-preference) {
       transition: opacity 0.2s ease-out;
-    }
-
-    &:hover,
-    &:focus-within {
-      opacity: 1;
     }
 
     .type,
@@ -771,6 +807,7 @@ $meta-visible: 100ch;
 
   .toot:hover,
   .toot:focus-within {
+    .toot-author,
     .toot-infos {
       opacity: 1;
     }

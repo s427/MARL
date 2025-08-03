@@ -1190,6 +1190,10 @@ const uiStore = {
     this.actorPanel = id;
     document.getElementById("actortab-" + id).focus();
   },
+  showActorProfile(id) {
+    this.panelOpen("actor", true);
+    this.openActorTab(id);
+  },
 
   panelClose() {
     if (combinedPanelsMode()) {

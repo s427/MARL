@@ -1,0 +1,11 @@
+<template x-if="$store.files.sources.length > 1">
+  <button
+    class="toot-author"
+    @click="$store.ui.showActorProfile(toot._marl.source)"
+  >
+    <img
+      :alt="$store.files.sources[toot._marl.source].actor.name"
+      :src="$store.files.sources[toot._marl.source].archiveBasePath + $store.files.sources[toot._marl.source].actor.icon.url"
+    />
+  </button>
+</template>
