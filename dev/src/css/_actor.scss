@@ -110,6 +110,17 @@
   }
 }
 
+.actor-header {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25) !important;
+  img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/1;
+    color: transparent;
+  }
+}
+
 .actor-id {
   position: relative;
   z-index: 1;
@@ -134,10 +145,14 @@
   width: 100px;
   border-radius: 0.5rem;
   cursor: pointer;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.25) url("../svg/light/person.svg") no-repeat 50% 50% / contain scroll !important;
   img {
     width: 100px;
     height: auto;
+    aspect-ratio: 1;
     border-radius: 0.5rem;
+    color: transparent;
   }
 
   &.no-avatar {
