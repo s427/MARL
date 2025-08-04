@@ -71,6 +71,12 @@ You can use the following properties. All properties are optional:
 - simplifyPostsDisplay: hide some technical or redundant elements in posts display
   possible values: true, false (default)
 
+- imagesCompactLayout: compact layout for images
+  possible values: true, false (default)
+
+- hideNoAltTextNotice: hide the warning icon when an image has no alt text
+  possible values: true, false (default)
+
 The folloging options are specific to server mode and not present in the tools panel:
 
 - showActorJson: whether or not to display the full JSON data in the actor panel
@@ -79,6 +85,10 @@ The folloging options are specific to server mode and not present in the tools p
 - showPostsJson: whether or not to display the full JSON data related to each post
   possible values: true, false (default)
   note: JSON data for posts is always hidden in "simplify post display" mode
+
+- appTitle: allows you to change the title for the app (<title>, shown on the browser tab)
+  note: the text " — MARL" will still be added at the end.
+
 
 Example:
 

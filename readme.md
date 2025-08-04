@@ -155,6 +155,13 @@ Spanish translation: https://github.com/anauta
 
 ## Version history
 
+- v. 2.12
+  - [Issue #17](https://github.com/s427/MARL/issues/17) - When multiple archives are loaded, display the author avatar next to each post
+  - [Issue #18](https://github.com/s427/MARL/issues/18) - New options related to images: Compact layout, Hide missing alt text indicator (see "Tools" panel)
+  - [Issue #19](https://github.com/s427/MARL/issues/19) - Server mode: new option to set the app title
+  - [Issue #20](https://github.com/s427/MARL/pull/20) - Remove empty favicon (so the default server favicon or a custim favicon can be displayed)
+  - [Issue #21](https://github.com/s427/MARL/issues/21) - If a post doesn't have text content (only media), hide the empty text block
+  - Various minor improvements
 - v. 2.11
   - Likes and bookmarks get a little love in this release 🥰
     - A new filter has been added to each section. It will simply search in the URL of likes or bookmarks, allowing you to easily find a specific domain, user or post ID.
@@ -162,7 +169,7 @@ Spanish translation: https://github.com/anauta
   - And also: the full text filter now also searches in the post "id" field (ie. the post URL), as well as in the "inReplyTo" field. Meaning you can now easily find a post by its ID, and MARL will also show the posts which are replies to this post (_if_ they are present in the archive, of course).
   - Various minor improvements
 - v. 2.10
-  - [Github issue #14](https://github.com/s427/MARL/issues/14) - Spanish translation. Thanks to [@anauta](https://github.com/anauta)!
+  - [Issue #14](https://github.com/s427/MARL/issues/14) - Spanish translation. Thanks to [@anauta](https://github.com/anauta)!
 - v. 2.9
   - [NEW] Conversation view
     - When two posts (or more) are direct replies to each other, a new "Show thread" button allows to view all the posts in the thread.
@@ -208,11 +215,11 @@ Spanish translation: https://github.com/anauta
     - Please read [server-mode.md](server-mode.md) for more information.
     - A stand-alone script is available in `tools/outbox-cleanup` to generate a JSON file without private posts (it has its own [readme](tools/outbox-cleanup/readme.md)  file).
 - v. 2.3
-  - [Github issue #10](https://github.com/s427/MARL/issues/10) - Support for archives with `media_attachments` folder removed. This allows very large archive files, which would normally fail to load because they exceed the browser cache capacity, to still be loaded, although without any attachment visible. Attachments metadata (alt text and path) are still shown, and attachment-related filters still work.
+  - [Issue #10](https://github.com/s427/MARL/issues/10) - Support for archives with `media_attachments` folder removed. This allows very large archive files, which would normally fail to load because they exceed the browser cache capacity, to still be loaded, although without any attachment visible. Attachments metadata (alt text and path) are still shown, and attachment-related filters still work.
 - v. 2.2
   - Better error handling when loading files
     - In case of errors, MARL should not remain stuck on the loading screen anymore, but will get back to the welcome screen (or the main screen if another archive is already loaded) and show an error message (either directly on the welcome screen, or in the tools panel).
-    - [Github issue #8](https://github.com/s427/MARL/issues/8) - If the JSON files are stored in a subfolder within the ZIP file (instead of being at its root), MARL will attempt to find them and use their location as root.
+    - [Issue #8](https://github.com/s427/MARL/issues/8) - If the JSON files are stored in a subfolder within the ZIP file (instead of being at its root), MARL will attempt to find them and use their location as root.
   - Various small fixes
 - v. 2.1
   - [NEW] Internationalization
