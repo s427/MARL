@@ -433,7 +433,7 @@
       font-family: inherit;
       border-radius: 0.25rem;
       color: #fff;
-      background: var(--actor-accent2-ok, transparent);
+      background: var(--actor-accent2-ok, var(--accent-dark, #000));
       cursor: pointer;
       span {
         display: inline-block;
