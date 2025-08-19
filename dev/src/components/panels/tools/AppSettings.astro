@@ -149,6 +149,19 @@
         <span class="form-item-label" x-text={`$t('tools.hideNoAltTextNotice')`}></span>
       </label>
     </div>
+
+    <div class="app-setting form-item checkbox app-settings-loop-gifs">
+      <label for="setting-loop-gifs" class="checkbox-label">
+        <input
+          id="setting-loop-gifs"
+          type="checkbox"
+          x-model.debounce={"$store.ui.loopGifs"}
+          @change.debounce="$store.ui.setOption('loopGifs')"
+        />
+        <span class="form-item-label" x-text={`$t('tools.loopGifs')`}></span>
+        <span class="form-item-description" x-text={`$t('tools.loopGifsDesc')`}></span>
+      </label>
+    </div>
   </div>
 
 </div>

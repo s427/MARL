@@ -12,7 +12,9 @@ import AttachmentDescription from './AttachmentDescription.astro'
       :width="att.width"
       :height="att.height"
       :src="`data:${att.mediaType}; base64,${$store.files.sources[toot._marl.source][att.url].content}`"
+      :id="'att-' + toot._marl.id + '-' + index"
       :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
+      :data-trigger="checkGif('att-' + toot._marl.id + '-' + index)"
     ></video>
 
     <AttachmentDescription />
@@ -29,7 +31,9 @@ import AttachmentDescription from './AttachmentDescription.astro'
       :width="att.width"
       :height="att.height"
       :src="$store.files.sources[toot._marl.source].archiveBasePath + att.url"
+      :id="'att-' + toot._marl.id + '-' + index"
       :aria-labelledby="'att-' + toot._marl.id + '-' + index + '-desc'"
+      :data-trigger="checkGif('att-' + toot._marl.id + '-' + index)"
     ></video>
 
     <AttachmentDescription />

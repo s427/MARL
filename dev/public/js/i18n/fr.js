@@ -196,6 +196,8 @@ appStrings["fr"] = {
     imagesCompactLayoutDesc:
       "Les images sont affichées en grille; les textes alternatifs (alt text) sont uniquement affichés lors du survol de la souris (ou focus clavier)",
     hideNoAltTextNotice: "Masquer les indications de textes alternatifs absents (alt text)",
+    loopGifs: "Jouer automatiquement les GIF en boucle",
+    loopGifsDesc: "Est considérée comme GIF toute vidéo muette et d'une durée inférieure à 10 secondes",
     loadedFiles: "Fichiers chargés",
     loadedRemotes: "Archives chargées",
     addAnother: "Ajouter une autre archive",

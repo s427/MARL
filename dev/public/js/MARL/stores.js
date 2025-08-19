@@ -36,6 +36,7 @@ const userPrefsStore = {
       case "simplifyPostsDisplay":
       case "imagesCompactLayout":
       case "hideNoAltTextNotice":
+      case "loopGifs":
         value = +value === 1 ? true : false;
         if (value !== Alpine.store("ui")[pref]) {
           Alpine.store("ui")[pref] = value;
@@ -1023,6 +1024,7 @@ const uiStore = {
     defaultPanel: "auto",
     imagesCompactLayout: false,
     hideNoAltTextNotice: false,
+    loopGifs: true,
     simplifyPostsDisplay: false,
     appTitle: "MARL - Mastodon Archive Reader Lite",
     appTitleSuffix: " — MARL",
@@ -1046,8 +1048,16 @@ const uiStore = {
     this.defaultPanel = this.defaultOptions.defaultPanel;
     this.simplifyPostsDisplay = this.defaultOptions.simplifyPostsDisplay;
     this.hideNoAltTextNotice = this.defaultOptions.hideNoAltTextNotice;
+    this.loopGifs = this.defaultOptions.loopGifs;
     this.imagesCompactLayout = this.defaultOptions.imagesCompactLayout;
     this.appTitle = this.defaultOptions.appTitle;
+
+    if (
+      window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
+      window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true
+    ) {
+      this.loopGifs = false;
+    }
 
     checkMobileLayout();
 
@@ -1060,6 +1070,7 @@ const uiStore = {
     loadPref("defaultPanel");
     loadPref("simplifyPostsDisplay");
     loadPref("hideNoAltTextNotice");
+    loadPref("loopGifs");
     loadPref("imagesCompactLayout");
 
     setTheme(this.theme);
@@ -1082,6 +1093,7 @@ const uiStore = {
       case "combinePanels":
       case "simplifyPostsDisplay":
       case "hideNoAltTextNotice":
+      case "loopGifs":
       case "imagesCompactLayout":
         val = val ? true : false;
         break;
@@ -1148,16 +1160,22 @@ const uiStore = {
   setOption(pref) {
     savePref(pref, this[pref]);
 
-    if (pref === "sortAsc") {
-      Alpine.store("files").sortToots();
-    }
+    switch (pref) {
+      case "sortAsc":
+        Alpine.store("files").sortToots();
+        break;
 
-    if (pref === "pageSize") {
-      Alpine.store("files").checkPagingValue();
-    }
+      case "pageSize":
+        Alpine.store("files").checkPagingValue();
+        break;
 
-    if (pref === "combinePanels") {
-      this.setInert();
+      case "combinePanels":
+        this.setInert();
+        break;
+
+      case "loopGifs":
+        checkGifsOnPage();
+        break;
     }
   },
 

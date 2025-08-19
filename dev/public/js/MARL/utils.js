@@ -845,6 +845,70 @@ function searchFullText(val) {
   Alpine.store("files").setFilter();
 }
 
+function getVideoProperties(video) {
+  return new Promise((resolve) => {
+    const checkVideo = () => {
+      const isShort = video.duration <= 10; // seconds
+      let hasAudio = false;
+
+      if (video.audioTracks) {
+        // Modern browsers
+        hasAudio = video.audioTracks.length > 0;
+      } else if (typeof video.webkitAudioDecodedByteCount !== "undefined") {
+        // Webkit browsers
+        hasAudio = video.webkitAudioDecodedByteCount > 0;
+      } else if (typeof video.mozHasAudio !== "undefined") {
+        // Firefox
+        hasAudio = video.mozHasAudio;
+      }
+
+      resolve({
+        duration: video.duration,
+        isShort,
+        hasAudio,
+        isGifLike: isShort && !hasAudio,
+      });
+    };
+
+    if (video.readyState >= 1) {
+      checkVideo();
+    } else {
+      video.addEventListener("loadedmetadata", checkVideo, { once: true });
+    }
+  });
+}
+
+function checkGif(id) {
+  const video = document.getElementById(id);
+  getVideoProperties(video).then((result) => {
+    if (result.isGifLike) {
+      if (Alpine.store("ui").loopGifs) {
+        video.loop = true;
+        video.removeAttribute("controls");
+        video.play();
+      } else {
+        video.removeAttribute("loop");
+        video.controls = true;
+        video.pause();
+      }
+    }
+
+    const setControls = (video) => {
+      video.setAttribute("controls", "controls");
+    };
+
+    video.removeEventListener("mouseenter", setControls(video)).addEventListener("mouseenter", setControls(video));
+    video.removeEventListener("touchstart", setControls(video)).addEventListener("touchstart", setControls(video));
+  });
+}
+
+function checkGifsOnPage() {
+  let videos = document.querySelectorAll("#toots .toot-attachments video");
+  videos.forEach((vid) => {
+    checkGif(vid.id);
+  });
+}
+
 // drag'n'drop over entire page
 
 const drag = {
