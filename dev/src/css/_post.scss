@@ -404,7 +404,7 @@ $meta-visible: 100ch;
     content: none;
     display: none;
   }
-  .no-alt-text .att-description {
+  .no-alt-text .att-description .desc-body {
     @include mixins.visually-hidden();
   }
 }
@@ -455,7 +455,7 @@ $meta-visible: 100ch;
     .att-wrapper {
       &:hover,
       &:focus-within {
-        .att-description {
+        .att-description .desc-body {
           @include mixins.visually-hidden();
         }
       }
