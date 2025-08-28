@@ -3,7 +3,7 @@ import NoAvatar from '../../../img/no-avatar.png'
 import NoAvatarDark from '../../../img/no-avatar-dark.png'
 ---
 
-<template x-if="localMode() && source.avatar.noImg">
+<template x-if="(localMode() && source.avatar.noImg) || (serverMode() && ! source.actor.icon)">
   <div class="actor-avatar no-avatar">
     <img :alt="$t('actor.noAvatarImage')" class="img-light" src={NoAvatar.src} />
     <img :alt="$t('actor.noAvatarImage')" class="img-dark" src={NoAvatarDark.src} />
@@ -23,7 +23,7 @@ import NoAvatarDark from '../../../img/no-avatar-dark.png'
   </button>
 </template>
 
-<template x-if="serverMode()">
+<template x-if="serverMode() && source.actor.icon">
   <button
     :id="'actor-avatar-' + source.id"
     class="actor-avatar"

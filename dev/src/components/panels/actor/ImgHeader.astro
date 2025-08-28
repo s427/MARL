@@ -3,7 +3,7 @@ import NoHeader from '../../../img/no-header.png'
 import NoHeaderDark from '../../../img/no-header-dark.png'
 ---
 
-<template x-if="localMode() && source.header.noImg">
+<template x-if="(localMode() && source.header.noImg) || (serverMode() && ! source.actor.image)">
   <div class="actor-header no-header">
     <img :alt="$t('actor.noHeaderImage')" class="img-light" src={NoHeader.src} />
     <img :alt="$t('actor.noHeaderImage')" class="img-dark" src={NoHeaderDark.src} />
@@ -23,7 +23,7 @@ import NoHeaderDark from '../../../img/no-header-dark.png'
   </button>
 </template>
 
-<template x-if="serverMode()">
+<template x-if="serverMode() && source.actor.image">
   <button
     :id="'actor-header-' + source.id"
     class="actor-header"
@@ -34,4 +34,3 @@ import NoHeaderDark from '../../../img/no-header-dark.png'
       :src="source.archiveBasePath + source.actor.image.url"
     />
 </button>
-</template>

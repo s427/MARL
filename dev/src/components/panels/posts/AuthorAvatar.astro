@@ -3,20 +3,22 @@
     class="toot-author"
     @click="$store.ui.showActorProfile(toot._marl.source)"
   >
-    <template x-if="serverMode()">
-      <img
-        :alt="$store.files.sources[toot._marl.source].actor.name"
-        :src="$store.files.sources[toot._marl.source].archiveBasePath + $store.files.sources[toot._marl.source].actor.icon.url"
-      />
+    <template x-if="(localMode() && $store.files.sources[toot._marl.source].avatar.noImg) || (serverMode() && ! $store.files.sources[toot._marl.source].actor.icon)">
+      <span class="visually-hidden" x-text="$store.files.sources[toot._marl.source].actor.name"></span>
     </template>
+
     <template x-if="localMode() && ! $store.files.sources[toot._marl.source].avatar.noImg">
       <img
         :alt="$store.files.sources[toot._marl.source].actor.name"
         :src="`data:${$store.files.sources[toot._marl.source].avatar.type}; base64,${$store.files.sources[toot._marl.source].avatar.content}`"
       />
     </template>
-    <template x-if="localMode() && $store.files.sources[toot._marl.source].avatar.noImg">
-      <span class="visually-hidden" x-text="$store.files.sources[toot._marl.source].actor.name"></span>
+
+    <template x-if="serverMode() && $store.files.sources[toot._marl.source].actor.icon">
+      <img
+        :alt="$store.files.sources[toot._marl.source].actor.name"
+        :src="$store.files.sources[toot._marl.source].archiveBasePath + $store.files.sources[toot._marl.source].actor.icon.url"
+      />
     </template>
   </button>
 </template>
