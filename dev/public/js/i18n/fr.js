@@ -184,6 +184,7 @@ appStrings["fr"] = {
     defaultPanel: "Panneau par défaut",
     defaultPanelDesc: "Quel panneau est affiché par défaut au chargement de l'app (si les panneaux sont combinés)",
     lastPanel: "Dernier panneau utilisé",
+    noPanel: "— Aucun —",
     postsSettings: "Posts",
     postsPerPage: "Nombre de posts page page :",
     chronologicalOrder: "Ordre chronologique",

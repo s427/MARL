@@ -89,6 +89,7 @@ $menu-filter-active:       hsl($hue, 75%, 50%);
 $menu-backdrop:            rgba(0, 0, 0, 0.5);
 
 $panel-close:              hsl($hue, 10%, 20%);
+$panel-close-bg:           hsl($hue, 10%, 100%, 50%); // actor panel only
 $panel-close-hover:        hsl($hue, 75%, 38%);
 
 // dark theme
@@ -99,6 +100,7 @@ $dark-menu-icon:           #fff;
 $dark-menu-filter-active:  hsl($hue, 75%, 50%);
 $dark-menu-backdrop:       rgba(0, 0, 0, 0.5);
 $dark-panel-close:         hsl($hue, 5%,  90%);
+$dark-panel-close-bg:      hsl($hue, 5%,  10%, 50%); // actor panel only
 $dark-panel-close-hover:   hsl($hue, 0%, 100%);
 
 /**********/

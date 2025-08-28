@@ -184,6 +184,7 @@ appStrings["es"] = {
     defaultPanel: "Panel por defecto",
     defaultPanelDesc: "Qué panel se muestra por defecto al abrir la aplicación (si hay paneles combinados)",
     lastPanel: "Último panel usado",
+    noPanel: "— Ninguno —",
     postsSettings: "Publicaciones",
     postsPerPage: "Número de publicaciones por página:",
     chronologicalOrder: "Orden cronológico",

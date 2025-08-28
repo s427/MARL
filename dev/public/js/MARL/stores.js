@@ -1106,7 +1106,7 @@ const uiStore = {
         break;
 
       case "defaultPanel":
-        if (!validPanel(val)) {
+        if (!validDefaultPanel(val)) {
           return;
         }
         break;
@@ -1214,10 +1214,6 @@ const uiStore = {
   },
 
   panelClose() {
-    if (combinedPanelsMode()) {
-      return;
-    }
-
     const name = this.activePanel;
     this.activePanel = "";
     this.setInert();
@@ -1230,7 +1226,13 @@ const uiStore = {
     }
   },
   panelOpen(name, setFocus) {
-    this.activePanel = name;
+    if (name === "none") {
+      this.activePanel = "";
+      setFocus = false;
+    } else {
+      this.activePanel = name;
+    }
+
     this.resetPanels();
     this.setInert();
 
@@ -1247,9 +1249,7 @@ const uiStore = {
       case "tags":
       case "tools":
         if (this.activePanel === name) {
-          if (!combinedPanelsMode()) {
-            this.panelClose();
-          }
+          this.panelClose();
         } else {
           this.panelOpen(name, true);
           savePref("activePanel", name);
@@ -1389,6 +1389,13 @@ const uiStore = {
 
   get appClasses() {
     let classes = [];
+
+    const activePanel = this.activePanel ? this.activePanel : "none";
+    classes.push(`active-panel-${activePanel}`);
+
+    if (mobileLayout()) {
+      classes.push("mobile-layout");
+    }
     if (combinedPanelsMode()) {
       classes.push("combine-panels");
     }

@@ -147,8 +147,13 @@ html {
     color: buttonText;
   }
 }
-.actor .panel-close {
-  color: #fff;
+.main-section-inner .actor .panel-close {
+  background: var(--panel-close-bg);
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    background-color: var(--bg-button-hover);
+  }
 }
 
 @mixin side-menu() {
@@ -238,6 +243,12 @@ html {
   }
 }
 
+.main-page:not(.combine-panels, .mobile-layout) {
+  .panel-close {
+    display: none;
+  }
+}
+
 @media screen and (width >= 1200px) {
   // ! value used in checkMobileLayout()
   .combine-panels {
@@ -258,6 +269,19 @@ html {
     .toots-header,
     .toots {
       padding-left: min(var(--panel-width), 100dvw - var(--toolbar-width));
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition: padding-left 0.35s ease-out;
+      }
+    }
+    &.active-panel-none {
+      .toots-header,
+      .toots {
+        padding-left: 0;
+        @media (prefers-reduced-motion: no-preference) {
+          transition-duration: 0.2s;
+        }
+      }
     }
 
     .toots {
@@ -282,9 +306,6 @@ html {
           opacity: 1;
         }
       }
-    }
-    .panel-close {
-      display: none !important;
     }
   }
 

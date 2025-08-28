@@ -183,6 +183,7 @@ appStrings["en"] = {
     defaultPanel: "Default panel",
     defaultPanelDesc: "Which panel is shown by default when opening the app (if the panels are combined)",
     lastPanel: "Last panel used",
+    noPanel: "— None —",
     postsSettings: "Posts",
     postsPerPage: "Number of posts per page:",
     chronologicalOrder: "Chronological order",

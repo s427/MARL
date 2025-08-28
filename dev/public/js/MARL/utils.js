@@ -814,8 +814,8 @@ function marlConsole(msg, cls = "info") {
   Alpine.store("ui").logMsg(msg, cls);
 }
 
-function validPanel(name) {
-  const panels = ["actor", "filters", "tags", "tools"];
+function validDefaultPanel(name) {
+  const panels = ["actor", "filters", "tags", "tools", "none"];
   return panels.includes(name);
 }
 
