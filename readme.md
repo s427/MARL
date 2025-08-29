@@ -155,6 +155,13 @@ Spanish translation: https://github.com/anauta
 
 ## Version history
 
+- v. 2.13
+  - [NEW] in the Tools panel:
+    - New setting: "Auto-play and loop GIFs" (ie. videos that are less than 10 seconds and have no sound).
+    - New option in the "Default panel" field: "— None —", if you don't want to display any panel when loading the app.
+    - Both can also be set via `config.js` (in server mode).
+  - In related news, if the "Combine panels" option is activated, it is now possible to completely close all panels (instead of always having one panel opened, as was previously the case). "Default panel: Last panel used" will also take this into account.
+  - Various small fixes and improvements.
 - v. 2.12
   - [Issue #17](https://github.com/s427/MARL/issues/17) - When multiple archives are loaded, display the author avatar next to each post
   - [Issue #18](https://github.com/s427/MARL/issues/18) - New options related to images: Compact layout, Hide missing alt text indicator (see "Tools" panel)

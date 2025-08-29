@@ -65,8 +65,7 @@ You can use the following properties. All properties are optional:
   possible values: true, false (default)
 
 - defaultPanel: if "combinePanels" is active (true), which panel is displayed upon loading the app
-  possible values: "actor", "filters", "tags", "tools"
-  note: if "combinePanels" is active and if this option is not set, no panel will be initially displayed
+  possible values: "actor", "filters", "tags", "tools", "none"
 
 - simplifyPostsDisplay: hide some technical or redundant elements in posts display
   possible values: true, false (default)
@@ -76,6 +75,9 @@ You can use the following properties. All properties are optional:
 
 - hideNoAltTextNotice: hide the warning icon when an image has no alt text
   possible values: true, false (default)
+
+- loopGifs: auto-play and loop videos that are short (< 10 seconds) and have no sound
+  possible values: true (default), false
 
 The folloging options are specific to server mode and not present in the tools panel:
 
