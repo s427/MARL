@@ -195,7 +195,7 @@ appStrings["en"] = {
     imagesCompactLayoutDesc: "Images are displayed as a grid; alt texts are only shown on hover or focus",
     hideNoAltTextNotice: "Hide missing alt text indicators",
     loopGifs: "Auto-play and loop GIFs",
-    loopGifsDesc: "Is considered a GIF any video without sound and whose duratin is less than 10 seconds",
+    loopGifsDesc: "Is considered a GIF any video without sound and whose duration is less than 10 seconds",
     loadedFiles: "Loaded files",
     loadedRemotes: "Loaded archives",
     addAnother: "Add another archive",

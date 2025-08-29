@@ -197,8 +197,8 @@ appStrings["es"] = {
     imagesCompactLayoutDesc:
       "Las imágenes se muestran como una rejilla; los textos alt solo se muestran al pasar el cursor por encima o al obtener el foco",
     hideNoAltTextNotice: "Ocultar indicadores de ausencia de texto alternativo",
-    loopGifs: "Auto-play and loop GIFs",
-    loopGifsDesc: "Is considered a GIF any video without sound and whose duratin is less than 10 seconds",
+    loopGifs: "Reproducción automática y en bucle de GIFs",
+    loopGifsDesc: "Se considera un GIF cualquier vídeo sin sonido y cuya duración sea inferior a 10 segundos",
     loadedFiles: "Archivos cargados",
     loadedRemotes: "Archivos cargados",
     addAnother: "Añadir otro archivo",
