@@ -1217,6 +1217,7 @@ const uiStore = {
     const name = this.activePanel;
     this.activePanel = "";
     this.setInert();
+    savePref("activePanel", "none");
 
     // bring focus back to where it was before the panel was opened
     if (name === "tools" && !this.mobileLayout) {
@@ -1250,6 +1251,7 @@ const uiStore = {
       case "tools":
         if (this.activePanel === name) {
           this.panelClose();
+          savePref("activePanel", "none");
         } else {
           this.panelOpen(name, true);
           savePref("activePanel", name);

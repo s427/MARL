@@ -76,6 +76,9 @@ You can use the following properties. All properties are optional:
 - hideNoAltTextNotice: hide the warning icon when an image has no alt text
   possible values: true, false (default)
 
+- loopGifs: auto-play and loop videos that are short (< 10 seconds) and have no sound
+  possible values: true (default), false
+
 The folloging options are specific to server mode and not present in the tools panel:
 
 - showActorJson: whether or not to display the full JSON data in the actor panel
